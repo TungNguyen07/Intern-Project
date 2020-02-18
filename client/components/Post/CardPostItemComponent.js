@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CardBlog = () => {
+const CardPost = () => {
   const classes = useStyles();
   //const [post, setPost] = useState();
 
@@ -51,4 +51,4 @@ const CardBlog = () => {
   );
 };
 
-export default CardBlog;
+export default CardPost;

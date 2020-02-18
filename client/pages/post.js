@@ -1,17 +1,17 @@
-import BlogLayout from "../components/Blog/ReadBlogLayout";
+import PostLayout from "../components/Post/PostLayout";
 import Header from "../components/Header/HeaderComponent";
 import Banner from "../components/Header/BannerComponent";
-import Footer from "../components/FooterComponent";
+import Footer from "../components/Layout/FooterComponent";
 
-const LatestBlog = () => {
+const LatestPost = () => {
   return (
     <div>
       <Header title="abc" />
       <Banner />
-      <BlogLayout />
+      <PostLayout />
       <Footer />
     </div>
   );
 };
 
-export default LatestBlog;
+export default LatestPost;

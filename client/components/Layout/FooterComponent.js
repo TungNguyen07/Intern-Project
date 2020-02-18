@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     float: "right"
   },
   grid: {
-    marginLeft: "10%"
+    marginLeft: "11%"
   }
 }));
 

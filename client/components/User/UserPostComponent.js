@@ -9,21 +9,18 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormLabel from "@material-ui/core/FormLabel";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
-import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { Tooltip } from "@material-ui/core";
-import Link from "next/link";
 
 const useStyles = makeStyles(theme => ({
   large: {
-    width: theme.spacing(20),
-    height: theme.spacing(20),
+    width: theme.spacing(15),
+    height: theme.spacing(15),
+    justifyContent: "center",
     margin: "auto",
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3)
+    marginTop: theme.spacing(5),
+    marginBottom: theme.spacing(5)
   },
   hr: {
     width: "80%"
@@ -47,21 +44,11 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(2)
   },
   genderGroup: {
-    display: "block",
-    marginLeft: theme.spacing(2)
-  },
-  genderTitle: {
-    marginTop: theme.spacing(2) - 2
-  },
-  icon: {
-    fontSize: "3rem"
-  },
-  radio: {
-    fontSize: "1em"
+    display: "block"
   }
 }));
 
-const ProfileComponent = () => {
+const UserPostComponent = () => {
   const classes = useStyles();
   const [selectedDate, setSelectedDate] = useState(
     new Date("2014-08-18T21:11:54")
@@ -87,16 +74,15 @@ const ProfileComponent = () => {
           src="https://material-ui.com/static/images/avatar/1.jpg"
           className={classes.large}
         />
-        <FormControl id="info" className={classes.info}>
+        <div className={classes.info}>
           <TextField
             className={classes.infoItem}
             id="fullname"
             label="Fullname"
             variant="outlined"
-            required
           />
           <div className={classes.gender}>
-            <FormLabel className={classes.genderTitle}>Gender</FormLabel>
+            <FormLabel>Gender</FormLabel>
             <RadioGroup
               className={classes.genderGroup}
               aria-label="gender"
@@ -104,16 +90,8 @@ const ProfileComponent = () => {
               value={value}
               onChange={handleChange}
             >
-              <FormControlLabel
-                value="1"
-                control={<Radio className={classes.radio} />}
-                label="Female"
-              />
-              <FormControlLabel
-                value="0"
-                control={<Radio className={classes.radio} />}
-                label="Male"
-              />
+              <FormControlLabel value="1" control={<Radio />} label="Female" />
+              <FormControlLabel value="0" control={<Radio />} label="Male" />
             </RadioGroup>
           </div>
 
@@ -136,44 +114,22 @@ const ProfileComponent = () => {
             id="email"
             label="Email"
             variant="outlined"
-            required
           />
           <TextField
             className={classes.infoItem}
             id="phone"
             label="Phone"
             variant="outlined"
-            required
           />
           <TextField
             className={classes.infoItem}
             id="address"
             label="Address"
             variant="outlined"
-            required
           />
-        </FormControl>
-        <div>
-          <Tooltip title="Home">
-            <IconButton color="primary" aria-label="Home" component="span">
-              <Link href="/">
-                <HomeIcon className={classes.icon} />
-              </Link>
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Save">
-            <IconButton color="primary" aria-label="Home" component="span">
-              <SaveIcon className={classes.icon} />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Edit">
-            <IconButton color="primary" aria-label="Home" component="span">
-              <EditIcon className={classes.icon} />
-            </IconButton>
-          </Tooltip>
         </div>
       </Paper>
     </React.Fragment>
   );
 };
-export default ProfileComponent;
+export default UserPostComponent;

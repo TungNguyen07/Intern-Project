@@ -1,14 +1,16 @@
 import Header from "../components/Header/HeaderComponent";
-import LoginComponent from "../components/LoginComponent";
-import Footer from "../components/FooterComponent";
-import Layout from "../components/Layout/LayoutComponent";
-import Banner from "../components/Header/BannerComponent";
+import LoginComponent from "../components/User/LoginComponent";
+import Footer from "../components/Layout/FooterComponent";
+import { makeStyles } from "@material-ui/styles";
+
+const useStyle = makeStyles(theme => ({}));
 
 export default function Login() {
+  const classes = useStyle();
   return (
     <div>
       {/* <Banner /> */}
-      <Header />
+      <Header title="Login" />
       <LoginComponent />
       <Footer />
     </div>

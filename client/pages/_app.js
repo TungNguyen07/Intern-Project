@@ -1,5 +1,6 @@
 import NextApp from "next/app";
 import React from "react";
+
 import { ThemeProvider as StyledThemeProvider } from "styled-components";
 import {
   ThemeProvider as MaterialThemeProvider,

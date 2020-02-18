@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const ReadBlog = () => {
+const ReadPost = () => {
   const [post, setPost] = useState([]);
   return (
     <div>
@@ -12,4 +12,4 @@ const ReadBlog = () => {
   );
 };
 
-export default ReadBlog;
+export default ReadPost;

@@ -1,9 +1,18 @@
 import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(theme => ({
+  image: {
+    maxWidth: "100%"
+  }
+}));
 
 const BannerImage = () => {
+  const classes = useStyles();
   return (
     <React.Fragment>
       <svg
+        className={classes.image}
         version="1.0"
         xmlns="http://www.w3.org/2000/svg"
         width="1024.000000pt"

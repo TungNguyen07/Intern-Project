@@ -4,8 +4,8 @@ import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
+import NavProfile from "../User/ProfileNavComponent";
 
-import ReadBlog from "./ReadBlogComponent";
 import Nav from "../Layout/NavbarComponent";
 
 const useStyles = makeStyles(theme => ({
@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const BlogLayout = props => {
+const PostLayout = props => {
   const classes = useStyles();
   return (
     <React.Fragment>
@@ -29,12 +29,12 @@ const BlogLayout = props => {
           <Grid item xs>
             <Paper className={classes.paper}>
               <Nav />
+              <br />
+              <NavProfile />
             </Paper>
           </Grid>
           <Grid item xs={9}>
-            <Paper className={classes.paper}>
-              <ReadBlog>{props.children}</ReadBlog>
-            </Paper>
+            <Paper className={classes.paper}>{props.Right}</Paper>
           </Grid>
         </Grid>
       </Container>
@@ -42,4 +42,4 @@ const BlogLayout = props => {
   );
 };
 
-export default BlogLayout;
+export default PostLayout;
