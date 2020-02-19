@@ -8,7 +8,7 @@ import Footer from "../components/Layout/FooterComponent";
 const CreatePost = () => {
   return (
     <div>
-      <Header />
+      <Header title="Create post" />
       <Banner />
       <Layout Right={<PostEditor />} />
       <Footer />

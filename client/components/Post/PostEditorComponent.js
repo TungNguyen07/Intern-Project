@@ -9,47 +9,10 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
+import DeleteIcon from "@material-ui/icons/Delete";
+import SaveIcon from "@material-ui/icons/Save";
 
 const ReactQuill = dynamic(import("react-quill"), { ssr: false });
-// class BlogEditor extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = { text: "" }; // You can also pass a Quill Delta here
-//     this.handleChange = this.handleChange.bind(this);
-//   }
-
-//   handleChange(value) {
-//     this.setState({ text: value });
-//   }
-
-//   modules = {
-//     toolbar: [
-//       [{ font: [] }, { size: [] }],
-//       ["bold", "italic", "underline", "strike"],
-//       [{ color: [] }, { background: [] }],
-//       [{ script: "super" }, { script: "sub" }],
-//       [{ header: "1" }, { header: "2" }, "blockquote", "code-block"],
-//       [
-//         { list: "ordered" },
-//         { list: "bullet" },
-//         { indent: "-1" },
-//         { indent: "+1" }
-//       ],
-
-//       ["link", "image", "video", "formula"]
-//     ]
-//   };
-
-//   render() {
-//     return (
-//       <ReactQuill
-//         value={this.state.text}
-//         onChange={this.handleChange}
-//         modules={this.modules}
-//       />
-//     );
-//   }
-// }
 
 const useStyle = makeStyles(theme => ({
   buttonSave: {
@@ -81,6 +44,9 @@ const useStyle = makeStyles(theme => ({
   },
   editor: {
     height: 600
+  },
+  icon: {
+    marginRight: theme.spacing(1) - 2
   }
 }));
 
@@ -135,9 +101,13 @@ const PostEditor = props => {
         <ReactQuill className={classes.editor} value={text} modules={modules} />
         <FormControl className={classes.formButton}>
           <Button className={classes.buttonSave} onClick={console.log(text)}>
+            <SaveIcon className={classes.icon} />
             Save
           </Button>
-          <Button className={classes.buttonDelete}>Cannel</Button>
+          <Button className={classes.buttonDelete}>
+            <DeleteIcon className={classes.icon} />
+            Cannel
+          </Button>
         </FormControl>
       </form>
     </div>

@@ -9,7 +9,8 @@ import MenuList from "@material-ui/core/MenuList";
 const useStyles = makeStyles({
   root: {},
   title: {
-    backgroundColor: "#4fd9ff"
+    backgroundColor: "#4fd9ff",
+    padding: "5px"
   }
 });
 
@@ -19,7 +20,7 @@ function Nav() {
   return (
     <Card className={classes.root}>
       <CardContent className={classes.title}>
-        <Typography variant="h5" component="h2">
+        <Typography variant="h6" component="h6">
           Activity
         </Typography>
       </CardContent>

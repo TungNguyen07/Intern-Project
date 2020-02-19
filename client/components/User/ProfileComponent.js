@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import HomeIcon from "@material-ui/icons/Home";
-import EditIcon from "@material-ui/icons/Edit";
-import SaveIcon from "@material-ui/icons/Save";
 import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
 import TextField from "@material-ui/core/TextField";
@@ -10,12 +7,11 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormLabel from "@material-ui/core/FormLabel";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
-import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { Tooltip } from "@material-ui/core";
-import Link from "next/link";
+
+import ButtonComponent from "./ButtonComponent";
 
 const useStyles = makeStyles(theme => ({
   large: {
@@ -153,25 +149,7 @@ const ProfileComponent = () => {
             required
           />
         </FormControl>
-        <div>
-          <Tooltip title="Home">
-            <IconButton color="primary" aria-label="Home" component="span">
-              <Link href="/">
-                <HomeIcon className={classes.icon} />
-              </Link>
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Save">
-            <IconButton color="primary" aria-label="Home" component="span">
-              <SaveIcon className={classes.icon} />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Edit">
-            <IconButton color="primary" aria-label="Home" component="span">
-              <EditIcon className={classes.icon} />
-            </IconButton>
-          </Tooltip>
-        </div>
+        <ButtonComponent />
       </Paper>
     </React.Fragment>
   );
