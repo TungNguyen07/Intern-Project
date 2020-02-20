@@ -11,6 +11,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SaveIcon from "@material-ui/icons/Save";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 
 const ReactQuill = dynamic(import("react-quill"), { ssr: false });
 
@@ -31,7 +32,8 @@ const useStyle = makeStyles(theme => ({
   dropzone: {
     height: 200,
     marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
+    border: "dotted 1.5px"
   },
   title: {
     width: "100%",
@@ -47,6 +49,13 @@ const useStyle = makeStyles(theme => ({
   },
   icon: {
     marginRight: theme.spacing(1) - 2
+  },
+  dropTitle: {
+    marginTop: "-1rem"
+  },
+  uploadIcon: {
+    fontSize: "5rem",
+    marginTop: "2rem"
   }
 }));
 
@@ -71,6 +80,15 @@ const PostEditor = props => {
     ]
   };
 
+  const onDrop = image => {
+    var data = image[0];
+    var reader = new FileReader();
+    reader.onloadend = function() {
+      console.log("RESULT", reader.result);
+    };
+    reader.readAsDataURL(data);
+  };
+
   return (
     <div>
       <form>
@@ -83,16 +101,14 @@ const PostEditor = props => {
             <MenuItem value={30}>Thirty</MenuItem>
           </Select>
         </FormControl>
-        <Dropzone
-          accept="image/jpg, image/png, image/jpeg"
-          onDrop={acceptedFiles => console.log(acceptedFiles)}
-        >
+        <Dropzone accept="image/jpg, image/png, image/jpeg" onDrop={onDrop}>
           {({ getRootProps, getInputProps }) => (
             <section>
               <div className={classes.dropzone} {...getRootProps()}>
                 <input {...getInputProps()} />
-                <h2>
-                  Drag 'n' drop your cover image, or click to select files
+                <CloudUploadIcon className={classes.uploadIcon} />
+                <h2 className={classes.dropTitle}>
+                  Drag 'n' drop your cover image, or click to select image
                 </h2>
               </div>
             </section>

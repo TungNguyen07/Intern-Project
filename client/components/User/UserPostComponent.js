@@ -20,6 +20,9 @@ const useStyles = makeStyles(theme => ({
   cardItem: {
     margin: "auto",
     marginTop: theme.spacing(2)
+  },
+  title: {
+    paddingTop: "1rem"
   }
 }));
 
@@ -29,7 +32,7 @@ const UserPostComponent = () => {
   return (
     <React.Fragment>
       <Paper className={classes.root}>
-        <h1>Your Post</h1>
+        <h1 className={classes.title}>Your Post</h1>
         <hr className={classes.hr} />
         <Grid container spacing={0}>
           <Grid item xs={3} className={classes.cardItem}>
