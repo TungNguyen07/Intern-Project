@@ -3,7 +3,6 @@ import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/styles";
-import Dropzone from "react-dropzone";
 import TextField from "@material-ui/core/TextField";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
@@ -12,6 +11,9 @@ import FormControl from "@material-ui/core/FormControl";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SaveIcon from "@material-ui/icons/Save";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import Card from "@material-ui/core/Card";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardActionArea from "@material-ui/core/CardActionArea";
 
 const ReactQuill = dynamic(import("react-quill"), { ssr: false });
 
@@ -29,13 +31,14 @@ const useStyle = makeStyles(theme => ({
     marginTop: theme.spacing(5),
     display: "block"
   },
-  dropzone: {
-    height: 200,
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    border: "dotted 1.5px"
+  upload: {
+    height: "100%",
+    width: "100%",
+    opacity: 0,
+    position: "inherit",
+    position: "absolute"
   },
-  title: {
+  textField: {
     width: "100%",
     marginBottom: theme.spacing(1)
   },
@@ -50,18 +53,43 @@ const useStyle = makeStyles(theme => ({
   icon: {
     marginRight: theme.spacing(1) - 2
   },
-  dropTitle: {
+  uploadTitle: {
     marginTop: "-1rem"
   },
   uploadIcon: {
     fontSize: "5rem",
-    marginTop: "2rem"
+    marginTop: "0rem"
+  },
+  card: {
+    border: "dotted 1.5px",
+    height: 200,
+    marginBottom: theme.spacing(1)
+  },
+  uploadContent: {
+    display: "block",
+    position: "absolute"
+  },
+  previewImg: {
+    maxWidth: "100%",
+    maxHeight: "100%"
+  },
+  cardAction: {
+    padding: 0,
+    height: "100%",
+    display: "flex"
+  },
+  cardMedia: {
+    position: "absolute",
+    height: "100%",
+    width: "auto"
   }
 }));
 
 const PostEditor = props => {
-  const [text, setText] = useState("");
   const classes = useStyle();
+
+  const [text, setText] = useState("");
+
   const modules = {
     toolbar: [
       [{ font: [] }, { size: [] }],
@@ -80,40 +108,73 @@ const PostEditor = props => {
     ]
   };
 
-  const onDrop = image => {
-    var data = image[0];
-    var reader = new FileReader();
-    reader.onloadend = function() {
-      console.log("RESULT", reader.result);
+  const [coverImg, setCoverImg] = useState();
+
+  function base64(files, callback) {
+    var file = files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      var dataUrl = reader.result;
+      callback(dataUrl);
     };
-    reader.readAsDataURL(data);
+    reader.readAsDataURL(file);
+  }
+
+  const onDrop = event => {
+    base64(event.target.files, function(data) {
+      setCoverImg(data);
+    });
   };
 
   return (
     <div>
       <form>
-        <TextField className={classes.title} id="title" label="Title" />
+        <TextField
+          className={classes.textField}
+          id="title"
+          label="Title"
+          required
+        />
         <FormControl className={classes.select}>
           <InputLabel id="demo-simple-select-label">Activity</InputLabel>
-          <Select className={classes.select} id="activity">
+          <Select className={classes.select} id="activity" defaultValue="10">
             <MenuItem value={10}>Ten</MenuItem>
             <MenuItem value={20}>Twenty</MenuItem>
             <MenuItem value={30}>Thirty</MenuItem>
           </Select>
         </FormControl>
-        <Dropzone accept="image/jpg, image/png, image/jpeg" onDrop={onDrop}>
-          {({ getRootProps, getInputProps }) => (
-            <section>
-              <div className={classes.dropzone} {...getRootProps()}>
-                <input {...getInputProps()} />
+        <TextField
+          className={classes.textField}
+          id="description"
+          label="Description"
+          multiline
+          required
+        />
+        <Card className={classes.card}>
+          <CardActionArea className={classes.cardAction}>
+            {coverImg && (
+              <CardMedia
+                className={classes.cardMedia}
+                component="img"
+                image={coverImg}
+              />
+            )}
+            {!coverImg && (
+              <div>
                 <CloudUploadIcon className={classes.uploadIcon} />
-                <h2 className={classes.dropTitle}>
-                  Drag 'n' drop your cover image, or click to select image
-                </h2>
+                <h2>Upload your cover image</h2>
               </div>
-            </section>
-          )}
-        </Dropzone>
+            )}
+            <input
+              className={classes.upload}
+              type="file"
+              accept=".png, .jpg, .jpeg"
+              multiple={false}
+              onChange={onDrop}
+            />
+          </CardActionArea>
+        </Card>
+
         <ReactQuill className={classes.editor} value={text} modules={modules} />
         <FormControl className={classes.formButton}>
           <Button className={classes.buttonSave} onClick={console.log(text)}>

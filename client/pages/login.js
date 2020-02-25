@@ -1,6 +1,7 @@
 import Header from "../components/Header/HeaderComponent";
-import LoginComponent from "../components/User/LoginComponent";
+import SigninComponent from "../components/User/SigninComponent";
 import Footer from "../components/Layout/FooterComponent";
+import Banner from "../components/Header/BannerComponent";
 import { makeStyles } from "@material-ui/styles";
 
 const useStyle = makeStyles(theme => ({}));
@@ -11,7 +12,7 @@ export default function Login() {
     <div>
       {/* <Banner /> */}
       <Header title="Login" />
-      <LoginComponent />
+      <SigninComponent />
       <Footer />
     </div>
   );

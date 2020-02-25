@@ -8,7 +8,6 @@ import MenuList from "@material-ui/core/MenuList";
 import Link from "next/link";
 
 const useStyles = makeStyles({
-  root: {},
   title: {
     backgroundColor: "#4fd9ff",
     padding: "5px"
@@ -19,20 +18,31 @@ function ProfileNav() {
   const classes = useStyles();
   const [user, setUser] = useState({});
   return (
-    <Card className={classes.root}>
+    <Card>
       <CardContent className={classes.title}>
         <Typography variant="h6" component="h6">
           Abc
         </Typography>
       </CardContent>
-      <MenuList>
-        <Link href="/profile">
-          <MenuItem>Profile</MenuItem>
-        </Link>
-        <MenuItem>Change Password</MenuItem>
-        <Link href="/create-post">
-          <MenuItem>Write post</MenuItem>
-        </Link>
+      <MenuList tabIndex="-1">
+        <MenuItem>
+          <Link href="/profile">
+            <span>Profile</span>
+          </Link>
+        </MenuItem>
+
+        <MenuItem>
+          <Link href="#">
+            <span>Change Password</span>
+          </Link>
+        </MenuItem>
+
+        <MenuItem>
+          <Link href="/create-post">
+            <span>Write post</span>
+          </Link>
+        </MenuItem>
+
         <MenuItem>Logout</MenuItem>
       </MenuList>
     </Card>

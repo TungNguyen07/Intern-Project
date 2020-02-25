@@ -1,9 +1,9 @@
 import React from "react";
 // import banner from "../../public/images/top_banner.svg";
-import BannerImage from "./Banner";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import BannerImage from "./BannerImage";
 
 const Banner = () => {
   return (
