@@ -46,9 +46,9 @@ const Footer = () => {
             <a href="mailto:ttvhtt.longxuyen@angiang.gov.vn">
               ttvhtt.longxuyen@angiang.gov.vn
             </a>
-            <Link href="/login">
-              <a className={classes.link}>Login</a>
-            </Link>
+            <a href="/signin" className={classes.link}>
+              Signin
+            </a>
           </p>
         </Card>
       </Grid>

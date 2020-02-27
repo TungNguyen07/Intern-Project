@@ -4,6 +4,9 @@ import { Grid } from "@material-ui/core";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
+import { makeStyles } from "@material-ui/styles";
+
+const useStyles = makeStyles(theme => ({}));
 
 const Dashboard = () => {
   return (
@@ -12,10 +15,7 @@ const Dashboard = () => {
       <Container maxWidth="lg">
         <Grid container spacing={1}>
           <Grid item xs={12}>
-            <CardItem>
-              <PeopleAltIcon />
-              <h1>365</h1>
-            </CardItem>
+            <CardItem icon={<PeopleAltIcon />} title="User" />
           </Grid>
         </Grid>
       </Container>

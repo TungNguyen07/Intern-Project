@@ -1,4 +1,6 @@
 import React from "react";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 import ProfileLayout from "../components/User/ProfileLayout";
 import ProfileComponent from "../components/User/ProfileComponent";
 import UserPostComponent from "../components/User/UserPostComponent";

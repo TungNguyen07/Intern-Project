@@ -33,16 +33,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AvatarComponent = () => {
+const AvatarComponent = props => {
   const classes = useStyles();
 
   return (
     <React.Fragment>
-      <Avatar
-        alt="image"
-        src="https://material-ui.com/static/images/avatar/1.jpg"
-        className={classes.large}
-      />
+      <Avatar alt="image" src={props.avatar} className={classes.large} />
     </React.Fragment>
   );
 };

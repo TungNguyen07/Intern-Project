@@ -6,6 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -32,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(1)
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
+    margin: theme.spacing(1, 0, 1)
   }
 }));
 
@@ -42,6 +43,8 @@ export default function LoginComponent() {
     username: "",
     password: ""
   });
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = prop => event => {
     setInfo({ ...info, [prop]: event.target.value });
@@ -77,13 +80,11 @@ export default function LoginComponent() {
           <form className={classes.form} noValidate>
             <TextField
               variant="outlined"
-              margin="normal"
               required
               fullWidth
               id="username"
               label="Username"
               name="username"
-              autoComplete="username"
               autoFocus
               onChange={handleChange("username")}
               value={info.username}
@@ -95,13 +96,19 @@ export default function LoginComponent() {
               fullWidth
               name="password"
               label="Password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
-              autoComplete="current-password"
               onChange={handleChange("password")}
               value={info.password}
             />
-
+            <Checkbox
+              checked={showPassword}
+              onChange={() => {
+                setShowPassword(!showPassword);
+              }}
+              color="primary"
+            />{" "}
+            Show password
             <Button
               type="button"
               fullWidth

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
 
 import EditInfoComponent from "./EditInfoComponent";
 
@@ -26,6 +27,17 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+function getInfo(id) {
+  const options = {
+    url: `http://localhost:4000/user?id=${id}`,
+    method: "get"
+  };
+
+  axios(options)
+    .then(res => console.log(res.data))
+    .catch(err => console.log(err));
+}
+
 const InfoComponent = props => {
   const classes = useStyles();
   const [info, setInfo] = useState({
@@ -36,6 +48,10 @@ const InfoComponent = props => {
     birth_date: "07/07/1998",
     address: "Long Xuyên"
   });
+
+  useEffect(() => {
+    getInfo("5e5636cc0c33a93eb476c10f");
+  }, []);
 
   return (
     <div>

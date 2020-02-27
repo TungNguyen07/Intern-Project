@@ -11,6 +11,12 @@ const useStyles = makeStyles({
   title: {
     backgroundColor: "#4fd9ff",
     padding: "5px"
+  },
+  link: {
+    textDecoration: "none",
+    "&:visited": {
+      color: "inherit"
+    }
   }
 });
 
@@ -26,21 +32,21 @@ function ProfileNav() {
       </CardContent>
       <MenuList tabIndex="-1">
         <MenuItem>
-          <Link href="/profile">
+          <a className={classes.link} href="/profile">
             <span>Profile</span>
-          </Link>
+          </a>
         </MenuItem>
 
         <MenuItem>
-          <Link href="#">
+          <a className={classes.link} href="#">
             <span>Change Password</span>
-          </Link>
+          </a>
         </MenuItem>
 
         <MenuItem>
-          <Link href="/create-post">
+          <a className={classes.link} href="/create-post">
             <span>Write post</span>
-          </Link>
+          </a>
         </MenuItem>
 
         <MenuItem>Logout</MenuItem>

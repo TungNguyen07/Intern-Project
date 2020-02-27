@@ -6,6 +6,7 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
+import PostAddIcon from "@material-ui/icons/PostAdd";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,7 +23,18 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(2)
   },
   title: {
-    paddingTop: "1rem"
+    paddingTop: "1rem",
+    display: "inline-flex"
+  },
+  icon: {
+    fontSize: "2.5rem",
+    marginBottom: "-0.5rem",
+    marginLeft: theme.spacing(1)
+  },
+  link: {
+    "&:visited": {
+      color: "inherit"
+    }
   }
 }));
 
@@ -33,6 +45,10 @@ const UserPostComponent = () => {
     <React.Fragment>
       <Paper className={classes.root}>
         <h1 className={classes.title}>Your Post</h1>
+        <a href="/create-post" className={classes.link}>
+          <PostAddIcon className={classes.icon} />
+        </a>
+
         <hr className={classes.hr} />
         <Grid container spacing={0}>
           <Grid item xs={3} className={classes.cardItem}>

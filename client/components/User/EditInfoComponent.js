@@ -51,11 +51,10 @@ const useStyles = makeStyles(theme => ({
 const EditInfoComponent = props => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [gender, setValue] = useState(props.info.gender);
+  const [info, setInfo] = useState(props.info);
 
   const handleClickOpen = () => {
     setOpen(true);
-    console.log(gender);
   };
 
   const handleClose = () => {
@@ -67,11 +66,20 @@ const EditInfoComponent = props => {
   );
 
   const handleDateChange = date => {
-    setSelectedDate(date);
+    setInfo({ ...info, birth_date: date });
   };
 
-  const handleChange = event => {
-    setValue(event.target.value);
+  // const handleChange = event => {
+  //   setValue(event.target.value);
+  // };
+
+  const handleChange = prop => event => {
+    setInfo({ ...info, [prop]: event.target.value });
+  };
+
+  const handleSave = () => {
+    console.log(info);
+    handleClose();
   };
 
   return (
@@ -98,8 +106,9 @@ const EditInfoComponent = props => {
               id="fullname"
               label="Fullname"
               variant="outlined"
-              value={props.info.fullname}
+              value={info.fullname}
               required
+              onChange={handleChange("fullname")}
             />
             <div className={classes.gender}>
               <FormLabel className={classes.genderTitle}>Gender</FormLabel>
@@ -107,8 +116,8 @@ const EditInfoComponent = props => {
                 className={classes.genderGroup}
                 aria-label="gender"
                 name="gender"
-                value={gender}
-                onChange={handleChange}
+                value={info.gender}
+                onChange={handleChange("gender")}
               >
                 <FormControlLabel
                   value="0"
@@ -127,10 +136,10 @@ const EditInfoComponent = props => {
               <DatePicker
                 className={classes.datePicker}
                 variant="outlined"
-                id="birth-date"
-                label="Birth-date"
+                id="birth_date"
+                label="birth_date"
                 format="MM/dd/yyyy"
-                value={selectedDate}
+                value={info.birth_date}
                 onChange={handleDateChange}
                 KeyboardButtonProps={{
                   "aria-label": "change date"
@@ -142,24 +151,27 @@ const EditInfoComponent = props => {
               id="email"
               label="Email"
               variant="outlined"
-              value={props.info.email}
+              value={info.email}
               required
+              onChange={handleChange("email")}
             />
             <TextField
               className={classes.infoItem}
               id="phone"
               label="Phone"
               variant="outlined"
-              value={props.info.phone_number}
+              value={info.phone_number}
               required
+              onChange={handleChange("phone")}
             />
             <TextField
               className={classes.infoItem}
               id="address"
               label="Address"
               variant="outlined"
-              value={props.info.address}
+              value={info.address}
               required
+              onChange={handleChange("address")}
             />
           </FormControl>
         </DialogContent>
@@ -167,7 +179,7 @@ const EditInfoComponent = props => {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleSave} color="primary">
             Save
           </Button>
         </DialogActions>
