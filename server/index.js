@@ -4,11 +4,15 @@ import express from "express";
 import helmet from "helmet";
 import logger from "morgan";
 import cors from "cors";
-import userRoute from "./route/user.route";
+
+import userRouter from "./route/user.route";
+import indexRouter from "./route/index.route";
+import db from "./db/connectDB";
 
 const app = express();
 const port = process.env.PORT || 4000;
 
+db;
 app.use(cors());
 app.use(logger("dev"));
 app.use(
@@ -21,6 +25,7 @@ app.use(
 );
 app.use(helmet());
 
-app.use("/user", userRoute);
+app.use("/profile", userRouter);
+app.use("/", indexRouter);
 
 app.listen(port, () => console.log(`Server is running on port ${port}!`));

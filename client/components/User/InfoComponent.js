@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
 
 import EditInfoComponent from "./EditInfoComponent";
+import { fetchData } from "../../libs/fetchData";
 
 const useStyles = makeStyles(theme => ({
   fullname: {
@@ -27,30 +27,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function getInfo(id) {
-  const options = {
-    url: `http://localhost:4000/user?id=${id}`,
-    method: "get"
-  };
-
-  axios(options)
-    .then(res => console.log(res.data))
-    .catch(err => console.log(err));
-}
-
 const InfoComponent = props => {
   const classes = useStyles();
-  const [info, setInfo] = useState({
-    fullname: "Nguyễn Sơn Tùng",
-    gender: "1",
-    phone_number: "0707071869",
-    email: "nstung@gmail.com",
-    birth_date: "07/07/1998",
-    address: "Long Xuyên"
-  });
+  const [info, setInfo] = useState({});
 
   useEffect(() => {
-    getInfo("5e5636cc0c33a93eb476c10f");
+    fetchData("http://localhost:4000/profile?id=5e58a413168d853a90c0b494")
+      .then(res => {
+        setInfo(res[0]);
+      })
+      .catch(err => console.log(err));
   }, []);
 
   return (

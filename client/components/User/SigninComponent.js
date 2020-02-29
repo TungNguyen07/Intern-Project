@@ -11,7 +11,10 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Paper } from "@material-ui/core";
-import axios from "axios";
+import Router from "next/router";
+import { useCookies } from "react-cookie";
+
+import { postData } from "../../libs/postData";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -39,6 +42,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function LoginComponent() {
   const classes = useStyles();
+  const [cookie, setCookie] = useCookies("");
   const [info, setInfo] = useState({
     username: "",
     password: ""
@@ -51,18 +55,11 @@ export default function LoginComponent() {
   };
 
   const submit = () => {
-    const options = {
-      url: "http://localhost:4000/user/signin",
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json;charset=UTF-8"
-      },
-      data: info
-    };
-
-    axios(options)
-      .then(res => console.log(res.data))
+    postData("http://localhost:4000/signin", info)
+      .then(res => {
+        setCookie("access_token", res.token);
+        Router.push("/");
+      })
       .catch(err => console.log(err));
   };
 

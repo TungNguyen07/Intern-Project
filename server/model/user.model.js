@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import DEFAULT_AVATAR from "../defaultAvatar";
 
 const userSchema = mongoose.Schema(
   {
@@ -16,10 +15,7 @@ const userSchema = mongoose.Schema(
     username: String,
     password: String,
     address: String,
-    avatar: {
-      type: String,
-      default: DEFAULT_AVATAR
-    }
+    avatar: String
   },
   { versionKey: false }
 );
@@ -56,6 +52,6 @@ userSchema.methods.comparePassword = function(password) {
   }
 };
 
-let user = mongoose.model("user", userSchema);
+const user = mongoose.model("user", userSchema);
 
 module.exports = user;
