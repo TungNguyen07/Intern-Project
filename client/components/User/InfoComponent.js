@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
 import EditInfoComponent from "./EditInfoComponent";
-import { fetchData } from "../../libs/fetchData";
+import { UserContext } from "../../contexts/userContext";
 
 const useStyles = makeStyles(theme => ({
   fullname: {
@@ -29,21 +29,17 @@ const useStyles = makeStyles(theme => ({
 
 const InfoComponent = props => {
   const classes = useStyles();
-  const [info, setInfo] = useState({});
+  const { user, dispatch } = useReducer(UserContext);
 
   useEffect(() => {
-    fetchData("http://localhost:4000/profile?id=5e58a413168d853a90c0b494")
-      .then(res => {
-        setInfo(res[0]);
-      })
-      .catch(err => console.log(err));
+    console.log(user);
   }, []);
 
   return (
     <div>
       <div className={classes.root}>
         <Typography variant="h3" className={classes.fullname}>
-          {info.fullname}
+          {user.fullname}
         </Typography>
         <EditInfoComponent info={info} />
       </div>
@@ -58,12 +54,12 @@ const InfoComponent = props => {
         </div>
         <div className={classes.displayInfo}>
           <Typography variant="subtitle1">
-            {parseInt(info.gender) ? "Male" : "Female"}
+            {parseInt(user.gender) ? "Male" : "Female"}
           </Typography>
-          <Typography variant="subtitle1">{info.birth_date}</Typography>
-          <Typography variant="subtitle1">{info.phone_number}</Typography>
-          <Typography variant="subtitle1">{info.email}</Typography>
-          <Typography variant="subtitle1">{info.address}</Typography>
+          <Typography variant="subtitle1">{user.birth_date}</Typography>
+          <Typography variant="subtitle1">{user.phone_number}</Typography>
+          <Typography variant="subtitle1">{user.email}</Typography>
+          <Typography variant="subtitle1">{user.address}</Typography>
         </div>
       </div>
     </div>

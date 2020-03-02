@@ -17,6 +17,7 @@ const useStyles = makeStyles(theme => ({
 
 const ProfileComponent = () => {
   const classes = useStyles();
+
   return (
     <Paper>
       <Title />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import ProfileLayout from "../components/User/ProfileLayout";
@@ -7,10 +7,11 @@ import UserPostComponent from "../components/User/UserPostComponent";
 import Header from "../components/Header/HeaderComponent";
 import Footer from "../components/Layout/FooterComponent";
 import Banner from "../components/Header/BannerComponent";
+import { UserProvider } from "../contexts/userContext";
 
 const Profile = () => {
   return (
-    <div>
+    <UserProvider>
       <Header title="Profile" />
       <Banner />
       <ProfileLayout>
@@ -18,7 +19,7 @@ const Profile = () => {
         <UserPostComponent />
       </ProfileLayout>
       <Footer />
-    </div>
+    </UserProvider>
   );
 };
 

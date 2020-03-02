@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -15,6 +15,7 @@ import Router from "next/router";
 import { useCookies } from "react-cookie";
 
 import { postData } from "../../libs/postData";
+import { userReducer } from "../../stores/userReducer";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -47,6 +48,7 @@ export default function LoginComponent() {
     username: "",
     password: ""
   });
+  const [user, dispatch] = userReducer();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -55,13 +57,13 @@ export default function LoginComponent() {
   };
 
   const submit = () => {
-    postData("http://localhost:4000/signin", info)
-      .then(res => {
-        setCookie("access_token", res.token);
-        Router.push("/");
-      })
-      .catch(err => console.log(err));
+    dispatch({ type: "SIGNIN", info: info });
+    Router.push("/profile");
   };
+
+  useEffect(() => {
+    console.log(user);
+  });
 
   return (
     <Paper className={classes.paper}>
