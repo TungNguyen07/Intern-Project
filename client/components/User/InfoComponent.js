@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -29,19 +29,19 @@ const useStyles = makeStyles(theme => ({
 
 const InfoComponent = props => {
   const classes = useStyles();
-  const { user, dispatch } = useReducer(UserContext);
+  // const [user, dispatch] = useReducer(UserContext);
 
   useEffect(() => {
-    console.log(user);
+    console.log(props.user);
   }, []);
 
   return (
     <div>
       <div className={classes.root}>
         <Typography variant="h3" className={classes.fullname}>
-          {user.fullname}
+          {props.user.fullname}
         </Typography>
-        <EditInfoComponent info={info} />
+        <EditInfoComponent info={props.user} />
       </div>
 
       <div className={classes.groupInfo}>
@@ -54,12 +54,12 @@ const InfoComponent = props => {
         </div>
         <div className={classes.displayInfo}>
           <Typography variant="subtitle1">
-            {parseInt(user.gender) ? "Male" : "Female"}
+            {parseInt(props.user.gender) ? "Male" : "Female"}
           </Typography>
-          <Typography variant="subtitle1">{user.birth_date}</Typography>
-          <Typography variant="subtitle1">{user.phone_number}</Typography>
-          <Typography variant="subtitle1">{user.email}</Typography>
-          <Typography variant="subtitle1">{user.address}</Typography>
+          <Typography variant="subtitle1">{props.user.birth_date}</Typography>
+          <Typography variant="subtitle1">{props.user.phone_number}</Typography>
+          <Typography variant="subtitle1">{props.user.email}</Typography>
+          <Typography variant="subtitle1">{props.user.address}</Typography>
         </div>
       </div>
     </div>

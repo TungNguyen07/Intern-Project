@@ -5,4 +5,6 @@ import { checkPassword } from "../middlewares/checkPassword";
 
 router.post("/signin", checkPassword, userApi.signin);
 
+router.post("/check-token", userApi.checkToken);
+
 module.exports = router;

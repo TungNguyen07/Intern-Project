@@ -1,5 +1,6 @@
 import NextApp from "next/app";
-import React from "react";
+import React, { useReducer } from "react";
+import { UserProvider } from "../contexts/userContext";
 
 import { ThemeProvider as StyledThemeProvider } from "styled-components";
 import {
@@ -25,7 +26,9 @@ export default class App extends NextApp {
     return (
       <StyledThemeProvider theme={theme}>
         <MaterialThemeProvider theme={theme}>
-          <Component {...pageProps} />
+          <UserProvider>
+            <Component {...pageProps} />
+          </UserProvider>
         </MaterialThemeProvider>
       </StyledThemeProvider>
     );

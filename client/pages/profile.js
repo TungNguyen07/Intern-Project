@@ -7,11 +7,10 @@ import UserPostComponent from "../components/User/UserPostComponent";
 import Header from "../components/Header/HeaderComponent";
 import Footer from "../components/Layout/FooterComponent";
 import Banner from "../components/Header/BannerComponent";
-import { UserProvider } from "../contexts/userContext";
 
 const Profile = () => {
   return (
-    <UserProvider>
+    <React.Fragment>
       <Header title="Profile" />
       <Banner />
       <ProfileLayout>
@@ -19,7 +18,7 @@ const Profile = () => {
         <UserPostComponent />
       </ProfileLayout>
       <Footer />
-    </UserProvider>
+    </React.Fragment>
   );
 };
 

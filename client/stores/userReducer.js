@@ -1,31 +1,23 @@
-import { useReducer } from "react";
-import fetchData from "../libs/fetchData";
+import { fetchData } from "../libs/fetchData";
 import { postData } from "../libs/postData";
+import { initialUser } from "./initialUser";
 
-const initialUser = {};
-const reducer = (state = initialUser, action) => {
+export const UserReducer = (state = initialUser, action) => {
   switch (action.type) {
-    case "SIGNIN":
-      return postData("http://localhost:4000/signin", action.info)
+    case "SIGN_IN": {
+      postData("http://localhost:4000/signin", action.info)
         .then(res => {
-          return { ...state, res };
+          if (res.user.isSignedIn) {
+            state = { ...state, user: res.user, token: res.token };
+            localStorage.setItem("access_user", JSON.stringify(state));
+          } else return state;
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          console.log(err);
+        });
+    }
 
-    case "SIGNOUT":
-      return {};
-    case "PROFILE":
-      return {};
-    case "CHANGE_PASSWORD":
-      return {};
-    case "CHANGE_INFOR":
-      return {};
     default:
       return state;
   }
-};
-
-export const userReducer = () => {
-  const [user, dispatch] = useReducer(reducer, initialUser);
-  return [user, dispatch];
 };

@@ -1,20 +1,39 @@
 import userModel from "../model/user.model";
 import mongoose from "mongoose";
-import jwt from "jsonwebtoken";
+import jwt, { verify } from "jsonwebtoken";
+const { SECRET_KEY } = process.env;
 
 module.exports.signin = async function(req, res) {
-  const user = await userModel.find({ username: req.body.username });
-  const payload = {
-    fullname: user[0].fullname,
-    role: user[0].role,
-    username: user[0].username,
-    id: user[0]._id
-  };
-  const token = jwt.sign({ payload }, process.env.SECRET_KEY);
-  res.json({
-    user: user[0],
-    token: token
-  });
+  const data = (await userModel.find({ username: req.body.username }))[0];
+  if (data) {
+    const payload = {
+      fullname: data.fullname,
+      role: data.role,
+      id: data._id
+    };
+
+    const user = {
+      ...payload,
+      gender: data.gender,
+      birth_date: data.birth_date,
+      email: data.email,
+      phone_number: data.phone_number,
+      address: data.phone_number,
+      isSignedIn: true
+    };
+
+    const token = jwt.sign({ payload }, process.env.SECRET_KEY);
+
+    res.json({
+      user: user,
+      token: token
+    });
+  } else {
+    const user = {
+      isSignedIn: false
+    };
+    res.json(user);
+  }
 };
 
 module.exports.getUserFollowId = async function(req, res) {
@@ -24,4 +43,12 @@ module.exports.getUserFollowId = async function(req, res) {
     console.log("success");
     res.json(data);
   }
+};
+
+module.exports.checkToken = function(req, res) {
+  const token = req.body.token;
+  console.log(req.body);
+  const result = jwt.verify(token, SECRET_KEY);
+  console.log(result);
+  res.json(result);
 };

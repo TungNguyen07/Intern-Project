@@ -8,7 +8,7 @@ export const fetchData = url => {
   return new Promise((resolve, reject) => {
     axios(options)
       .then(res => {
-        resolve(res.data);
+        resolve(res);
       })
       .catch(err => reject(err));
   });

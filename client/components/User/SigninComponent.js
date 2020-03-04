@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, useReducer } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,10 +12,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Paper } from "@material-ui/core";
 import Router from "next/router";
-import { useCookies } from "react-cookie";
 
-import { postData } from "../../libs/postData";
-import { userReducer } from "../../stores/userReducer";
+import {
+  UserContext,
+  UserProvider,
+  useStore
+} from "../../contexts/userContext";
+import { UserReducer } from "../../stores/userReducer";
+import { initialUser } from "../../stores/initialUser";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -43,12 +47,14 @@ const useStyles = makeStyles(theme => ({
 
 export default function LoginComponent() {
   const classes = useStyles();
-  const [cookie, setCookie] = useCookies("");
+  const [error, setError] = useState("");
   const [info, setInfo] = useState({
     username: "",
     password: ""
   });
-  const [user, dispatch] = userReducer();
+
+  //const [user, dispatch] = useReducer(UserReducer, initialUser);
+  const { user, dispatch } = useStore();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -56,14 +62,22 @@ export default function LoginComponent() {
     setInfo({ ...info, [prop]: event.target.value });
   };
 
-  const submit = () => {
-    dispatch({ type: "SIGNIN", info: info });
+  const submit = async () => {
+    await dispatch({ type: "SIGN_IN", info: info });
+
     Router.push("/profile");
+    // if (dispatch({ type: "IS_SIGNED_IN" })) Router.push("/");
+    // else setError("Incorect Username or Password!");
   };
 
-  useEffect(() => {
-    console.log(user);
-  });
+  // useEffect(() => {
+  //   if (localStorage.length) {
+  //     const user = JSON.parse(localStorage.getItem("access_user"));
+  //     const { token } = user.token;
+  //     console.log(token);
+  //     const result = dispatch({ type: "CHECK_TOKEN", token: token });
+  //   }
+  // }, []);
 
   return (
     <Paper className={classes.paper}>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card } from "@material-ui/core";
@@ -26,6 +26,15 @@ const useStyles = makeStyles(theme => ({
 
 const Footer = () => {
   const classes = useStyles();
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+  useEffect(() => {
+    const access_user = JSON.parse(localStorage.getItem("access_user"));
+    if (access_user) {
+      if (access_user.isSignedIn) setIsSignedIn(true);
+    }
+  });
+
   return (
     <div className={classes.root}>
       <Grid className={classes.grid}>
@@ -46,9 +55,11 @@ const Footer = () => {
             <a href="mailto:ttvhtt.longxuyen@angiang.gov.vn">
               ttvhtt.longxuyen@angiang.gov.vn
             </a>
-            <a href="/signin" className={classes.link}>
-              Signin
-            </a>
+            {!isSignedIn && (
+              <a href="/signin" className={classes.link}>
+                Signin
+              </a>
+            )}
           </p>
         </Card>
       </Grid>
