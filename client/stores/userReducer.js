@@ -1,23 +1,21 @@
-import { fetchData } from "../libs/fetchData";
-import { postData } from "../libs/postData";
+import { SIGN_IN, SIGN_OUT } from "../actions/userActionsType";
 import { initialUser } from "./initialUser";
+import { postData } from "../libs/postData";
 
-export const UserReducer = (state = initialUser, action) => {
+export default function userReducer(state = initialUser, action) {
   switch (action.type) {
-    case "SIGN_IN": {
-      postData("http://localhost:4000/signin", action.info)
-        .then(res => {
-          if (res.user.isSignedIn) {
-            state = { ...state, user: res.user, token: res.token };
-            localStorage.setItem("access_user", JSON.stringify(state));
-          } else return state;
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    }
-
+    case SIGN_IN:
+      signin(action.signinInfo);
     default:
       return state;
   }
-};
+}
+
+function signin(signinInfo) {
+  console.log("Signing...");
+  postData("http://localhost:4000/signin", signinInfo).then(res => {
+    if (res.token) {
+      localStorage.setItem("access_token", res.token);
+    }
+  });
+}

@@ -37,11 +37,12 @@ module.exports.signin = async function(req, res) {
 };
 
 module.exports.getUserFollowId = async function(req, res) {
-  const id = mongoose.Types.ObjectId(req.query.id);
+  const id = mongoose.Types.ObjectId(req.body.id);
+  console.log(req.body);
   const data = await userModel.find({ _id: id });
   if (data) {
-    console.log("success");
-    res.json(data);
+    console.log(data[0]);
+    res.json(data[0]);
   }
 };
 

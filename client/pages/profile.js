@@ -8,7 +8,7 @@ import Header from "../components/Header/HeaderComponent";
 import Footer from "../components/Layout/FooterComponent";
 import Banner from "../components/Header/BannerComponent";
 
-const Profile = () => {
+const Profile = props => {
   return (
     <React.Fragment>
       <Header title="Profile" />
@@ -20,6 +20,11 @@ const Profile = () => {
       <Footer />
     </React.Fragment>
   );
+};
+
+Profile.getInitialProps = async function() {
+  const res = { key: 1, value: 2 };
+  return res;
 };
 
 export default Profile;

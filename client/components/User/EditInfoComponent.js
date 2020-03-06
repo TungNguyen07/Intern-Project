@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 const EditInfoComponent = props => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [info, setInfo] = useState(props.info);
+  const [info, setInfo] = useState(props.user);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -106,7 +106,7 @@ const EditInfoComponent = props => {
               id="fullname"
               label="Fullname"
               variant="outlined"
-              value={info.fullname}
+              value={""}
               required
               onChange={handleChange("fullname")}
             />
@@ -116,7 +116,7 @@ const EditInfoComponent = props => {
                 className={classes.genderGroup}
                 aria-label="gender"
                 name="gender"
-                value={info.gender}
+                value={1}
                 onChange={handleChange("gender")}
               >
                 <FormControlLabel
@@ -139,7 +139,7 @@ const EditInfoComponent = props => {
                 id="birth_date"
                 label="birth_date"
                 format="MM/dd/yyyy"
-                value={info.birth_date}
+                value={""}
                 onChange={handleDateChange}
                 KeyboardButtonProps={{
                   "aria-label": "change date"
@@ -151,7 +151,7 @@ const EditInfoComponent = props => {
               id="email"
               label="Email"
               variant="outlined"
-              value={info.email}
+              value={""}
               required
               onChange={handleChange("email")}
             />
@@ -160,7 +160,7 @@ const EditInfoComponent = props => {
               id="phone"
               label="Phone"
               variant="outlined"
-              value={info.phone_number}
+              value={""}
               required
               onChange={handleChange("phone")}
             />
@@ -169,7 +169,7 @@ const EditInfoComponent = props => {
               id="address"
               label="Address"
               variant="outlined"
-              value={info.address}
+              value={""}
               required
               onChange={handleChange("address")}
             />

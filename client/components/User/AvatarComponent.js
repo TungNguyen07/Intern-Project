@@ -38,7 +38,7 @@ const AvatarComponent = props => {
 
   return (
     <React.Fragment>
-      <Avatar alt="image" src={props.user.avatar} className={classes.large} />
+      <Avatar alt="image" src="" className={classes.large} />
     </React.Fragment>
   );
 };

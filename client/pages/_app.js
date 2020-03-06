@@ -1,6 +1,11 @@
 import NextApp from "next/app";
-import React, { useReducer } from "react";
-import { UserProvider } from "../contexts/userContext";
+import React from "react";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+
+import allReducer from "../stores/allReducer";
+
+const store = createStore(allReducer);
 
 import { ThemeProvider as StyledThemeProvider } from "styled-components";
 import {
@@ -26,9 +31,9 @@ export default class App extends NextApp {
     return (
       <StyledThemeProvider theme={theme}>
         <MaterialThemeProvider theme={theme}>
-          <UserProvider>
+          <Provider store={store}>
             <Component {...pageProps} />
-          </UserProvider>
+          </Provider>
         </MaterialThemeProvider>
       </StyledThemeProvider>
     );

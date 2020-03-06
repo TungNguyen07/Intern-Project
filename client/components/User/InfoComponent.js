@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useReducer, useContext } from "react";
+import React, { useEffect } from "react";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
 
 import EditInfoComponent from "./EditInfoComponent";
-import { UserContext } from "../../contexts/userContext";
 
 const useStyles = makeStyles(theme => ({
   fullname: {
@@ -27,21 +27,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const InfoComponent = props => {
+export const InfoComponent = props => {
   const classes = useStyles();
-  // const [user, dispatch] = useReducer(UserContext);
-
-  useEffect(() => {
-    console.log(props.user);
-  }, []);
 
   return (
     <div>
       <div className={classes.root}>
         <Typography variant="h3" className={classes.fullname}>
-          {props.user.fullname}
+          {props.fullname}
         </Typography>
-        <EditInfoComponent info={props.user} />
+        <EditInfoComponent />
       </div>
 
       <div className={classes.groupInfo}>
@@ -54,16 +49,22 @@ const InfoComponent = props => {
         </div>
         <div className={classes.displayInfo}>
           <Typography variant="subtitle1">
-            {parseInt(props.user.gender) ? "Male" : "Female"}
+            {parseInt(props.gender) ? "Male" : "Female"}
           </Typography>
-          <Typography variant="subtitle1">{props.user.birth_date}</Typography>
-          <Typography variant="subtitle1">{props.user.phone_number}</Typography>
-          <Typography variant="subtitle1">{props.user.email}</Typography>
-          <Typography variant="subtitle1">{props.user.address}</Typography>
+          <Typography variant="subtitle1">{props.birth_date}</Typography>
+          <Typography variant="subtitle1">{props.phone_number}</Typography>
+          <Typography variant="subtitle1">{props.email}</Typography>
+          <Typography variant="subtitle1">{props.address}</Typography>
         </div>
       </div>
     </div>
   );
 };
 
-export default InfoComponent;
+const mapStateToProps = state => {
+  return {
+    user: state.userReducer
+  };
+};
+
+export default connect(mapStateToProps, null)(InfoComponent);

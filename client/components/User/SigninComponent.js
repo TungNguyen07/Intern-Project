@@ -12,14 +12,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Paper } from "@material-ui/core";
 import Router from "next/router";
+import Alert from "@material-ui/lab/Alert";
 
-import {
-  UserContext,
-  UserProvider,
-  useStore
-} from "../../contexts/userContext";
-import { UserReducer } from "../../stores/userReducer";
-import { initialUser } from "../../stores/initialUser";
+import { userActions } from "../../actions/userActions";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -42,19 +39,22 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(1, 0, 1)
+  },
+  alert: {
+    width: "100%",
+    margin: theme.spacing(1)
   }
 }));
 
-export default function LoginComponent() {
+export const LoginComponent = props => {
   const classes = useStyles();
-  const [error, setError] = useState("");
+  const [isValid, setIsValid] = useState(true);
   const [info, setInfo] = useState({
     username: "",
     password: ""
   });
 
   //const [user, dispatch] = useReducer(UserReducer, initialUser);
-  const { user, dispatch } = useStore();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -62,22 +62,24 @@ export default function LoginComponent() {
     setInfo({ ...info, [prop]: event.target.value });
   };
 
-  const submit = async () => {
-    await dispatch({ type: "SIGN_IN", info: info });
+  const { Signin } = props;
+  const submit = () => {
+    if (info.username == "" || info.password == "") setIsValid(false);
+    else {
+      Signin(info);
 
-    Router.push("/profile");
+      Router.push("/profile");
+    }
     // if (dispatch({ type: "IS_SIGNED_IN" })) Router.push("/");
     // else setError("Incorect Username or Password!");
   };
 
-  // useEffect(() => {
-  //   if (localStorage.length) {
-  //     const user = JSON.parse(localStorage.getItem("access_user"));
-  //     const { token } = user.token;
-  //     console.log(token);
-  //     const result = dispatch({ type: "CHECK_TOKEN", token: token });
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (localStorage.length) {
+      const token = { token: localStorage.getItem("access_token") };
+      if (token) Router.push("/");
+    }
+  }, []);
 
   return (
     <Paper className={classes.paper}>
@@ -90,6 +92,11 @@ export default function LoginComponent() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          {!isValid && (
+            <Alert className={classes.alert} severity="warning">
+              Invalid Username or Password
+            </Alert>
+          )}
           <form className={classes.form} noValidate>
             <TextField
               variant="outlined"
@@ -144,4 +151,12 @@ export default function LoginComponent() {
       </Container>
     </Paper>
   );
+};
+
+function mapDispatchToProps(dispatch) {
+  return {
+    Signin: bindActionCreators(userActions.Signin, dispatch)
+  };
 }
+
+export default connect(null, mapDispatchToProps)(LoginComponent);
