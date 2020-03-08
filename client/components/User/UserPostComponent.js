@@ -7,6 +7,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import PostAddIcon from "@material-ui/icons/PostAdd";
+import Link from "next/link";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -45,9 +46,9 @@ const UserPostComponent = () => {
     <React.Fragment>
       <Paper className={classes.root}>
         <h1 className={classes.title}>Your Post</h1>
-        <a href="/create-post" className={classes.link}>
+        <Link href="/create-post">
           <PostAddIcon className={classes.icon} />
-        </a>
+        </Link>
 
         <hr className={classes.hr} />
         <Grid container spacing={0}>

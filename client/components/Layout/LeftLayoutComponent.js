@@ -1,8 +1,7 @@
 import React from "react";
-import Paper from "@material-ui/core/Paper";
 
 const LeftLayout = props => {
-  return <Paper>{props.children}</Paper>;
+  return <React.Fragment>{props.children}</React.Fragment>;
 };
 
 export default LeftLayout;

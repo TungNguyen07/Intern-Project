@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
@@ -29,6 +29,12 @@ const useStyles = makeStyles(theme => ({
 
 export const InfoComponent = props => {
   const classes = useStyles();
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    setUser(props.state);
+    console.log(user);
+  });
 
   return (
     <div>
@@ -62,9 +68,7 @@ export const InfoComponent = props => {
 };
 
 const mapStateToProps = state => {
-  return {
-    user: state.userReducer
-  };
+  return state;
 };
 
 export default connect(mapStateToProps, null)(InfoComponent);

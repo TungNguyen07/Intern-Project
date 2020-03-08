@@ -9,6 +9,8 @@ import Layout from "../components/Layout/LayoutComponent";
 import Nav from "../components/Layout/NavbarComponent";
 import Propaganda from "../components/Layout/PropagandaComponent";
 import LatestPost from "../components/Post/LatestPostComponent";
+import ProfileNav from "../components/User/ProfileNavComponent";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles(theme => ({
   loading: {
@@ -17,12 +19,15 @@ const useStyles = makeStyles(theme => ({
   div: { textAlign: "center" }
 }));
 
-const App = () => {
+export const App = user => {
   const classes = useStyles();
   const [isLoading, setLoading] = useState(true);
+
   useEffect(() => {
+    console.log("user", user.user.isSignedIn);
     setLoading(false);
   }, []);
+
   return isLoading ? (
     <div className={classes.div}>
       <CircularProgress className={classes.loading} />
@@ -31,7 +36,21 @@ const App = () => {
     <div>
       <Header title="Home" />
       <Banner />
-      <Layout Left={<Nav />} Right={<Propaganda />} Center={<LatestPost />}>
+      <Layout
+        Left={
+          user.user.isSignedIn ? (
+            <div>
+              <Nav />
+              <br />
+              <ProfileNav />
+            </div>
+          ) : (
+            <Nav />
+          )
+        }
+        Right={<Propaganda />}
+        Center={<LatestPost />}
+      >
         {" "}
       </Layout>
       <Footer />
@@ -39,4 +58,8 @@ const App = () => {
   );
 };
 
-export default App;
+const mapStateToProps = state => {
+  return { user: state.userReducer.user };
+};
+
+export default connect(mapStateToProps, null)(App);

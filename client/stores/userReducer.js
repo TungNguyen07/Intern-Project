@@ -1,21 +1,43 @@
-import { SIGN_IN, SIGN_OUT } from "../actions/userActionsType";
-import { initialUser } from "./initialUser";
-import { postData } from "../libs/postData";
+import {
+  SIGN_OUT_SUCCESS,
+  SIGN_IN_SUCCESS,
+  SIGN_IN_FAIL
+} from "../actions/userActionsType";
 
-export default function userReducer(state = initialUser, action) {
+const initUser = {
+  user: {},
+  token: "",
+  error: "",
+  isLoading: false
+};
+
+export default function userReducer(state = initUser, action) {
   switch (action.type) {
-    case SIGN_IN:
-      signin(action.signinInfo);
+    case SIGN_IN_SUCCESS:
+      return {
+        ...state,
+        user: action.payload.user,
+        token: action.payload.token,
+        error: action.payload.error
+      };
+
+    case SIGN_IN_FAIL:
+      return {
+        ...state,
+        user: action.payload.user,
+        token: action.payload.token,
+        error: action.payload.error
+      };
+
+    case SIGN_OUT_SUCCESS:
+      return {
+        ...state,
+        user: action.payload.user,
+        token: action.payload.token,
+        error: action.payload.error
+      };
+
     default:
       return state;
   }
-}
-
-function signin(signinInfo) {
-  console.log("Signing...");
-  postData("http://localhost:4000/signin", signinInfo).then(res => {
-    if (res.token) {
-      localStorage.setItem("access_token", res.token);
-    }
-  });
 }

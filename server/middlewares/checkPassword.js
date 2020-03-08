@@ -8,10 +8,14 @@ export const checkPassword = async (req, res, next) => {
   if (user) {
     if (await user.comparePassword(password)) {
       next();
-    }
+    } else
+      res.json({
+        error: true,
+        message: "Incorrect Username or Password"
+      });
   } else
-    res.status(404).json({
+    res.json({
       error: true,
-      message: "Incorect Username or Password!"
+      message: "Incorrect Username or Password"
     });
 };

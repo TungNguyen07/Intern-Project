@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useReducer } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -46,32 +46,27 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const LoginComponent = props => {
+export const LoginComponent = ({ user, error, Signin }) => {
   const classes = useStyles();
   const [isValid, setIsValid] = useState(true);
+  const [isCorrect, setIsCorrect] = useState(true);
   const [info, setInfo] = useState({
     username: "",
     password: ""
   });
-
-  //const [user, dispatch] = useReducer(UserReducer, initialUser);
-
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = prop => event => {
     setInfo({ ...info, [prop]: event.target.value });
   };
 
-  const { Signin } = props;
   const submit = () => {
     if (info.username == "" || info.password == "") setIsValid(false);
     else {
+      setIsValid(true);
+      setIsCorrect(true);
       Signin(info);
-
-      Router.push("/profile");
     }
-    // if (dispatch({ type: "IS_SIGNED_IN" })) Router.push("/");
-    // else setError("Incorect Username or Password!");
   };
 
   useEffect(() => {
@@ -80,6 +75,19 @@ export const LoginComponent = props => {
       if (token) Router.push("/");
     }
   }, []);
+
+  useEffect(() => {
+    if (error.length > 0) setIsCorrect(false);
+    console.log("Checking...", error.length);
+  }, [error]);
+
+  useEffect(() => {
+    if (user.fullname) {
+      setIsCorrect(true);
+      Router.push("/");
+    }
+    console.log("user1", user);
+  }, [user]);
 
   return (
     <Paper className={classes.paper}>
@@ -95,6 +103,11 @@ export const LoginComponent = props => {
           {!isValid && (
             <Alert className={classes.alert} severity="warning">
               Invalid Username or Password
+            </Alert>
+          )}
+          {!isCorrect && (
+            <Alert className={classes.alert} severity="error">
+              Incorrect Username or Password
             </Alert>
           )}
           <form className={classes.form} noValidate>
@@ -159,4 +172,8 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(null, mapDispatchToProps)(LoginComponent);
+function mapStateToProps(state) {
+  return { user: state.userReducer.user, error: state.userReducer.error };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);

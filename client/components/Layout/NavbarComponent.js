@@ -7,10 +7,13 @@ import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
 
 const useStyles = makeStyles({
-  root: {},
   title: {
     backgroundColor: "#4fd9ff",
     padding: "5px"
+  },
+  item: {
+    lineHeight: "1.3",
+    paddingTop: "4px"
   }
 });
 
@@ -24,10 +27,10 @@ function Nav() {
           Activity
         </Typography>
       </CardContent>
-      <MenuList selected="2">
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>My account</MenuItem>
-        <MenuItem>Logout</MenuItem>
+      <MenuList selected="0">
+        <MenuItem className={classes.item}>Profile</MenuItem>
+        <MenuItem className={classes.item}>My account</MenuItem>
+        <MenuItem className={classes.item}>Logout</MenuItem>
       </MenuList>
     </Card>
   );
