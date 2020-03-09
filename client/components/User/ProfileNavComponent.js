@@ -33,16 +33,14 @@ export const ProfileNav = ({ user, Signout }) => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      console.log(user);
-    }, 1000);
+    console.log(user);
   }, []);
 
   return (
     <Card>
       <CardContent className={classes.title}>
         <Typography variant="h6" component="h6" className={classes.profile}>
-          {user.user.fullname}
+          {user.fullname}
         </Typography>
       </CardContent>
       <MenuList tabIndex="-1">
@@ -64,7 +62,7 @@ export const ProfileNav = ({ user, Signout }) => {
           </Link>
         </MenuItem>
 
-        {user.user.role == 1 && (
+        {user.role == 1 && (
           <MenuItem className={classes.item}>
             <Link href="/admin">
               <span>Dashboard</span>
@@ -81,7 +79,7 @@ export const ProfileNav = ({ user, Signout }) => {
 };
 
 const mapStateToProps = state => {
-  return { user: state.userReducer };
+  return { user: state.userReducer.user };
 };
 
 const mapDispatchToProps = dispatch => {

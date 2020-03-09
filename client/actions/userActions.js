@@ -2,12 +2,14 @@ import { postData } from "../libs/postData";
 import {
   SIGN_IN_SUCCESS,
   SIGN_IN_FAIL,
-  SIGN_OUT_SUCCESS
+  SIGN_OUT_SUCCESS,
+  SET_USER
 } from "./userActionsType";
 
 export const userActions = {
   Signin,
-  Signout
+  Signout,
+  setUserDetail
 };
 
 export function Signin(signinInfo) {
@@ -15,7 +17,7 @@ export function Signin(signinInfo) {
     postData("http://localhost:4000/signin", signinInfo).then(res => {
       if (res.token) {
         localStorage.setItem("access_token", res.token);
-        localStorage.setItem("current_user", JSON.stringify(res.user));
+
         dispatch(SigninSuccess(res));
       }
       if (res.error) dispatch(SigninFail(res));
@@ -53,13 +55,6 @@ export function Signout() {
   };
 }
 
-// export function setUserDetail(user) {
-//   return {
-//     type: SIGN_IN_SUCCESS,
-//     token: user.token
-//   };
-// }
-
 export function SignoutSuccess() {
   return {
     type: SIGN_OUT_SUCCESS,
@@ -67,6 +62,24 @@ export function SignoutSuccess() {
       user: {},
       token: "",
       error: ""
+    }
+  };
+}
+
+// export function getUserDetail() {
+//   return dispatch => {
+//     const userDetail = JSON.parse(localStorage.getItem("current_user"));
+//     if (userDetail) dispatch(setUserDetail(userDetail));
+//     else dispatch(getUserDetailFail());
+//   };
+// }
+
+export function setUserDetail(userDetail) {
+  console.log("Setting...", userDetail);
+  return {
+    type: SET_USER,
+    payload: {
+      user: userDetail
     }
   };
 }

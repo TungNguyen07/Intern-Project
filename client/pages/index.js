@@ -19,12 +19,12 @@ const useStyles = makeStyles(theme => ({
   div: { textAlign: "center" }
 }));
 
-export const App = user => {
+export const App = ({ user }) => {
   const classes = useStyles();
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log("user", user.user.isSignedIn);
+    console.log("user", user);
     setLoading(false);
   }, []);
 
@@ -38,7 +38,7 @@ export const App = user => {
       <Banner />
       <Layout
         Left={
-          user.user.isSignedIn ? (
+          user.isSignedIn ? (
             <div>
               <Nav />
               <br />

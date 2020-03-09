@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
+import { userActions } from "../../actions/userActions";
 import EditInfoComponent from "./EditInfoComponent";
 
 const useStyles = makeStyles(theme => ({
@@ -27,48 +29,58 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const InfoComponent = props => {
+export const InfoComponent = ({ user }) => {
   const classes = useStyles();
-  const [user, setUser] = useState({});
 
   useEffect(() => {
-    setUser(props.state);
-    console.log(user);
-  });
+    setTimeout(() => {
+      console.log("user", user);
+    }, 1000);
+  }, [user]);
 
   return (
     <div>
-      <div className={classes.root}>
-        <Typography variant="h3" className={classes.fullname}>
-          {props.fullname}
-        </Typography>
-        <EditInfoComponent />
-      </div>
+      {user && (
+        <div>
+          <div className={classes.root}>
+            <Typography variant="h3" className={classes.fullname}>
+              {user.fullname}
+            </Typography>
+            <EditInfoComponent />
+          </div>
 
-      <div className={classes.groupInfo}>
-        <div className={classes.otherInfo}>
-          <Typography variant="subtitle1">Gender: </Typography>
-          <Typography variant="subtitle1">Birthday: </Typography>
-          <Typography variant="subtitle1">Phone: </Typography>
-          <Typography variant="subtitle1">Email: </Typography>
-          <Typography variant="subtitle1">Address: </Typography>
+          <div className={classes.groupInfo}>
+            <div className={classes.otherInfo}>
+              <Typography variant="subtitle1">Gender: </Typography>
+              <Typography variant="subtitle1">Birthday: </Typography>
+              <Typography variant="subtitle1">Phone: </Typography>
+              <Typography variant="subtitle1">Email: </Typography>
+              <Typography variant="subtitle1">Address: </Typography>
+            </div>
+            <div className={classes.displayInfo}>
+              <Typography variant="subtitle1">
+                {parseInt(user.gender) ? "Male" : "Female"}
+              </Typography>
+              <Typography variant="subtitle1">{user.birth_date}</Typography>
+              <Typography variant="subtitle1">{user.phone_number}</Typography>
+              <Typography variant="subtitle1">{user.email}</Typography>
+              <Typography variant="subtitle1">{user.address}</Typography>
+            </div>
+          </div>
         </div>
-        <div className={classes.displayInfo}>
-          <Typography variant="subtitle1">
-            {parseInt(props.gender) ? "Male" : "Female"}
-          </Typography>
-          <Typography variant="subtitle1">{props.birth_date}</Typography>
-          <Typography variant="subtitle1">{props.phone_number}</Typography>
-          <Typography variant="subtitle1">{props.email}</Typography>
-          <Typography variant="subtitle1">{props.address}</Typography>
-        </div>
-      </div>
+      )}
     </div>
   );
 };
 
-const mapStateToProps = state => {
-  return state;
-};
+function mapStateToProps(state) {
+  return { user: state.userReducer.user };
+}
 
-export default connect(mapStateToProps, null)(InfoComponent);
+function mapDispatchToProps(dispatch) {
+  return {
+    getInfo: bindActionCreators(userActions.getUserDetail, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(InfoComponent);

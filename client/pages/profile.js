@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import ProfileLayout from "../components/User/ProfileLayout";
@@ -7,8 +7,9 @@ import UserPostComponent from "../components/User/UserPostComponent";
 import Header from "../components/Header/HeaderComponent";
 import Footer from "../components/Layout/FooterComponent";
 import Banner from "../components/Header/BannerComponent";
+import withAuth from "../middlewares/AuthHOC";
 
-const Profile = props => {
+const Profile = () => {
   return (
     <React.Fragment>
       <Header title="Profile" />
@@ -22,9 +23,4 @@ const Profile = props => {
   );
 };
 
-Profile.getInitialProps = async function() {
-  const res = { key: 1, value: 2 };
-  return res;
-};
-
-export default Profile;
+export default withAuth(Profile);

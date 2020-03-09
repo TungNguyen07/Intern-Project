@@ -1,7 +1,8 @@
 import {
   SIGN_OUT_SUCCESS,
   SIGN_IN_SUCCESS,
-  SIGN_IN_FAIL
+  SIGN_IN_FAIL,
+  SET_USER
 } from "../actions/userActionsType";
 
 const initUser = {
@@ -35,6 +36,13 @@ export default function userReducer(state = initUser, action) {
         user: action.payload.user,
         token: action.payload.token,
         error: action.payload.error
+      };
+
+    case SET_USER:
+      console.log("Processing...", action.payload.user);
+      return {
+        ...state,
+        user: action.payload.user
       };
 
     default:

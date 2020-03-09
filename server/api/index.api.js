@@ -1,0 +1,16 @@
+import userModel from "../model/user.model";
+import mongoose from "mongoose";
+import jwt, { verify } from "jsonwebtoken";
+const { SECRET_KEY } = process.env;
+
+module.exports.checkToken = async function(req, res) {
+  const token = req.body.token;
+
+  const result = jwt.decode(token, SECRET_KEY);
+  if (result) {
+    const id = result.payload.id;
+    const user = await userModel.findOne({ _id: mongoose.Types.ObjectId(id) });
+    console.log(user);
+    res.json(user);
+  } else res.json({ error: true });
+};

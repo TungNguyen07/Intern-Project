@@ -45,11 +45,3 @@ module.exports.getUserFollowId = async function(req, res) {
     res.json(data[0]);
   }
 };
-
-module.exports.checkToken = function(req, res) {
-  const token = req.body.token;
-  console.log(req.body);
-  const result = jwt.verify(token, SECRET_KEY);
-  console.log(result);
-  res.json(result);
-};

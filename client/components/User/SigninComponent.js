@@ -13,10 +13,11 @@ import Container from "@material-ui/core/Container";
 import { Paper } from "@material-ui/core";
 import Router from "next/router";
 import Alert from "@material-ui/lab/Alert";
-
-import { userActions } from "../../actions/userActions";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+
+import { userActions } from "../../actions/userActions";
+import { postData } from "../../libs/postData";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -72,13 +73,17 @@ export const LoginComponent = ({ user, error, Signin }) => {
   useEffect(() => {
     if (localStorage.length) {
       const token = { token: localStorage.getItem("access_token") };
-      if (token) Router.push("/");
+      postData("http://localhost:4000/check-token", token).then(res => {
+        if (res._id) {
+          console.log(res);
+          Router.push("/");
+        }
+      });
     }
   }, []);
 
   useEffect(() => {
     if (error.length > 0) setIsCorrect(false);
-    console.log("Checking...", error.length);
   }, [error]);
 
   useEffect(() => {
@@ -86,7 +91,6 @@ export const LoginComponent = ({ user, error, Signin }) => {
       setIsCorrect(true);
       Router.push("/");
     }
-    console.log("user1", user);
   }, [user]);
 
   return (
