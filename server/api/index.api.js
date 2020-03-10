@@ -9,7 +9,18 @@ module.exports.checkToken = async function(req, res) {
   const result = jwt.decode(token, SECRET_KEY);
   if (result) {
     const id = result.payload.id;
-    const user = await userModel.findOne({ _id: mongoose.Types.ObjectId(id) });
+    const data = await userModel.findOne({ _id: mongoose.Types.ObjectId(id) });
+    const user = {
+      id: data._id,
+      fullname: data.fullname,
+      gender: data.gender,
+      birth_date: data.birth_date,
+      email: data.email,
+      phone_number: data.phone_number,
+      address: data.address,
+      role: data.role,
+      avatar: data.avatar
+    };
     console.log(user);
     res.json(user);
   } else res.json({ error: true });

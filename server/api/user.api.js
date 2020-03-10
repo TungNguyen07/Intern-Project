@@ -18,8 +18,8 @@ module.exports.signin = async function(req, res) {
       birth_date: data.birth_date,
       email: data.email,
       phone_number: data.phone_number,
-      address: data.phone_number,
-      isSignedIn: true
+      address: data.address,
+      avatar: data.avatar
     };
 
     const token = jwt.sign({ payload }, process.env.SECRET_KEY);
@@ -39,9 +39,31 @@ module.exports.signin = async function(req, res) {
 module.exports.getUserFollowId = async function(req, res) {
   const id = mongoose.Types.ObjectId(req.body.id);
   console.log(req.body);
-  const data = await userModel.find({ _id: id });
+  const data = await userModel.findOne({ _id: id });
   if (data) {
-    console.log(data[0]);
-    res.json(data[0]);
+    console.log(data);
+    res.json(data);
   }
+};
+
+module.exports.updateInfo = function(req, res) {
+  console.log(req.body);
+  const newInfo = req.body;
+  const condition = { _id: mongoose.Types.ObjectId(newInfo.id) };
+  const query = {
+    $set: {
+      fullname: newInfo.fullname,
+      gender: newInfo.gender,
+      birth_date: newInfo.birth_date,
+      email: newInfo.email,
+      phone_number: newInfo.phone_number,
+      address: newInfo.address
+    }
+  };
+  userModel.updateOne(condition, query, function(err, res) {
+    if (err) throw err;
+    console.log("Update Successfully");
+  });
+
+  res.json({ success: true });
 };

@@ -3,13 +3,14 @@ import {
   SIGN_IN_SUCCESS,
   SIGN_IN_FAIL,
   SIGN_OUT_SUCCESS,
-  SET_USER
+  SET_USER_DETAIL
 } from "./userActionsType";
 
 export const userActions = {
   Signin,
   Signout,
-  setUserDetail
+  setUserDetail,
+  updateInfo
 };
 
 export function Signin(signinInfo) {
@@ -66,20 +67,21 @@ export function SignoutSuccess() {
   };
 }
 
-// export function getUserDetail() {
-//   return dispatch => {
-//     const userDetail = JSON.parse(localStorage.getItem("current_user"));
-//     if (userDetail) dispatch(setUserDetail(userDetail));
-//     else dispatch(getUserDetailFail());
-//   };
-// }
-
 export function setUserDetail(userDetail) {
-  console.log("Setting...", userDetail);
   return {
-    type: SET_USER,
+    type: SET_USER_DETAIL,
     payload: {
       user: userDetail
     }
+  };
+}
+
+export function updateInfo(info) {
+  return dispatch => {
+    postData("http://localhost:4000/profile/update", info)
+      .then(res => {
+        if (res.success) dispatch(setUserDetail(info));
+      })
+      .catch(err => console.log(err));
   };
 }

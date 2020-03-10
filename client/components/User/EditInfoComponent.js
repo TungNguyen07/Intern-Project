@@ -16,6 +16,10 @@ import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import { Tooltip } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+
+import { userActions } from "../../actions/userActions";
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -48,10 +52,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const EditInfoComponent = props => {
+export const EditInfoComponent = ({ user, update }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [info, setInfo] = useState(props.user);
+  const [info, setInfo] = useState(user);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -61,24 +65,16 @@ const EditInfoComponent = props => {
     setOpen(false);
   };
 
-  const [selectedDate, setSelectedDate] = useState(
-    new Date("2020-02-20T21:11:54")
-  );
-
   const handleDateChange = date => {
-    setInfo({ ...info, birth_date: date });
+    setInfo({ ...info, birth_date: date.toISOString() });
   };
-
-  // const handleChange = event => {
-  //   setValue(event.target.value);
-  // };
 
   const handleChange = prop => event => {
     setInfo({ ...info, [prop]: event.target.value });
   };
 
   const handleSave = () => {
-    console.log(info);
+    update(info);
     handleClose();
   };
 
@@ -106,7 +102,7 @@ const EditInfoComponent = props => {
               id="fullname"
               label="Fullname"
               variant="outlined"
-              value={""}
+              value={info.fullname}
               required
               onChange={handleChange("fullname")}
             />
@@ -116,7 +112,7 @@ const EditInfoComponent = props => {
                 className={classes.genderGroup}
                 aria-label="gender"
                 name="gender"
-                value={1}
+                value={info.gender.toString()}
                 onChange={handleChange("gender")}
               >
                 <FormControlLabel
@@ -139,7 +135,7 @@ const EditInfoComponent = props => {
                 id="birth_date"
                 label="birth_date"
                 format="MM/dd/yyyy"
-                value={""}
+                value={info.birth_date}
                 onChange={handleDateChange}
                 KeyboardButtonProps={{
                   "aria-label": "change date"
@@ -151,7 +147,7 @@ const EditInfoComponent = props => {
               id="email"
               label="Email"
               variant="outlined"
-              value={""}
+              value={info.email}
               required
               onChange={handleChange("email")}
             />
@@ -160,7 +156,7 @@ const EditInfoComponent = props => {
               id="phone"
               label="Phone"
               variant="outlined"
-              value={""}
+              value={info.phone_number}
               required
               onChange={handleChange("phone")}
             />
@@ -169,7 +165,7 @@ const EditInfoComponent = props => {
               id="address"
               label="Address"
               variant="outlined"
-              value={""}
+              value={info.address}
               required
               onChange={handleChange("address")}
             />
@@ -188,4 +184,14 @@ const EditInfoComponent = props => {
   );
 };
 
-export default EditInfoComponent;
+const mapStateToProps = state => {
+  return { user: state.userReducer.user };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    update: bindActionCreators(userActions.updateInfo, dispatch)
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditInfoComponent);

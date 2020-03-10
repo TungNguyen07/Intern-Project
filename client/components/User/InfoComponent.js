@@ -33,10 +33,8 @@ export const InfoComponent = ({ user }) => {
   const classes = useStyles();
 
   useEffect(() => {
-    setTimeout(() => {
-      console.log("user", user);
-    }, 1000);
-  }, [user]);
+    console.log("info", user);
+  }, []);
 
   return (
     <div>
@@ -61,7 +59,9 @@ export const InfoComponent = ({ user }) => {
               <Typography variant="subtitle1">
                 {parseInt(user.gender) ? "Male" : "Female"}
               </Typography>
-              <Typography variant="subtitle1">{user.birth_date}</Typography>
+              <Typography variant="subtitle1">
+                {new Date(user.birth_date).toLocaleDateString()}
+              </Typography>
               <Typography variant="subtitle1">{user.phone_number}</Typography>
               <Typography variant="subtitle1">{user.email}</Typography>
               <Typography variant="subtitle1">{user.address}</Typography>
@@ -73,14 +73,8 @@ export const InfoComponent = ({ user }) => {
   );
 };
 
-function mapStateToProps(state) {
-  return { user: state.userReducer.user };
-}
+// const mapStateToProps = state => {
+//   return { user: state.userReducer.user };
+// };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    getInfo: bindActionCreators(userActions.getUserDetail, dispatch)
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(InfoComponent);
+// export default connect(mapStateToProps, null)(InfoComponent);

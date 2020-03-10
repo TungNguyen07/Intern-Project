@@ -38,7 +38,7 @@ export const App = ({ user }) => {
       <Banner />
       <Layout
         Left={
-          user.isSignedIn ? (
+          user.fullname ? (
             <div>
               <Nav />
               <br />

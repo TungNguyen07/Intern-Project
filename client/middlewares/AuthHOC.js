@@ -40,7 +40,6 @@ const withAuth = WrappedComponent => {
 
     const saveUser = data => {
       props = data;
-      console.log("props", props);
     };
 
     return <WrappedComponent {...props} />;

@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { makeStyles } from "@material-ui/core/styles";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Link from "next/link";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import Router from "next/router";
+
+import { userActions } from "../../actions/userActions";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -15,9 +21,6 @@ const useStyles = makeStyles(theme => ({
   radio: {
     fontSize: "1em"
   },
-  icon: {
-    fontSize: "3rem"
-  },
   top: {
     display: "flex",
     marginBottom: "-1rem"
@@ -26,28 +29,49 @@ const useStyles = makeStyles(theme => ({
     margin: "auto",
     paddingTop: "1rem"
   },
-  button: {
-    position: "absolute"
+  signout: {
+    textAlign: "end"
   }
 }));
 
-const TitleComponent = () => {
+export const TitleComponent = ({ user, Signout }) => {
   const classes = useStyles();
+
+  useEffect(() => {
+    console.log("user", user);
+  }, []);
+
+  const signout = () => {
+    Signout();
+    Router.push("/signin");
+  };
+
   return (
     <div className={classes.top}>
       <Link href="/">
-        <IconButton
-          color="primary"
-          aria-label="Edit"
-          component="span"
-          className={classes.button}
-        >
+        <IconButton color="primary" aria-label="Edit" component="span">
           <ArrowBackIcon className={classes.icon} />
         </IconButton>
       </Link>
-      <h1 className={classes.title}>User Profile</h1>
+      <h1 className={classes.title}>{user.fullname}'s Profile</h1>
+      <IconButton
+        color="primary"
+        aria-label="Edit"
+        component="span"
+        onClick={signout}
+      >
+        <ExitToAppIcon className={classes.icon} />
+      </IconButton>
     </div>
   );
 };
 
-export default TitleComponent;
+const mapDispatchToProps = dispatch => {
+  return { Signout: bindActionCreators(userActions.Signout, dispatch) };
+};
+
+const mapStateToProps = state => {
+  return { user: state.userReducer.user };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TitleComponent);

@@ -4,4 +4,6 @@ const router = express.Router();
 
 router.post("/", userApi.getUserFollowId);
 
+router.post("/update", userApi.updateInfo);
+
 module.exports = router;

@@ -7,6 +7,7 @@ import Layout from "../components/Post/PostLayout";
 import Header from "../components/Header/HeaderComponent";
 import Banner from "../components/Header/BannerComponent";
 import Footer from "../components/Layout/FooterComponent";
+import withAuth from "../middlewares/AuthHOC";
 
 const useStyles = makeStyles(theme => ({
   loading: {
@@ -35,4 +36,4 @@ const CreatePost = () => {
   );
 };
 
-export default CreatePost;
+export default withAuth(CreatePost);
