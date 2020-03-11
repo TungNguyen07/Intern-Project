@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -18,6 +18,7 @@ import { Tooltip } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import Router from "next/router";
 
 import { userActions } from "../../actions/userActions";
 
@@ -56,6 +57,10 @@ export const EditInfoComponent = ({ user, update }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [info, setInfo] = useState(user);
+
+  useEffect(() => {
+    console.log("info", info);
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -112,7 +117,7 @@ export const EditInfoComponent = ({ user, update }) => {
                 className={classes.genderGroup}
                 aria-label="gender"
                 name="gender"
-                value={info.gender.toString()}
+                value={info.gender}
                 onChange={handleChange("gender")}
               >
                 <FormControlLabel

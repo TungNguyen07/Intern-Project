@@ -8,6 +8,9 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import Link from "next/link";
+import { connect } from "react-redux";
+
+import { userActions } from "../../actions/userActions";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -39,15 +42,17 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const UserPostComponent = () => {
+export const UserPostComponent = ({ user }) => {
   const classes = useStyles();
 
   return (
     <React.Fragment>
       <Paper className={classes.root}>
-        <h1 className={classes.title}>Your Post</h1>
+        <h1 className={classes.title}>{user.fullname}'s' Post</h1>
         <Link href="/create-post">
-          <PostAddIcon className={classes.icon} />
+          <a className={classes.link}>
+            <PostAddIcon className={classes.icon} />
+          </a>
         </Link>
 
         <hr className={classes.hr} />
@@ -120,4 +125,9 @@ const UserPostComponent = () => {
     </React.Fragment>
   );
 };
-export default UserPostComponent;
+
+const mapStateToProps = state => {
+  return { user: state.userReducer.user };
+};
+
+export default connect(mapStateToProps, null)(UserPostComponent);

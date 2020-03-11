@@ -14,7 +14,7 @@ module.exports.signin = async function(req, res) {
 
     const user = {
       ...payload,
-      gender: data.gender,
+      gender: data.gender.toString(),
       birth_date: data.birth_date,
       email: data.email,
       phone_number: data.phone_number,
@@ -38,7 +38,7 @@ module.exports.signin = async function(req, res) {
 
 module.exports.getUserFollowId = async function(req, res) {
   const id = mongoose.Types.ObjectId(req.body.id);
-  console.log(req.body);
+
   const data = await userModel.findOne({ _id: id });
   if (data) {
     console.log(data);
@@ -47,17 +47,17 @@ module.exports.getUserFollowId = async function(req, res) {
 };
 
 module.exports.updateInfo = function(req, res) {
-  console.log(req.body);
   const newInfo = req.body;
   const condition = { _id: mongoose.Types.ObjectId(newInfo.id) };
   const query = {
     $set: {
       fullname: newInfo.fullname,
-      gender: newInfo.gender,
+      gender: parseInt(newInfo.gender),
       birth_date: newInfo.birth_date,
       email: newInfo.email,
       phone_number: newInfo.phone_number,
-      address: newInfo.address
+      address: newInfo.address,
+      avatar: newInfo.avatar
     }
   };
   userModel.updateOne(condition, query, function(err, res) {

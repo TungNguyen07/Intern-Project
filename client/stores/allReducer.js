@@ -1,9 +1,10 @@
-import { initialUser } from "./initialUser";
 import userReducer from "./userReducer";
+import postReducer from "./postReducer";
 import { combineReducers } from "redux";
 
 const allReducer = combineReducers({
-  userReducer
+  userReducer,
+  postReducer
 });
 
 export default allReducer;

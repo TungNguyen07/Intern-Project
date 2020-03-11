@@ -13,7 +13,7 @@ module.exports.checkToken = async function(req, res) {
     const user = {
       id: data._id,
       fullname: data.fullname,
-      gender: data.gender,
+      gender: data.gender.toString(),
       birth_date: data.birth_date,
       email: data.email,
       phone_number: data.phone_number,
@@ -21,7 +21,7 @@ module.exports.checkToken = async function(req, res) {
       role: data.role,
       avatar: data.avatar
     };
-    console.log(user);
+
     res.json(user);
   } else res.json({ error: true });
 };

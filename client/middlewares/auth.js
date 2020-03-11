@@ -1,9 +1,10 @@
 import { postData } from "../libs/postData";
 import Router from "next/router";
 
-export const checkTokenNGetUser = async () => {
-  const token = { token: localStorage.getItem("access_token") };
-  return postData("http://localhost:4000/check-token", token)
+export const checkTokenNGetUser = async token => {
+  console.log("token", token);
+
+  return postData("http://localhost:4000/check-token", { token })
     .then(res => {
       if (res.error) return null;
       else return res;

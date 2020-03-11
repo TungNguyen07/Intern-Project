@@ -30,13 +30,16 @@ const withAuth = WrappedComponent => {
     // }
 
     useEffect(() => {
-      checkTokenNGetUser().then(res => {
-        if (verifyUser(res)) {
-          saveUser(res);
-          setUserDetail(res);
-        } else Router.push("/signin");
-      });
-    });
+      const token = localStorage.getItem("access_token");
+      if (!token) Router.push("/signin");
+      else
+        checkTokenNGetUser(token).then(res => {
+          if (verifyUser(res)) {
+            saveUser(res);
+            setUserDetail(res);
+          } else Router.push("/signin");
+        });
+    }, []);
 
     const saveUser = data => {
       props = data;

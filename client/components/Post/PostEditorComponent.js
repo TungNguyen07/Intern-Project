@@ -21,7 +21,7 @@ const useStyle = makeStyles(theme => ({
   buttonSave: {
     marginTop: theme.spacing(1),
     marginRight: theme.spacing(1),
-    backgroundColor: "#00ddff"
+    backgroundColor: "#4fd9ff"
   },
   buttonDelete: {
     marginTop: theme.spacing(1),
@@ -88,7 +88,8 @@ const useStyle = makeStyles(theme => ({
 const PostEditor = props => {
   const classes = useStyle();
 
-  const [text, setText] = useState("");
+  const [post, setPost] = useState("");
+  const [coverImg, setCoverImg] = useState();
 
   const modules = {
     toolbar: [
@@ -108,8 +109,6 @@ const PostEditor = props => {
     ]
   };
 
-  const [coverImg, setCoverImg] = useState();
-
   function base64(files, callback) {
     var file = files[0];
     const reader = new FileReader();
@@ -119,6 +118,11 @@ const PostEditor = props => {
     };
     reader.readAsDataURL(file);
   }
+
+  const handleChange = value => {
+    setPost(value);
+    console.log(post);
+  };
 
   const onDrop = event => {
     base64(event.target.files, function(data) {
@@ -175,9 +179,16 @@ const PostEditor = props => {
           </CardActionArea>
         </Card>
 
-        <ReactQuill className={classes.editor} value={text} modules={modules} />
+        <ReactQuill
+          theme="snow"
+          id="content"
+          className={classes.editor}
+          value={post}
+          modules={modules}
+          onChange={handleChange}
+        />
         <FormControl className={classes.formButton}>
-          <Button className={classes.buttonSave} onClick={console.log(text)}>
+          <Button className={classes.buttonSave} onClick={console.log(post)}>
             <SaveIcon className={classes.icon} />
             Save
           </Button>
