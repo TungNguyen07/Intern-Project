@@ -5,6 +5,7 @@ import {
   SIGN_OUT_SUCCESS,
   SET_USER_DETAIL
 } from "./userActionsType";
+import Router from "next/router";
 
 export const userActions = {
   Signin,
@@ -32,7 +33,7 @@ export const SigninSuccess = data => {
     payload: {
       user: data.user,
       token: data.token,
-      error: ""
+      error: []
     }
   };
 };
@@ -42,17 +43,16 @@ export const SigninFail = data => {
     type: SIGN_IN_FAIL,
     payload: {
       user: {},
-      token: "",
-      error: data.message
+      token: [],
+      error: [data.message]
     }
   };
 };
 
 export function Signout() {
   return dispatch => {
-    localStorage.removeItem("access_token"),
-      localStorage.removeItem("current_user"),
-      dispatch(SignoutSuccess());
+    localStorage.removeItem("access_token"), Router.push("/signin");
+    dispatch(SignoutSuccess());
   };
 }
 
@@ -62,7 +62,7 @@ export function SignoutSuccess() {
     payload: {
       user: {},
       token: "",
-      error: ""
+      error: []
     }
   };
 }

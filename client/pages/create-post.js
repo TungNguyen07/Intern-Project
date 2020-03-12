@@ -22,11 +22,7 @@ const CreatePost = () => {
   useEffect(() => {
     setLoading(false);
   }, []);
-  return isLoading ? (
-    <div className={classes.div}>
-      <CircularProgress className={classes.loading} />
-    </div>
-  ) : (
+  return (
     <div>
       <Header title="Create post" />
       <Banner />

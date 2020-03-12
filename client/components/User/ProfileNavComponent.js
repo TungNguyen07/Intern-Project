@@ -62,6 +62,10 @@ export const ProfileNav = ({ user, Signout }) => {
           </Link>
         </MenuItem>
 
+        {/* <MenuItem className={classes.item}>
+          <a href="/create-post">Write post</a>
+        </MenuItem> */}
+
         {user.role == 1 && (
           <MenuItem className={classes.item}>
             <Link href="/admin">

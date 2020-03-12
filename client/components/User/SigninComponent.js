@@ -62,8 +62,10 @@ export const LoginComponent = ({ user, error, Signin }) => {
   };
 
   const submit = () => {
-    if (info.username == "" || info.password == "") setIsValid(false);
-    else {
+    if (info.username == "" || info.password == "") {
+      setIsValid(false);
+      setIsCorrect(true);
+    } else {
       setIsValid(true);
       setIsCorrect(true);
       Signin(info);

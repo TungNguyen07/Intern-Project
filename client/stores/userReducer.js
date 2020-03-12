@@ -8,7 +8,7 @@ import {
 const initUser = {
   user: {},
   token: "",
-  error: "",
+  error: [],
   isLoading: false
 };
 

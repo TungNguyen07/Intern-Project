@@ -3,7 +3,7 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Avatar from "../User/AvatarComponent";
-import Info from "../User/InfoComponent";
+import { InfoComponent } from "../User/InfoComponent";
 
 const useStyles = makeStyles(theme => ({
   hr: { width: "80%" },
@@ -19,7 +19,7 @@ const AdminInfoComponent = () => {
       <hr className={classes.hr} />
       <div className={classes.displayInfo}>
         <Avatar />
-        <Info />
+        <InfoComponent />
       </div>
     </Paper>
   );

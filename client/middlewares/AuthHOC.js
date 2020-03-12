@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 
 import { checkTokenNGetUser, verifyUser } from "./auth";
 import { userActions } from "../actions/userActions";
+import axios from "axios";
 
 const withAuth = WrappedComponent => {
   const MiddlewareAuth = ({ setUserDetail, props }) => {
@@ -30,6 +31,7 @@ const withAuth = WrappedComponent => {
     // }
 
     useEffect(() => {
+      let mounted = true;
       const token = localStorage.getItem("access_token");
       if (!token) Router.push("/signin");
       else
@@ -39,6 +41,7 @@ const withAuth = WrappedComponent => {
             setUserDetail(res);
           } else Router.push("/signin");
         });
+      return () => (mounted = false);
     }, []);
 
     const saveUser = data => {

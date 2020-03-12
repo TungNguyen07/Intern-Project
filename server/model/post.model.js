@@ -5,11 +5,11 @@ const postSchema = mongoose.Schema(
     title: String,
     description: String,
     content: String,
-    create_at: Date,
+    created_at: Date,
     author_id: String,
     activity_id: String,
-    view: Number,
-    active: Boolean,
+    view: { type: Number, default: 0 },
+    active: { type: Boolean, default: false },
     cover_img: String
   },
   { versionKey: false }

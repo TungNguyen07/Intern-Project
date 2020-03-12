@@ -7,6 +7,7 @@ import cors from "cors";
 
 import userRouter from "./route/user.route";
 import indexRouter from "./route/index.route";
+import postRouter from "./route/post.route";
 import db from "./db/connectDB";
 
 const app = express();
@@ -27,5 +28,6 @@ app.use(helmet());
 
 app.use("/profile", userRouter);
 app.use("/", indexRouter);
+app.use("/post", postRouter);
 
 app.listen(port, () => console.log(`Server is running on port ${port}!`));

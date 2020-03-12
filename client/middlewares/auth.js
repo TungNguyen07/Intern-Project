@@ -1,5 +1,4 @@
 import { postData } from "../libs/postData";
-import Router from "next/router";
 
 export const checkTokenNGetUser = async token => {
   console.log("token", token);

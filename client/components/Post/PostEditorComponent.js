@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 import Button from "@material-ui/core/Button";
@@ -14,6 +14,11 @@ import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardActionArea from "@material-ui/core/CardActionArea";
+import Typography from "@material-ui/core/Typography";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+
+import { postActions } from "../../actions/postAction";
 
 const ReactQuill = dynamic(import("react-quill"), { ssr: false });
 
@@ -82,20 +87,27 @@ const useStyle = makeStyles(theme => ({
     position: "absolute",
     height: "100%",
     width: "auto"
+  },
+  title: {
+    color: "black"
   }
 }));
 
-const PostEditor = props => {
+export const PostEditor = ({ author, checkValid, message }) => {
   const classes = useStyle();
 
-  const [post, setPost] = useState("");
   const [coverImg, setCoverImg] = useState();
+  const [post, setPost] = useState({});
+  const [notify, setNotify] = useState(message);
 
   const modules = {
     toolbar: [
       [{ font: [] }, { size: [] }],
       ["bold", "italic", "underline", "strike"],
-      [{ color: [] }, { background: [] }],
+      [
+        { color: ["black", "red", "blue", "white", "yellow"] },
+        { background: [] }
+      ],
       [{ script: "super" }, { script: "sub" }],
       [{ header: "1" }, { header: "2" }, "blockquote", "code-block"],
       [
@@ -119,9 +131,12 @@ const PostEditor = props => {
     reader.readAsDataURL(file);
   }
 
-  const handleChange = value => {
-    setPost(value);
-    console.log(post);
+  const handleChangeContent = value => {
+    setPost({ ...post, content: value });
+  };
+
+  const handleChange = prop => event => {
+    setPost({ ...post, [prop]: event.target.value });
   };
 
   const onDrop = event => {
@@ -130,18 +145,49 @@ const PostEditor = props => {
     });
   };
 
+  const handleSave = () => {
+    setNotify("");
+    checkValid({
+      ...post,
+      cover_img: coverImg,
+      author_id: author.id,
+      created_at: new Date().toISOString()
+    });
+    handleDelete();
+  };
+
+  const handleDelete = () => {
+    setPost({});
+    setCoverImg("");
+  };
+
+  useEffect(() => {
+    setNotify(message);
+    if (notify) console.log("error");
+  }, [message]);
+
   return (
     <div>
+      <Typography variant="h3" className={classes.title}>
+        Make your new post
+      </Typography>
       <form>
         <TextField
           className={classes.textField}
+          value={post.title || ""}
           id="title"
           label="Title"
           required
+          onChange={handleChange("title")}
         />
         <FormControl className={classes.select}>
           <InputLabel id="demo-simple-select-label">Activity</InputLabel>
-          <Select className={classes.select} id="activity" defaultValue="10">
+          <Select
+            className={classes.select}
+            id="activity"
+            defaultValue="10"
+            onChange={handleChange("activity_id")}
+          >
             <MenuItem value={10}>Ten</MenuItem>
             <MenuItem value={20}>Twenty</MenuItem>
             <MenuItem value={30}>Thirty</MenuItem>
@@ -149,10 +195,12 @@ const PostEditor = props => {
         </FormControl>
         <TextField
           className={classes.textField}
+          value={post.description || ""}
           id="description"
           label="Description"
           multiline
           required
+          onChange={handleChange("description")}
         />
         <Card className={classes.card}>
           <CardActionArea className={classes.cardAction}>
@@ -183,16 +231,16 @@ const PostEditor = props => {
           theme="snow"
           id="content"
           className={classes.editor}
-          value={post}
+          value={post.content || ""}
           modules={modules}
-          onChange={handleChange}
+          onChange={handleChangeContent}
         />
         <FormControl className={classes.formButton}>
-          <Button className={classes.buttonSave} onClick={console.log(post)}>
+          <Button className={classes.buttonSave} onClick={handleSave}>
             <SaveIcon className={classes.icon} />
             Save
           </Button>
-          <Button className={classes.buttonDelete}>
+          <Button className={classes.buttonDelete} onClick={handleDelete}>
             <DeleteIcon className={classes.icon} />
             Cannel
           </Button>
@@ -202,4 +250,14 @@ const PostEditor = props => {
   );
 };
 
-export default PostEditor;
+const mapStateToProps = state => {
+  return { author: state.userReducer.user, message: state.postReducer.message };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    checkValid: bindActionCreators(postActions.checkValidPost, dispatch)
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostEditor);

@@ -1,0 +1,4 @@
+export const NEW_ACTIVITY = "NEW_ACTIVITY";
+export const DELETE_ACTIVITY = "DELETE_ACTIVITY";
+export const UPDATE_ACTIVITY = "UPDATE_ACTIVITY";
+export const GET_ACTIVITY = "GET_ACTIVITY";

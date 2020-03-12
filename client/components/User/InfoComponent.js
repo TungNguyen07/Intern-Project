@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 
-import { userActions } from "../../actions/userActions";
-import EditInfoComponent from "./EditInfoComponent";
+import EditInfoComponent from "../Dialog/EditInfoComponent";
 
 const useStyles = makeStyles(theme => ({
   fullname: {
@@ -32,9 +29,9 @@ const useStyles = makeStyles(theme => ({
 export const InfoComponent = ({ user }) => {
   const classes = useStyles();
 
-  useEffect(() => {
-    console.log("info", user);
-  }, []);
+  // useEffect(() => {
+  //   console.log("info", user);
+  // }, []);
 
   return (
     <div>
