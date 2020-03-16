@@ -9,6 +9,7 @@ module.exports.signin = async function(req, res) {
     const payload = {
       fullname: data.fullname,
       role: data.role,
+      staffId: data.staffId,
       id: data._id
     };
 
@@ -66,4 +67,16 @@ module.exports.updateInfo = function(req, res) {
   });
 
   res.json({ success: true });
+};
+
+module.exports.addUser = async function(req, res) {
+  const user = req.body;
+  await userModel.create(user);
+  const newUser = await userModel.findOne({ staffId: req.body.staffId });
+  res.json(newUser);
+};
+
+module.exports.getAllUser = async function(req, res) {
+  const allUser = await userModel.find({}, { _id: 0, password: 0, role: 0 });
+  res.json(allUser);
 };

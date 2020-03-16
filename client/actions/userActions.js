@@ -14,12 +14,11 @@ export const userActions = {
   updateInfo
 };
 
-export function Signin(signinInfo) {
+function Signin(signinInfo) {
   return dispatch => {
     postData("http://localhost:4000/signin", signinInfo).then(res => {
       if (res.token) {
         localStorage.setItem("access_token", res.token);
-
         dispatch(SigninSuccess(res));
       }
       if (res.error) dispatch(SigninFail(res));
@@ -27,42 +26,45 @@ export function Signin(signinInfo) {
   };
 }
 
-export const SigninSuccess = data => {
+const SigninSuccess = data => {
   return {
     type: SIGN_IN_SUCCESS,
     payload: {
       user: data.user,
       token: data.token,
-      error: []
+      error: [],
+      isLoading: false
     }
   };
 };
 
-export const SigninFail = data => {
+const SigninFail = data => {
   return {
     type: SIGN_IN_FAIL,
     payload: {
       user: {},
       token: [],
-      error: [data.message]
+      error: [data.message],
+      isLoading: false
     }
   };
 };
 
-export function Signout() {
+function Signout() {
   return dispatch => {
     localStorage.removeItem("access_token"), Router.push("/signin");
     dispatch(SignoutSuccess());
   };
 }
 
-export function SignoutSuccess() {
+function SignoutSuccess() {
   return {
     type: SIGN_OUT_SUCCESS,
     payload: {
       user: {},
       token: "",
-      error: []
+      error: [],
+      isLoading: false
     }
   };
 }
@@ -71,12 +73,13 @@ export function setUserDetail(userDetail) {
   return {
     type: SET_USER_DETAIL,
     payload: {
-      user: userDetail
+      user: userDetail,
+      isLoading: false
     }
   };
 }
 
-export function updateInfo(info) {
+function updateInfo(info) {
   return dispatch => {
     postData("http://localhost:4000/profile/update", info)
       .then(res => {

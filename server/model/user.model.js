@@ -1,21 +1,24 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import { MALE } from "../enums/userGender";
+import { DEFAULT_AVATAR } from "../defaultAvatar";
 
 const userSchema = mongoose.Schema(
   {
+    staffId: String,
     fullname: String,
-    gender: Number,
-    phone_number: String,
-    birth_date: Date,
-    email: String,
+    gender: { type: Number, default: MALE },
+    phone_number: { type: String, default: "" },
+    birth_date: { type: Date, default: new Date() },
+    email: { type: String, default: "" },
     role: {
       type: Number,
       default: process.env.MEMBERSHIP
     },
     username: String,
-    password: String,
-    address: String,
-    avatar: String
+    password: { type: String, default: "123456" },
+    address: { type: String, default: "" },
+    avatar: { type: String, default: DEFAULT_AVATAR }
   },
   { versionKey: false }
 );

@@ -14,7 +14,7 @@ const Banner = () => {
       <img
         id="banner"
         className={classes.image}
-        src="../../static/images/top_banner.jpg"
+        src="../../static/images/top-banner.jpg"
       />
     </React.Fragment>
   );

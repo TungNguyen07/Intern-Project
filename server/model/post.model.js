@@ -10,7 +10,7 @@ const postSchema = mongoose.Schema(
     activity_id: String,
     view: { type: Number, default: 0 },
     active: { type: Boolean, default: false },
-    cover_img: String
+    cover_img: { type: String, default: "" }
   },
   { versionKey: false }
 );

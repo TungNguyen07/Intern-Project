@@ -1,26 +1,55 @@
-import React from "react";
-import CardItem from "./CardItemComponent";
+import React, { useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
-import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/styles";
+import ManageUser from "./ManageUserComponent";
+import ManageActivity from "./ManageActivityComponent";
 
-const useStyles = makeStyles(theme => ({}));
+const useStyles = makeStyles(theme => ({
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4)
+  },
+  grid: {
+    display: "flex",
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2)
+  },
+  div: {
+    width: "100%"
+  }
+}));
 
-const Dashboard = () => {
+const ManageComponent = ({ tableDisplay }) => {
+  const classes = useStyles();
+  const [display, setDisplay] = useState();
+
+  useEffect(() => {
+    switch (tableDisplay) {
+      case "USER":
+        return setDisplay(<ManageUser />);
+      case "POST":
+        return;
+      case "ACTIVITY":
+        return setDisplay(<ManageActivity />);
+      case "PENDING_POST":
+        return;
+      default:
+        return;
+    }
+  }, [tableDisplay]);
+
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container maxWidth="lg">
-        <Grid container spacing={1}>
-          <Grid item xs={12}>
-            <CardItem icon={<PeopleAltIcon />} title="User" />
-          </Grid>
+      <Container maxWidth="xl" className={classes.container}>
+        <Grid container item xs={12} className={classes.grid}>
+          <div className={classes.div}>{display}</div>
         </Grid>
       </Container>
     </React.Fragment>
   );
 };
 
-export default Dashboard;
+export default ManageComponent;

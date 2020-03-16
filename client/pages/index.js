@@ -22,11 +22,12 @@ const useStyles = makeStyles(theme => ({
   div: { textAlign: "center" }
 }));
 
-export const App = ({ user, setUserDetail }) => {
+export const App = ({ user, setUserDetail, isLoading }) => {
   const classes = useStyles();
-  const [isLoading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(isLoading);
 
   useEffect(() => {
+    console.log(isLoading);
     const token = localStorage.getItem("access_token");
     postData("http://localhost:4000/check-token", { token })
       .then(res => {
@@ -41,7 +42,7 @@ export const App = ({ user, setUserDetail }) => {
     setLoading(false);
   }, []);
 
-  return isLoading ? (
+  return loading ? (
     <div className={classes.div}>
       <CircularProgress className={classes.loading} />
     </div>
@@ -72,7 +73,10 @@ export const App = ({ user, setUserDetail }) => {
 };
 
 const mapStateToProps = state => {
-  return { user: state.userReducer.user };
+  return {
+    user: state.userReducer.user,
+    isLoading: state.userReducer.isLoading
+  };
 };
 
 const mapDispatchToProps = dispatch => {

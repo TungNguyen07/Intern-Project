@@ -52,25 +52,21 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const EditInfoComponent = ({ user, update }) => {
+export const AddNewUserComponent = ({ isOpen, addUser }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [info, setInfo] = useState(user);
+  const [info, setInfo] = useState({
+    idStaff: "",
+    fullname: "",
+    username: ""
+  });
 
   useEffect(() => {
-    console.log("info", info);
-  }, []);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+    setOpen(isOpen);
+  }, [isOpen]);
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const handleDateChange = date => {
-    setInfo({ ...info, birth_date: date.toISOString() });
   };
 
   const handleChange = prop => event => {
@@ -78,29 +74,25 @@ export const EditInfoComponent = ({ user, update }) => {
   };
 
   const handleSave = () => {
-    update(info);
+    addUser(info);
     handleClose();
   };
 
   return (
     <React.Fragment>
-      <Tooltip title="Edit">
-        <IconButton
-          color="primary"
-          aria-label="Edit"
-          component="span"
-          className={classes.button}
-          onClick={handleClickOpen}
-        >
-          <EditIcon className={classes.icon} />
-        </IconButton>
-      </Tooltip>
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth={true}>
-        <DialogTitle id="form-dialog-title">
-          Edit Personal Infomation
-        </DialogTitle>
+        <DialogTitle id="form-dialog-title">Add new user</DialogTitle>
         <DialogContent>
           <FormControl id="info" className={classes.form}>
+            <TextField
+              className={classes.infoItem}
+              id="idStaff"
+              label="Id Staff"
+              variant="outlined"
+              value={info.idStaff}
+              required
+              onChange={handleChange("idStaff")}
+            />
             <TextField
               className={classes.infoItem}
               id="fullname"
@@ -110,68 +102,14 @@ export const EditInfoComponent = ({ user, update }) => {
               required
               onChange={handleChange("fullname")}
             />
-            <div className={classes.gender}>
-              <FormLabel className={classes.genderTitle}>Gender</FormLabel>
-              <RadioGroup
-                className={classes.genderGroup}
-                aria-label="gender"
-                name="gender"
-                value={info.gender}
-                onChange={handleChange("gender")}
-              >
-                <FormControlLabel
-                  value="0"
-                  control={<Radio className={classes.radio} />}
-                  label="Female"
-                />
-                <FormControlLabel
-                  value="1"
-                  control={<Radio className={classes.radio} />}
-                  label="Male"
-                />
-              </RadioGroup>
-            </div>
-
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <DatePicker
-                className={classes.datePicker}
-                variant="outlined"
-                id="birth_date"
-                label="birth_date"
-                format="MM/dd/yyyy"
-                value={info.birth_date}
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                  "aria-label": "change date"
-                }}
-              />
-            </MuiPickersUtilsProvider>
             <TextField
               className={classes.infoItem}
-              id="email"
-              label="Email"
+              id="username"
+              label="Username"
               variant="outlined"
-              value={info.email}
+              value={info.username}
               required
-              onChange={handleChange("email")}
-            />
-            <TextField
-              className={classes.infoItem}
-              id="phone"
-              label="Phone"
-              variant="outlined"
-              value={info.phone_number}
-              required
-              onChange={handleChange("phone")}
-            />
-            <TextField
-              className={classes.infoItem}
-              id="address"
-              label="Address"
-              variant="outlined"
-              value={info.address}
-              required
-              onChange={handleChange("address")}
+              onChange={handleChange("username")}
             />
           </FormControl>
         </DialogContent>
@@ -188,14 +126,10 @@ export const EditInfoComponent = ({ user, update }) => {
   );
 };
 
-const mapStateToProps = state => {
-  return { user: state.userReducer.user };
-};
-
 const mapDispatchToProps = dispatch => {
   return {
-    update: bindActionCreators(userActions.updateInfo, dispatch)
+    addUser: bindActionCreators(userActions.addUser, dispatch)
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditInfoComponent);
+export default connect(null, mapDispatchToProps)(AddNewUserComponent);
