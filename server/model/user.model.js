@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import { MALE } from "../enums/userGender";
 import { DEFAULT_AVATAR } from "../defaultAvatar";
+import { STAFF } from "../enums/userRoles";
 
 const userSchema = mongoose.Schema(
   {
@@ -13,7 +14,7 @@ const userSchema = mongoose.Schema(
     email: { type: String, default: "" },
     role: {
       type: Number,
-      default: process.env.MEMBERSHIP
+      default: STAFF
     },
     username: String,
     password: { type: String, default: "123456" },

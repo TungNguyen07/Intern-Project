@@ -5,6 +5,7 @@ import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/styles";
 import ManageUser from "./ManageUserComponent";
 import ManageActivity from "./ManageActivityComponent";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles(theme => ({
   container: {

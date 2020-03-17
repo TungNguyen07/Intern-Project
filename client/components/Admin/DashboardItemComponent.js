@@ -9,12 +9,8 @@ import AssignmentLateIcon from "@material-ui/icons/AssignmentLate";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import HomeIcon from "@material-ui/icons/Home";
 import Router from "next/router";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
 
-import { adminActions } from "../../actions/adminActions";
-
-const DashboardItemComponent = ({ setState, getAllUser }) => {
+const DashboardItemComponent = ({ setState }) => {
   return (
     <div>
       <ListItem
@@ -38,7 +34,6 @@ const DashboardItemComponent = ({ setState, getAllUser }) => {
         button
         onClick={() => {
           setState("USER");
-          getAllUser();
         }}
       >
         <ListItemIcon>
@@ -83,8 +78,4 @@ const DashboardItemComponent = ({ setState, getAllUser }) => {
   );
 };
 
-const mapDispatchToProps = dispatch => {
-  return { getAllUser: bindActionCreators(adminActions.getAllUser, dispatch) };
-};
-
-export default connect(null, mapDispatchToProps)(DashboardItemComponent);
+export default DashboardItemComponent;

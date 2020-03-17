@@ -3,9 +3,11 @@ import { ADMIN } from "../enums/userRoles";
 import userModel, { deleteOne } from "../model/user.model";
 import { MALE } from "../enums/userGender";
 const { MONGO_URL, MONGO_OPTIONS } = process.env;
+import { DEFAULT_AVATAR } from "../defaultAvatar";
 
 const Admin = {
   fullname: "Son Tung Nguyen",
+  staffId: "admin",
   gender: MALE,
   phone_number: "0707071869",
   birth_date: "07/07/1998",
@@ -14,7 +16,7 @@ const Admin = {
   username: "admin",
   password: "123456",
   address: "Long Xuyen",
-  avatar: ""
+  avatar: DEFAULT_AVATAR
 };
 
 const insertAdminAccount = () => new userModel(Admin).save();

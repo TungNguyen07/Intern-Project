@@ -162,7 +162,7 @@ export const EditInfoComponent = ({ user, update }) => {
               variant="outlined"
               value={info.phone_number}
               required
-              onChange={handleChange("phone")}
+              onChange={handleChange("phone_number")}
             />
             <TextField
               className={classes.infoItem}

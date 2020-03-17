@@ -1,31 +1,35 @@
 import {
   ADD_USER_FAIL,
   ADD_USER_SUCCESS,
-  GET_ALL_USER_SUCCESS,
-  GET_ALL_USER_FAIL
+  DELETE_SUCCESS,
+  DELETE_FAIL
 } from "./adminActionType";
+import { NEW_ACTIVITY_SUCCESS } from "./activityActionType";
 import { postData } from "../libs/postData";
 import { fetchData } from "../libs/fetchData";
 
 export const adminActions = {
   addUser,
-  getAllUser
+  deleteUser,
+  addActivity,
+  updateActivity,
+  deleteActivity
 };
 
 function addUser(newUser) {
   return dispatch => {
     postData("http://localhost:4000/add-user", newUser).then(res => {
       if (res.error) dispatch(addUserFail);
-      else dispatch(addUserSuccess(newUser));
+      else dispatch(addUserSuccess());
     });
   };
 }
 
-function addUserSuccess(newUser) {
+function addUserSuccess() {
   return {
     type: ADD_USER_SUCCESS,
     payload: {
-      newUser: newUser
+      message: ["Add new user successfully!"]
     }
   };
 }
@@ -39,29 +43,73 @@ function addUserFail() {
   };
 }
 
-function getAllUser() {
+function deleteUser(staffId) {
+  console.log("right here", staffId);
   return dispatch => {
-    fetchData("http://localhost:4000/get-user").then(res => {
-      if (res.error) dispatch(getAllUserFail(res.error));
-      else dispatch(getAllUserSuccess(res.data));
+    postData("http://localhost:4000/profile/delete", staffId).then(res => {
+      if (res.error) dispatch(deleteFail());
+      else dispatch(deleteSuccess());
     });
   };
 }
 
-function getAllUserSuccess(data) {
+function deleteSuccess() {
   return {
-    type: GET_ALL_USER_SUCCESS,
+    type: DELETE_SUCCESS,
     payload: {
-      user: data
+      message: ["Delete user successfully!"]
     }
   };
 }
 
-function getAllUserFail(err) {
+function deleteFail() {
   return {
-    type: GET_ALL_USER_FAIL,
+    type: DELETE_FAIL,
     payload: {
-      error: err
+      error: ["Delete user failed!"]
     }
+  };
+}
+
+function addActivity(newActivity) {
+  return dispatch => {
+    postData("http://localhost:4000/activity/new-activity", newActivity).then(
+      res => {
+        if (res.error) console.log(res.error);
+        else dispatch(addActivitySuccess(res));
+      }
+    );
+  };
+}
+
+function addActivitySuccess() {
+  return {
+    type: NEW_ACTIVITY_SUCCESS,
+    payload: {
+      message: ["Add activity successfully!"]
+    }
+  };
+}
+
+function updateActivity(newActivity) {
+  return dispatch => {
+    postData(
+      "http://localhost:4000/activity/update-activity",
+      newActivity
+    ).then(res => {
+      if (res.error) console.log(res.error);
+      else dispatch(addActivitySuccess());
+    });
+  };
+}
+
+function deleteActivity(activity) {
+  return dispatch => {
+    postData("http://localhost:4000/activity/delete-activity", activity).then(
+      res => {
+        if (res.error) console.log(res.error);
+        else dispatch(addActivitySuccess());
+      }
+    );
   };
 }

@@ -1,15 +1,14 @@
 import {
   ADD_USER_FAIL,
   ADD_USER_SUCCESS,
-  GET_ALL_USER,
-  GET_ALL_USER_SUCCESS,
-  GET_ALL_USER_FAIL
+  DELETE_SUCCESS,
+  DELETE_FAIL
 } from "../actions/adminActionType";
-
+import { NEW_ACTIVITY_SUCCESS } from "../actions/activityActionType";
 const initAdmin = {
   owner: {},
-  user: [],
-  error: []
+  error: [],
+  message: []
 };
 
 export default function adminReducer(state = initAdmin, action) {
@@ -17,23 +16,33 @@ export default function adminReducer(state = initAdmin, action) {
     case ADD_USER_SUCCESS:
       return {
         ...state,
-        user: [...user, action.payload.newUser]
+        message: action.payload.message
       };
+
     case ADD_USER_FAIL:
       return {
         ...state,
         error: action.payload.error
       };
-    case GET_ALL_USER_SUCCESS:
+
+    case DELETE_SUCCESS:
       return {
         ...state,
-        user: action.payload.user
+        message: action.payload.message
       };
-    case GET_ALL_USER_FAIL:
+
+    case DELETE_FAIL:
       return {
         ...state,
         error: action.payload.error
       };
+
+    case NEW_ACTIVITY_SUCCESS:
+      return {
+        ...state,
+        message: action.payload.message
+      };
+
     default:
       return state;
   }

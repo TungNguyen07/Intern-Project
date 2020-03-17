@@ -72,11 +72,43 @@ module.exports.updateInfo = function(req, res) {
 module.exports.addUser = async function(req, res) {
   const user = req.body;
   await userModel.create(user);
-  const newUser = await userModel.findOne({ staffId: req.body.staffId });
-  res.json(newUser);
+  res.json({ success: true });
 };
 
 module.exports.getAllUser = async function(req, res) {
-  const allUser = await userModel.find({}, { _id: 0, password: 0, role: 0 });
+  const allUser = await userModel.find(
+    {},
+    {
+      _id: 0,
+      password: 0,
+      role: 0,
+      avatar: 0,
+      address: 0,
+      email: 0,
+      phone_number: 0,
+      gender: 0,
+      birth_date: 0
+    }
+  );
   res.json(allUser);
+};
+
+module.exports.getProfile = async function(req, res) {
+  const staffId = req.params.id;
+  const profile = await userModel.findOne(
+    { staffId: staffId },
+    { _id: 0, username: 0, password: 0 }
+  );
+  if (profile) res.json(profile);
+  else res.json({ error: true });
+};
+
+module.exports.deleteUser = async function(req, res) {
+  const id = req.body.staffId;
+  let condition = { staffId: id };
+  userModel.remove(condition, function(err, res) {
+    if (err) throw err;
+    console.log("Delete user sucessfully!");
+  });
+  res.json({ success: true });
 };
