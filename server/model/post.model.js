@@ -6,8 +6,8 @@ const postSchema = mongoose.Schema(
     description: String,
     content: String,
     created_at: Date,
-    author_id: String,
-    activity_id: String,
+    author_id: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
+    activity_id: { type: mongoose.Schema.Types.ObjectId, ref: "activity" },
     view: { type: Number, default: 0 },
     active: { type: Boolean, default: false },
     cover_img: { type: String, default: "" }

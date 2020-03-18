@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import MaterialTable from "material-table";
-import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import { makeStyles } from "@material-ui/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { bindActionCreators } from "redux";
@@ -68,7 +67,8 @@ const ActivityTableComponent = ({
       columns={columns}
       data={activity}
       options={{
-        actionsColumnIndex: -1
+        actionsColumnIndex: -1,
+        tableLayout: "fixed"
       }}
       editable={{
         onRowAdd: newData =>

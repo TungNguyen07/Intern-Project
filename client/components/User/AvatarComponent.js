@@ -81,6 +81,10 @@ export const AvatarComponent = ({ user, update }) => {
     handleClose();
   };
 
+  useEffect(() => {
+    setAvatar(user.avatar);
+  }, [user]);
+
   return (
     <React.Fragment>
       <CardActionArea className={classes.card} onClick={handleOpen}>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -34,9 +34,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const CoverImgComponent = ({ getImg }) => {
+export const CoverImgComponent = ({ prop, getImg }) => {
   const classes = useStyles();
-  const [coverImg, setCoverImg] = useState();
+  const [coverImg, setCoverImg] = useState(prop);
 
   function base64(files, callback) {
     var file = files[0];
@@ -54,6 +54,11 @@ export const CoverImgComponent = ({ getImg }) => {
       getImg(data);
     });
   };
+
+  useEffect(() => {
+    console.log("right here");
+    setCoverImg(prop);
+  }, [prop]);
 
   return (
     <Card className={classes.card}>

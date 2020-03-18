@@ -4292,6 +4292,13 @@ next@^9.2.1:
     webpack-sources "1.4.3"
     whatwg-fetch "3.0.0"
 
+nextjs-progressbar@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/nextjs-progressbar/-/nextjs-progressbar-0.0.4.tgz#f7580fd517703301dad7eb0893fbed5c9686c840"
+  integrity sha512-t+feT48KBDaysRH+snX3ARmYnAdViHhKSxXIXI4eK97SrVOJN+pHl+/IVUV1Oq1ZM34KEx4TZ7iHl3p7aXrMRA==
+  dependencies:
+    nprogress "^0.2.0"
+
 node-fetch@2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.0.tgz#e633456386d4aa55863f676a7ab0daa8fdecb0fd"

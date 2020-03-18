@@ -5,6 +5,7 @@ import thunk from "redux-thunk";
 import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import withRedux from "next-redux-wrapper";
+import NextNprogress from "nextjs-progressbar";
 
 import allReducer from "../stores/allReducer";
 
@@ -48,6 +49,7 @@ class App extends NextApp {
       <StyledThemeProvider theme={theme}>
         <MaterialThemeProvider theme={theme}>
           <Provider store={store}>
+            <NextNprogress color="#10649c" />
             <Component {...pageProps} />
           </Provider>
         </MaterialThemeProvider>

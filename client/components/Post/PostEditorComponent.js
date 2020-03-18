@@ -11,11 +11,13 @@ import SaveIcon from "@material-ui/icons/Save";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { postActions } from "../../actions/postActions";
 import { CoverImgComponent } from "./CoverImgComponent";
 import { TextEditorComponent } from "./TextEditorComponent";
 import Notification from "../Dialog/NotificationComponent";
+import { fetchData } from "../../libs/fetchData";
 
 const useStyle = makeStyles(theme => ({
   buttonSave: {
@@ -45,17 +47,20 @@ const useStyle = makeStyles(theme => ({
   },
   title: {
     color: "black"
-  }
+  },
+  loading: {
+    marginTop: "15%"
+  },
+  div: { textAlign: "center" }
 }));
 
 export const PostEditor = ({ author, checkValid, message }) => {
   const classes = useStyle();
-  const [post, setPost] = useState({
-    title: "",
-    description: "",
-    content: ""
-  });
+  const initPost = { title: "", description: "", content: "", coverImg: "" };
+  const [post, setPost] = useState(initPost);
   const [notify, setNotify] = useState(false);
+  const [isFetching, setFetching] = useState(true);
+  const [activity, setActivity] = useState([]);
 
   const handleChange = prop => event => {
     setPost({ ...post, [prop]: event.target.value });
@@ -75,14 +80,11 @@ export const PostEditor = ({ author, checkValid, message }) => {
       author_id: author.id,
       created_at: new Date().toISOString()
     });
+    setPost(initPost);
   };
 
   const handleDelete = () => {
-    setPost({
-      title: "",
-      description: "",
-      content: ""
-    });
+    setPost(initPost);
   };
 
   useEffect(() => {
@@ -90,7 +92,25 @@ export const PostEditor = ({ author, checkValid, message }) => {
     else setNotify(false);
   }, [message]);
 
-  return (
+  useEffect(() => {
+    fetchData("http://localhost:4000/activity/get-activity").then(res => {
+      setActivity(
+        res.data.map(item => {
+          return {
+            id: item._id,
+            name: item.activity_name
+          };
+        })
+      );
+      setFetching(false);
+    });
+  }, []);
+
+  return isFetching ? (
+    <div className={classes.div}>
+      <CircularProgress className={classes.loading} />
+    </div>
+  ) : (
     <div>
       <Typography variant="h3" className={classes.title}>
         Make your new post
@@ -109,12 +129,16 @@ export const PostEditor = ({ author, checkValid, message }) => {
           <Select
             className={classes.select}
             id="activity"
-            defaultValue="10"
+            defaultValue={activity[0].id}
             onChange={handleChange("activity_id")}
           >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            {activity.map(item => {
+              return (
+                <MenuItem key={item.id} value={item.id}>
+                  {item.name}
+                </MenuItem>
+              );
+            })}
           </Select>
         </FormControl>
         <TextField
@@ -127,8 +151,8 @@ export const PostEditor = ({ author, checkValid, message }) => {
           onChange={handleChange("description")}
         />
 
-        <CoverImgComponent getImg={getCoverImg} />
-        <TextEditorComponent getContent={getContent} />
+        <CoverImgComponent prop={post.coverImg} getImg={getCoverImg} />
+        <TextEditorComponent props={post.content} getContent={getContent} />
 
         <FormControl className={classes.formButton}>
           <Button className={classes.buttonSave} onClick={handleSave}>

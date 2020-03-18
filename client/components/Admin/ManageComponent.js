@@ -3,9 +3,12 @@ import { Grid } from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 import ManageUser from "./ManageUserComponent";
 import ManageActivity from "./ManageActivityComponent";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import ManagePost from "./ManagePostComponent";
+import ManagePendingPost from "./ManagePendingPostComponent";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -31,11 +34,13 @@ const ManageComponent = ({ tableDisplay }) => {
       case "USER":
         return setDisplay(<ManageUser />);
       case "POST":
-        return;
+        return setDisplay(<ManagePost />);
       case "ACTIVITY":
         return setDisplay(<ManageActivity />);
       case "PENDING_POST":
-        return;
+        return setDisplay(<ManagePendingPost />);
+      case "DASHBOARD":
+        return setDisplay();
       default:
         return;
     }

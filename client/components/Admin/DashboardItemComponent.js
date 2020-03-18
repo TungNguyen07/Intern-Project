@@ -24,12 +24,19 @@ const DashboardItemComponent = ({ setState }) => {
         </ListItemIcon>
         <ListItemText primary="HOME" />
       </ListItem>
-      <ListItem button>
+
+      <ListItem
+        button
+        onClick={() => {
+          setState("DASHBOARD");
+        }}
+      >
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
         <ListItemText primary="DASHBOARD" />
       </ListItem>
+
       <ListItem
         button
         onClick={() => {
@@ -41,6 +48,7 @@ const DashboardItemComponent = ({ setState }) => {
         </ListItemIcon>
         <ListItemText primary="USER" />
       </ListItem>
+
       <ListItem
         button
         onClick={() => {
@@ -52,6 +60,7 @@ const DashboardItemComponent = ({ setState }) => {
         </ListItemIcon>
         <ListItemText primary="ACTIVITY" />
       </ListItem>
+
       <ListItem
         button
         onClick={() => {
@@ -63,6 +72,7 @@ const DashboardItemComponent = ({ setState }) => {
         </ListItemIcon>
         <ListItemText primary="POST" />
       </ListItem>
+
       <ListItem
         button
         onClick={() => {

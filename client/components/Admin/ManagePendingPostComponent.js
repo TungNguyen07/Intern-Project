@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import MaterialTable from "material-table";
 import { makeStyles } from "@material-ui/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import BlockIcon from "@material-ui/icons/Block";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
@@ -15,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   div: { textAlign: "center" }
 }));
 
-const PostTableComponent = (
+const PendingPostTableComponent = (
   {
     //   addActivity,
     //   updateActivity,
@@ -26,14 +28,15 @@ const PostTableComponent = (
   const columns = [
     { title: "Title", field: "title" },
     { title: "Author", field: "author" },
-    { title: "_id", field: "_id", hidden: true }
+    { title: "id", field: "_id", hidden: true }
   ];
-  const [activePost, setActivePost] = useState([]);
+
+  const [pendingPost, setPendingPost] = useState([]);
   const [isFetching, setFetching] = useState(true);
 
   useEffect(() => {
-    fetchData("http://localhost:4000/post/get-active-post").then(res => {
-      setActivePost(
+    fetchData("http://localhost:4000/post/get-pending-post").then(res => {
+      setPendingPost(
         res.data.map(item => {
           return {
             title: item.title,
@@ -46,9 +49,13 @@ const PostTableComponent = (
     });
   }, []);
 
-  //   const handleAdd = newActivity => {
-  //     addActivity(newActivity);
-  //   };
+  useEffect(() => {
+    console.log(pendingPost);
+  }, [pendingPost]);
+
+  // const handleAdd = newActivity => {
+  //   addActivity(newActivity);
+  // };
 
   //   const handleUpdate = activity => {
   //     updateActivity(activity);
@@ -64,35 +71,25 @@ const PostTableComponent = (
     </div>
   ) : (
     <MaterialTable
-      title="Manage Post"
+      title="Manage Pending Post"
       columns={columns}
-      data={activePost}
+      data={pendingPost}
       actions={[
         {
-          icon: () => <div />,
-          disabled: true
+          icon: () => <CheckCircleIcon />,
+          tooltip: "Approve"
+        },
+        {
+          icon: () => <BlockIcon />,
+          tooltip: "Deny"
         }
       ]}
       options={{
         actionsColumnIndex: -1,
         tableLayout: "fixed"
       }}
-      editable={{
-        onRowDelete: oldData =>
-          new Promise(resolve => {
-            setTimeout(() => {
-              {
-                // const oldActivity = activity;
-                // oldActivity.splice(oldActivity.indexOf(oldData), 1);
-                // handleDelete(oldData);
-                // setActivity([...oldActivity]);
-              }
-              resolve();
-            }, 600);
-          })
-      }}
     />
   );
 };
 
-export default PostTableComponent;
+export default PendingPostTableComponent;

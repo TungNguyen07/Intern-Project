@@ -22,6 +22,12 @@ const useStyles = makeStyles({
   item: {
     lineHeight: "1.3",
     paddingTop: "4px"
+  },
+  link: {
+    textDecoration: "none",
+    "&:visited": {
+      color: "inherit"
+    }
   }
 });
 
@@ -52,7 +58,7 @@ export const ProfileNav = ({ user, Signout }) => {
 
         <MenuItem className={classes.item}>
           <Link href="#">
-            <span>Change Password</span>
+            <span>Change Passwor</span>
           </Link>
         </MenuItem>
 
@@ -63,7 +69,7 @@ export const ProfileNav = ({ user, Signout }) => {
         </MenuItem>
 
         {/* <MenuItem className={classes.item}>
-          <a href="/create-post">Write post</a>
+          <Link href="/create-post">Write post</Link>
         </MenuItem> */}
 
         {user.role == 1 && (
