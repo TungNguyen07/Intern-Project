@@ -4,9 +4,11 @@ import { makeStyles } from "@material-ui/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+const { SERVER_URL } = process.env;
 
 import { fetchData } from "../../libs/fetchData";
 import { adminActions } from "../../actions/adminActions";
+import MessageDialog from "../Dialog/MessageDialogComponent";
 
 const useStyles = makeStyles(theme => ({
   loading: {
@@ -29,9 +31,10 @@ const ActivityTableComponent = ({
 
   const [activity, setActivity] = useState([]);
   const [isFetching, setFetching] = useState(true);
+  const [isError, setError] = useState(false);
 
   useEffect(() => {
-    fetchData("http://localhost:4000/activity/get-activity").then(res => {
+    fetchData(`${SERVER_URL}/activity/get-activity`).then(res => {
       setActivity(
         res.data.map(item => {
           return {
@@ -45,8 +48,20 @@ const ActivityTableComponent = ({
     });
   }, []);
 
+  const checkValid = newActivity => {
+    let valid = true;
+    for (let item of activity) {
+      if (newActivity.activity_name == item.activity_name) {
+        valid = false;
+        break;
+      }
+    }
+    return valid;
+  };
+
   const handleAdd = newActivity => {
     addActivity(newActivity);
+    setActivity([...activity, newActivity]);
   };
 
   const handleUpdate = activity => {
@@ -62,53 +77,57 @@ const ActivityTableComponent = ({
       <CircularProgress className={classes.loading} />
     </div>
   ) : (
-    <MaterialTable
-      title="Editable Example"
-      columns={columns}
-      data={activity}
-      options={{
-        actionsColumnIndex: -1,
-        tableLayout: "fixed"
-      }}
-      editable={{
-        onRowAdd: newData =>
-          new Promise(resolve => {
-            setTimeout(() => {
-              {
-                const oldActivity = activity;
-                oldActivity.push(newData);
-                handleAdd(newData);
-                setActivity([...oldActivity]);
-              }
-              resolve();
-            }, 600);
-          }),
-        onRowUpdate: (newData, oldData) =>
-          new Promise(resolve => {
-            setTimeout(() => {
-              {
-                const oldActivity = activity;
-                oldActivity[oldActivity.indexOf(oldData)] = newData;
-                handleUpdate(newData);
-                setActivity([...oldActivity]);
-              }
-              resolve();
-            }, 600);
-          }),
-        onRowDelete: oldData =>
-          new Promise(resolve => {
-            setTimeout(() => {
-              {
-                const oldActivity = activity;
-                oldActivity.splice(oldActivity.indexOf(oldData), 1);
-                handleDelete(oldData);
-                setActivity([...oldActivity]);
-              }
-              resolve();
-            }, 600);
-          })
-      }}
-    />
+    <div>
+      <MaterialTable
+        title="Editable Example"
+        columns={columns}
+        data={activity}
+        options={{
+          actionsColumnIndex: -1,
+          tableLayout: "fixed"
+        }}
+        editable={{
+          onRowAdd: newData =>
+            new Promise((resolve, reject) => {
+              setTimeout(() => {
+                {
+                  checkValid(newData)
+                    ? handleAdd(newData)
+                    : reject(setError(true));
+                }
+                resolve();
+              }, 600);
+            }),
+          onRowUpdate: (newData, oldData) =>
+            new Promise(resolve => {
+              setTimeout(() => {
+                {
+                  const oldActivity = activity;
+                  oldActivity[oldActivity.indexOf(oldData)] = newData;
+                  handleUpdate(newData);
+                  setActivity([...oldActivity]);
+                }
+                resolve();
+              }, 600);
+            }),
+          onRowDelete: oldData =>
+            new Promise(resolve => {
+              setTimeout(() => {
+                {
+                  const oldActivity = activity;
+                  oldActivity.splice(oldActivity.indexOf(oldData), 1);
+                  handleDelete(oldData);
+                  setActivity([...oldActivity]);
+                }
+                resolve();
+              }, 600);
+            })
+        }}
+      />
+      {isError && (
+        <MessageDialog setError={setError} message="Duplicate Activity name" />
+      )}
+    </div>
   );
 };
 

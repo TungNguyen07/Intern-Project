@@ -5,9 +5,11 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import MaterialTable from "material-table";
+const { SERVER_URL } = process.env;
 
 import { adminActions } from "../../actions/adminActions";
 import ViewProfileComponent from "../Dialog/ViewProfileComponent";
+import MessageDialog from "../Dialog/MessageDialogComponent";
 import { fetchData } from "../../libs/fetchData";
 
 const useStyles = makeStyles(theme => ({
@@ -33,12 +35,10 @@ const UserTableComponent = ({ addUser, deleteUser }) => {
   const [isFetching, setIsFetching] = useState(true);
   const [isOpen, setOpen] = useState(false);
   const [rowData, setRowdata] = useState({});
-  const [action, setAction] = useState("");
-
-  const ADD = "ADD";
+  const [isError, setError] = useState(false);
 
   useEffect(() => {
-    fetchData("http://localhost:4000/get-user").then(res => {
+    fetchData(`${SERVER_URL}/get-user`).then(res => {
       setData(
         res.data.map(item => {
           return {
@@ -64,13 +64,24 @@ const UserTableComponent = ({ addUser, deleteUser }) => {
     deleteUser({ staffId: user.staffId });
   };
 
-  useEffect(() => {
-    if (action == ADD) {
-      const newUser = data.slice(-1)[0];
-      addUser(newUser);
-      setAction("");
+  const checkValid = newUser => {
+    let valid = true;
+    for (let user of data) {
+      if (
+        newUser.staffId == user.staffId ||
+        newUser.username == user.username
+      ) {
+        valid = false;
+        break;
+      }
     }
-  }, [action]);
+    return valid;
+  };
+
+  const handleAdd = newUser => {
+    addUser(newUser);
+    setData([...data, newUser]);
+  };
 
   return isFetching ? (
     <div className={classes.div}>
@@ -83,21 +94,19 @@ const UserTableComponent = ({ addUser, deleteUser }) => {
         columns={columns}
         data={data}
         actions={[
-          {
+          rowData => ({
             icon: () => <AccountBoxIcon />,
             tooltip: "Profile",
             onClick: (event, rowData) => handleOpen(rowData)
-          }
+          })
         ]}
         editable={{
           onRowAdd: newData =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
                 {
-                  const olddata = data;
-                  olddata.push(newData);
-                  setAction(ADD);
-                  setData([...olddata]);
+                  if (!checkValid(newData)) reject(setError(true));
+                  else handleAdd(newData);
                 }
                 resolve();
               }, 600);
@@ -114,7 +123,7 @@ const UserTableComponent = ({ addUser, deleteUser }) => {
                   setData([...initdata]);
                 }
                 resolve();
-              }, 1000);
+              }, 600);
             })
         }}
         options={{
@@ -126,6 +135,12 @@ const UserTableComponent = ({ addUser, deleteUser }) => {
         isOpen={isOpen}
         isClose={handleClose}
       />
+      {isError && (
+        <MessageDialog
+          setError={setError}
+          message="Duplicate Staff Id or Username"
+        />
+      )}
     </div>
   );
 };

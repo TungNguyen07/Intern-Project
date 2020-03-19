@@ -6,6 +6,7 @@ import {
   SET_USER_DETAIL
 } from "./userActionsType";
 import Router from "next/router";
+const { SERVER_URL } = process.env;
 
 export const userActions = {
   Signin,
@@ -16,7 +17,7 @@ export const userActions = {
 
 function Signin(signinInfo) {
   return dispatch => {
-    postData("http://localhost:4000/signin", signinInfo).then(res => {
+    postData(`${SERVER_URL}/signin`, signinInfo).then(res => {
       if (res.token) {
         localStorage.setItem("access_token", res.token);
         dispatch(SigninSuccess(res));
@@ -81,7 +82,7 @@ export function setUserDetail(userDetail) {
 
 function updateInfo(info) {
   return dispatch => {
-    postData("http://localhost:4000/profile/update", info)
+    postData(`${SERVER_URL}/profile/update`, info)
       .then(res => {
         if (res.success) dispatch(setUserDetail(info));
       })

@@ -9,6 +9,8 @@ import { connect } from "react-redux";
 
 import { fetchData } from "../../libs/fetchData";
 import { adminActions } from "../../actions/adminActions";
+import { postActions, approvePost, denyPost } from "../../actions/postActions";
+const { SERVER_URL } = process.env;
 
 const useStyles = makeStyles(theme => ({
   loading: {
@@ -17,13 +19,7 @@ const useStyles = makeStyles(theme => ({
   div: { textAlign: "center" }
 }));
 
-const PendingPostTableComponent = (
-  {
-    //   addActivity,
-    //   updateActivity,
-    //   deleteActivity
-  }
-) => {
+const PendingPostTableComponent = () => {
   const classes = useStyles();
   const columns = [
     { title: "Title", field: "title" },
@@ -35,7 +31,7 @@ const PendingPostTableComponent = (
   const [isFetching, setFetching] = useState(true);
 
   useEffect(() => {
-    fetchData("http://localhost:4000/post/get-pending-post").then(res => {
+    fetchData(`${SERVER_URL}/post/get-pending-post`).then(res => {
       setPendingPost(
         res.data.map(item => {
           return {
@@ -49,21 +45,13 @@ const PendingPostTableComponent = (
     });
   }, []);
 
-  useEffect(() => {
-    console.log(pendingPost);
-  }, [pendingPost]);
+  const handleApprove = postId => {
+    approvePost({ id: postId });
+  };
 
-  // const handleAdd = newActivity => {
-  //   addActivity(newActivity);
-  // };
-
-  //   const handleUpdate = activity => {
-  //     updateActivity(activity);
-  //   };
-
-  //   const handleDelete = activity => {
-  //     deleteActivity(activity);
-  //   };
+  const handleDeny = postId => {
+    denyPost({ id: postId });
+  };
 
   return isFetching ? (
     <div className={classes.div}>
@@ -75,14 +63,44 @@ const PendingPostTableComponent = (
       columns={columns}
       data={pendingPost}
       actions={[
-        {
+        rowData => ({
           icon: () => <CheckCircleIcon />,
-          tooltip: "Approve"
-        },
-        {
+          tooltip: "Approve",
+          onClick: (event, rowData) => {
+            new Promise((resolve, reject) => {
+              setTimeout(() => {
+                {
+                  let initdata = pendingPost;
+                  const index = initdata.indexOf(rowData);
+                  const approveItem = initdata[index];
+                  initdata.splice(index, 1);
+                  handleApprove(approveItem._id);
+                  setPendingPost([...initdata]);
+                }
+                resolve();
+              }, 600);
+            });
+          }
+        }),
+        rowData => ({
           icon: () => <BlockIcon />,
-          tooltip: "Deny"
-        }
+          tooltip: "Deny",
+          onClick: (event, rowData) => {
+            new Promise((resolve, reject) => {
+              setTimeout(() => {
+                {
+                  let initdata = pendingPost;
+                  const index = initdata.indexOf(rowData);
+                  const deletePost = initdata[index];
+                  initdata.splice(index, 1);
+                  handleDeny(deletePost);
+                  setPendingPost([...initdata]);
+                }
+                resolve();
+              }, 600);
+            });
+          }
+        })
       ]}
       options={{
         actionsColumnIndex: -1,

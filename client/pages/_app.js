@@ -6,6 +6,8 @@ import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import withRedux from "next-redux-wrapper";
 import NextNprogress from "nextjs-progressbar";
+const dotenv = require("dotenv");
+dotenv.config();
 
 import allReducer from "../stores/allReducer";
 

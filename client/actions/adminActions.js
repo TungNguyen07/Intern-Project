@@ -7,6 +7,7 @@ import {
 import { NEW_ACTIVITY_SUCCESS } from "./activityActionType";
 import { postData } from "../libs/postData";
 import { fetchData } from "../libs/fetchData";
+const { SERVER_URL } = process.env;
 
 export const adminActions = {
   addUser,
@@ -18,7 +19,7 @@ export const adminActions = {
 
 function addUser(newUser) {
   return dispatch => {
-    postData("http://localhost:4000/add-user", newUser).then(res => {
+    postData(`${SERVER_URL}/add-user`, newUser).then(res => {
       if (res.error) dispatch(addUserFail);
       else dispatch(addUserSuccess());
     });
@@ -46,7 +47,7 @@ function addUserFail() {
 function deleteUser(staffId) {
   console.log("right here", staffId);
   return dispatch => {
-    postData("http://localhost:4000/profile/delete", staffId).then(res => {
+    postData(`${SERVER_URL}/profile/delete`, staffId).then(res => {
       if (res.error) dispatch(deleteFail());
       else dispatch(deleteSuccess());
     });
@@ -73,12 +74,10 @@ function deleteFail() {
 
 function addActivity(newActivity) {
   return dispatch => {
-    postData("http://localhost:4000/activity/new-activity", newActivity).then(
-      res => {
-        if (res.error) console.log(res.error);
-        else dispatch(addActivitySuccess(res));
-      }
-    );
+    postData(`${SERVER_URL}/activity/new-activity`, newActivity).then(res => {
+      if (res.error) console.log(res.error);
+      else dispatch(addActivitySuccess(res));
+    });
   };
 }
 
@@ -93,23 +92,20 @@ function addActivitySuccess() {
 
 function updateActivity(newActivity) {
   return dispatch => {
-    postData(
-      "http://localhost:4000/activity/update-activity",
-      newActivity
-    ).then(res => {
-      if (res.error) console.log(res.error);
-      else dispatch(addActivitySuccess());
-    });
-  };
-}
-
-function deleteActivity(activity) {
-  return dispatch => {
-    postData("http://localhost:4000/activity/delete-activity", activity).then(
+    postData(`${SERVER_URL}/activity/update-activity`, newActivity).then(
       res => {
         if (res.error) console.log(res.error);
         else dispatch(addActivitySuccess());
       }
     );
+  };
+}
+
+function deleteActivity(activity) {
+  return dispatch => {
+    postData(`${SERVER_URL}/activity/delete-activity`, activity).then(res => {
+      if (res.error) console.log(res.error);
+      else dispatch(addActivitySuccess());
+    });
   };
 }

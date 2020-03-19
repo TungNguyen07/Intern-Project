@@ -8,4 +8,8 @@ router.get("/get-pending-post", postApi.getPendingPost);
 
 router.get("/get-active-post", postApi.getActivePost);
 
+router.post("/approve-post", postApi.approvePost);
+
+router.post("/deny-post", postApi.denyPost);
+
 module.exports = router;

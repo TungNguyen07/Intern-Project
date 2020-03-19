@@ -5,6 +5,7 @@ import {
   NEW_POST_SUCCESS,
   NEW_POST_FAIL
 } from "./postActionType";
+const { SERVER_URL } = process.env;
 
 export const postActions = {
   checkValidPost
@@ -12,7 +13,7 @@ export const postActions = {
 
 function newPost(post) {
   return dispatch => {
-    postData("http://localhost:4000/post/new-post", post).then(res => {
+    postData(`${SERVER_URL}/post/new-post`, post).then(res => {
       if (res.success) {
         dispatch(newPostSucess(res.success));
       } else dispatch(newPostFail("Unknown Error!"));
@@ -48,4 +49,18 @@ const newPostFail = fail => {
       error: fail
     }
   };
+};
+
+export const approvePost = postId => {
+  postData(`${SERVER_URL}/post/approve-post`, postId).then(res => {
+    if (res.error) console.log(res.error);
+    else console.log(res);
+  });
+};
+
+export const denyPost = postId => {
+  postData(`${SERVER_URL}/post/deny-post`, postId).then(res => {
+    if (res.error) console.log(res.error);
+    else console.log(res);
+  });
 };

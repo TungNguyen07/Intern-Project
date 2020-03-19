@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+const { SERVER_URL } = process.env;
 
 import { fetchData } from "../../libs/fetchData";
 import { adminActions } from "../../actions/adminActions";
@@ -25,6 +26,7 @@ const PostTableComponent = (
   const classes = useStyles();
   const columns = [
     { title: "Title", field: "title" },
+    { title: "Activity", field: "activity" },
     { title: "Author", field: "author" },
     { title: "_id", field: "_id", hidden: true }
   ];
@@ -32,11 +34,12 @@ const PostTableComponent = (
   const [isFetching, setFetching] = useState(true);
 
   useEffect(() => {
-    fetchData("http://localhost:4000/post/get-active-post").then(res => {
+    fetchData(`${SERVER_URL}/post/get-active-post`).then(res => {
       setActivePost(
         res.data.map(item => {
           return {
             title: item.title,
+            activity: item.activity,
             author: item.fullname,
             _id: item._id
           };
@@ -68,10 +71,10 @@ const PostTableComponent = (
       columns={columns}
       data={activePost}
       actions={[
-        {
+        rowData => ({
           icon: () => <div />,
           disabled: true
-        }
+        })
       ]}
       options={{
         actionsColumnIndex: -1,
