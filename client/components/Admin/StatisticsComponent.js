@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
@@ -6,8 +6,18 @@ import CategoryIcon from "@material-ui/icons/Category";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import AssignmentLateIcon from "@material-ui/icons/AssignmentLate";
 import { makeStyles } from "@material-ui/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import CardItems from "./CardItemComponent";
+import { fetchData } from "../../libs/fetchData";
+const { SERVER_URL } = process.env;
+
+const cardBorder = {
+  width: "100%",
+  height: "5rem",
+  display: "flex",
+  marginRight: 16
+};
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -21,33 +31,64 @@ const useStyles = makeStyles(theme => ({
   grid: {
     display: "flex",
     paddingLeft: theme.spacing(2)
-  }
+  },
+  loading: {
+    marginTop: "15%"
+  },
+  div: { textAlign: "center" }
 }));
 
-const StatisticComponent = () => {
+const StatisticComponent = ({ isReload }) => {
   const classes = useStyles();
-  return (
+  const [data, setData] = useState({});
+  const [isFetching, setFetching] = useState(true);
+
+  const fetchingData = () => {
+    fetchData(`${SERVER_URL}/get-statistics-data`).then(res => {
+      setData(res.data);
+    });
+    setFetching(false);
+  };
+
+  useEffect(() => {
+    fetchingData();
+  }, []);
+
+  useEffect(() => {
+    fetchingData();
+  }, [isReload]);
+
+  return isFetching ? (
+    <div className={classes.div}>
+      <CircularProgress className={classes.loading} />
+    </div>
+  ) : (
     <Container maxWidth="xl" className={classes.container}>
       <Grid item xs={12} className={classes.grid}>
         <CardItems
+          className={classes.cardBorder}
           title="USER"
           icon={<PeopleAltIcon className={classes.icon} />}
-          quantity={20}
+          quantity={data.user}
+          style={{ ...cardBorder, borderLeft: "5px solid #4e73df" }}
         />
         <CardItems
           title="ACTIVITY"
           icon={<CategoryIcon className={classes.icon} />}
-          quantity={20}
+          quantity={data.activity}
+          style={{ ...cardBorder, borderLeft: "5px solid #36b9cc" }}
         />
         <CardItems
           title="POST"
           icon={<AssignmentIcon className={classes.icon} />}
-          quantity={20}
+          quantity={data.post}
+          style={{ ...cardBorder, borderLeft: "5px solid #1cc88a" }}
         />
         <CardItems
           title="PENDING POST"
           icon={<AssignmentLateIcon className={classes.icon} />}
-          quantity={20}
+          quantity={data.pendingPost}
+          style={{ ...cardBorder, borderLeft: "5px solid #f6c23e" }}
         />
       </Grid>
     </Container>

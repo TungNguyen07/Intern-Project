@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 import { makeStyles } from "@material-ui/styles";
@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const TextEditorComponent = ({ getContent }) => {
+export const TextEditorComponent = ({ isReload, getContent }) => {
   const classes = useStyles();
   const [content, setContent] = useState("");
 
@@ -43,6 +43,10 @@ export const TextEditorComponent = ({ getContent }) => {
     setContent(value);
     getContent(value);
   };
+
+  useEffect(() => {
+    if (isReload == true) setContent("");
+  }, [isReload]);
 
   return (
     <ReactQuill

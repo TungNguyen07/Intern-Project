@@ -1,4 +1,6 @@
 import userModel from "../model/user.model";
+import postModel from "../model/post.model";
+import activityModel from "../model/activity.model";
 import mongoose from "mongoose";
 import jwt, { verify } from "jsonwebtoken";
 const { SECRET_KEY } = process.env;
@@ -24,4 +26,17 @@ module.exports.checkToken = async function(req, res) {
 
     res.json(user);
   } else res.json({ error: true });
+};
+
+module.exports.getStatisticsData = async function(req, res) {
+  const countUser = await userModel.countDocuments();
+  const countActivity = await activityModel.countDocuments();
+  const countPost = await postModel.countDocuments({ active: true });
+  const countPendingPost = await postModel.countDocuments({ active: false });
+  res.json({
+    user: countUser,
+    activity: countActivity,
+    post: countPost,
+    pendingPost: countPendingPost
+  });
 };

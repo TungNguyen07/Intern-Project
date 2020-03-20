@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/styles";
 import TextField from "@material-ui/core/TextField";
@@ -10,14 +10,13 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import SaveIcon from "@material-ui/icons/Save";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-import { postActions } from "../../actions/postActions";
 import { CoverImgComponent } from "./CoverImgComponent";
 import { TextEditorComponent } from "./TextEditorComponent";
-import Notification from "../Dialog/NotificationComponent";
+import MessageDialog from "../Dialog/MessageDialogComponent";
 import { fetchData } from "../../libs/fetchData";
+import { newPost } from "../../actions/postActions";
 
 const useStyle = makeStyles(theme => ({
   buttonSave: {
@@ -54,43 +53,80 @@ const useStyle = makeStyles(theme => ({
   div: { textAlign: "center" }
 }));
 
-export const PostEditor = ({ author, checkValid, message }) => {
+export const PostEditor = ({ author }) => {
   const classes = useStyle();
   const initPost = { title: "", description: "", content: "", coverImg: "" };
   const [post, setPost] = useState(initPost);
-  const [notify, setNotify] = useState(false);
+  const [notify, setNotify] = useState([]);
   const [isFetching, setFetching] = useState(true);
   const [activity, setActivity] = useState([]);
+  const [display, setDisplay] = useState(false);
+  const [reload, setReload] = useState(false);
+
+  const [, updateState] = React.useState();
+  const forceUpdate = useCallback(() => updateState({}), []);
 
   const handleChange = prop => event => {
+    setReload(false);
     setPost({ ...post, [prop]: event.target.value });
   };
 
   const getCoverImg = img => {
+    setReload(false);
     setPost({ ...post, cover_img: img });
   };
 
   const getContent = content => {
+    setReload(false);
     setPost({ ...post, content: content });
   };
 
+  const checkValid = newPost => {
+    let arrError = [];
+    if (newPost.title == "" || newPost.title == undefined)
+      arrError.push("Title is required!");
+    if (newPost.description == "" || newPost.description == undefined)
+      arrError.push("Description is required!");
+    if (newPost.content == "" || newPost.content == undefined)
+      arrError.push("Content is required!");
+    if (arrError.length) {
+      setNotify(arrError);
+      return false;
+    } else {
+      arrError.push(
+        "Make new post successfully. Waiting for admin approve your post!"
+      );
+      setNotify(arrError);
+      return true;
+    }
+  };
+
   const handleSave = () => {
-    checkValid({
+    console.log(checkValid(post));
+    checkValid(post) ? handleAdd() : handleError();
+  };
+
+  const handleError = () => {
+    setDisplay(true);
+  };
+
+  const handleAdd = () => {
+    const initPost = {
       ...post,
       author_id: author.id,
       created_at: new Date().toISOString()
-    });
+    };
+    newPost(initPost);
     setPost(initPost);
+    setReload(true);
+    setDisplay(true);
+    forceUpdate();
   };
 
   const handleDelete = () => {
     setPost(initPost);
+    setReload(true);
   };
-
-  useEffect(() => {
-    if (message.length) setNotify(true);
-    else setNotify(false);
-  }, [message]);
 
   useEffect(() => {
     fetchData("http://localhost:4000/activity/get-activity").then(res => {
@@ -151,8 +187,8 @@ export const PostEditor = ({ author, checkValid, message }) => {
           onChange={handleChange("description")}
         />
 
-        <CoverImgComponent prop={post.coverImg} getImg={getCoverImg} />
-        <TextEditorComponent props={post.content} getContent={getContent} />
+        <CoverImgComponent isReload={reload} getImg={getCoverImg} />
+        <TextEditorComponent isReload={reload} getContent={getContent} />
 
         <FormControl className={classes.formButton}>
           <Button className={classes.buttonSave} onClick={handleSave}>
@@ -165,21 +201,13 @@ export const PostEditor = ({ author, checkValid, message }) => {
           </Button>
         </FormControl>
       </form>
-      {notify && (
-        <Notification setNotify={setNotify} isOpen={notify} content={message} />
-      )}
+      {display && <MessageDialog setError={setDisplay} message={notify} />}
     </div>
   );
 };
 
 const mapStateToProps = state => {
-  return { author: state.userReducer.user, message: state.postReducer.message };
+  return { author: state.userReducer.user };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    checkValid: bindActionCreators(postActions.checkValidPost, dispatch)
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PostEditor);
+export default connect(mapStateToProps, null)(PostEditor);

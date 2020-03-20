@@ -20,6 +20,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import { userActions } from "../../actions/userActions";
+import MessageDialog from "./MessageDialogComponent";
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -56,17 +57,18 @@ export const EditInfoComponent = ({ user, update }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [info, setInfo] = useState(user);
-
-  useEffect(() => {
-    console.log("info", info);
-  }, []);
+  const [error, setError] = useState([]);
+  const [display, setDisplay] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
+    setError([]);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setError([]);
   };
 
   const handleDateChange = date => {
@@ -77,9 +79,39 @@ export const EditInfoComponent = ({ user, update }) => {
     setInfo({ ...info, [prop]: event.target.value });
   };
 
+  const validateEmail = email => {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const validatePhone = phone => {
+    return isNaN(phone);
+  };
+
+  const checkValid = infor => {
+    let arrError = [];
+    if (!validateEmail(infor.email) || infor.email == "")
+      arrError.push("Invalid Email!");
+    if (validatePhone(infor.phone_number))
+      arrError.push("Invalid Number Phone!");
+    if (infor.fullname == "") arrError.push("Fullname is required!");
+    if (infor.address == "") arrError.push("Address is required!");
+    if (infor.phone_number == "") arrError.push("Phone number is required!");
+    if (arrError.length) {
+      setError(arrError);
+      return false;
+    } else return true;
+  };
+
   const handleSave = () => {
-    update(info);
+    setError([]);
+    checkValid(info) ? updateUser() : setDisplay(true);
+  };
+
+  const updateUser = () => {
     handleClose();
+    setSuccess(true);
+    update(info);
   };
 
   return (
@@ -184,6 +216,13 @@ export const EditInfoComponent = ({ user, update }) => {
           </Button>
         </DialogActions>
       </Dialog>
+      {display && <MessageDialog setError={setDisplay} message={error} />}
+      {success && (
+        <MessageDialog
+          setError={setSuccess}
+          message={["Update profile successfully!"]}
+        />
+      )}
     </React.Fragment>
   );
 };

@@ -43,13 +43,13 @@ const Footer = () => {
           style={{ background: "linear-gradient(#a3f1ff,#03c8ff)" }}
         >
           <h2 className={classes.title}>
-            TRUNG TÂM VĂN HÓA - THỂ THAO THÀNH PHỐ LONG XUYÊN
+            CENTER FOR CULTURAL AND SPORTS IN LONG XUYEN CITY
           </h2>
           <p>
-            Địa chỉ: Số 268 Nguyễn Trường Tộ, Phường Bình Khánh, Thành phố Long
-            Xuyên, Tỉnh An Giang.
+            Address: 268 Nguyen Truong To, Binh Khanh Ward, Long Xuyen City, An
+            Giang
           </p>
-          <p>Điện thoại: 0123456789</p>
+          <p>Fax: 0123456789</p>
           <p>
             Email:{" "}
             <a href="mailto:ttvhtt.longxuyen@angiang.gov.vn">

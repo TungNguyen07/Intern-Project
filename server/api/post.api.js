@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 import postModel from "../model/post.model";
+import { defaultCoverImg } from "../defaultCoverImg";
 
 module.exports.newPost = async function(req, res) {
+  if (!req.body.cover_img) req.body.cover_img = defaultCoverImg;
   await postModel.create(req.body, function(err, res) {
     if (err) throw err;
     console.log("Create successfully");
@@ -94,10 +96,20 @@ module.exports.denyPost = function(req, res) {
   res.json({ success: true });
 };
 
-module.exports.getSomePost = function(req, res) {
-  const SomePost = postModel.find(
-    {},
-    { cover_img: 1, description: 1, title: 1, created_at: 1 }
+module.exports.getSomePost = async function(req, res) {
+  const somePost = await postModel.find(
+    { active: true },
+    { _id: 1, cover_img: 1, description: 1, title: 1 }
   );
-  res.json(SomePost);
+  res.json(somePost);
+};
+
+module.exports.getPostFollowUser = async function(req, res) {
+  const id = req.query.id;
+  console.log("id", id);
+  const post = await postModel.find(
+    { author_id: id, active: true },
+    { _id: 1, cover_img: 1, description: 1, title: 1 }
+  );
+  res.json(post);
 };

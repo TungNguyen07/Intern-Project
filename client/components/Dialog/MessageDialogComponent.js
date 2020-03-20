@@ -21,9 +21,11 @@ const MessageDialog = ({ message, setError }) => {
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{"Error message"}</DialogTitle>
+        <DialogTitle>{"Message dialog"}</DialogTitle>
         <DialogContent>
-          <DialogContentText>{message}</DialogContentText>
+          {message.map(item => {
+            return <DialogContentText key={item}>{item}</DialogContentText>;
+          })}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">

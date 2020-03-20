@@ -11,11 +11,12 @@ import Badge from "@material-ui/core/Badge";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
+import Avatar from "@material-ui/core/Avatar";
 
 import DashboardItems from "./DashboardItemComponent";
-import ActivityTableComponent from "./ManageActivityComponent";
 import StatisticComponent from "./StatisticsComponent";
 import ManageComponent from "./ManageComponent";
+import { connect } from "react-redux";
 
 const drawerWidth = 240;
 
@@ -92,7 +93,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Dashboard() {
+export const Dashboard = ({ user }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(true);
   const [display, setDisplay] = useState("");
@@ -137,10 +138,9 @@ export default function Dashboard() {
           >
             Dashboard
           </Typography>
+          <p>{user.fullname}</p>
           <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
+            <Avatar src={user.avatar} />
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -165,4 +165,10 @@ export default function Dashboard() {
       </main>
     </div>
   );
-}
+};
+
+const mapStateToProps = state => {
+  return { user: state.userReducer.user };
+};
+
+export default connect(mapStateToProps, null)(Dashboard);

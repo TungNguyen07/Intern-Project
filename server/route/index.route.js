@@ -14,4 +14,6 @@ router.post("/add-user", checkStaffId, checkUsername, userApi.addUser);
 
 router.get("/get-user", userApi.getAllUser);
 
+router.get("/get-statistics-data", indexApi.getStatisticsData);
+
 module.exports = router;

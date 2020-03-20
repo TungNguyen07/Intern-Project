@@ -34,9 +34,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const CoverImgComponent = ({ prop, getImg }) => {
+export const CoverImgComponent = ({ isReload, getImg }) => {
   const classes = useStyles();
-  const [coverImg, setCoverImg] = useState(prop);
+  const [coverImg, setCoverImg] = useState("");
 
   function base64(files, callback) {
     var file = files[0];
@@ -56,9 +56,8 @@ export const CoverImgComponent = ({ prop, getImg }) => {
   };
 
   useEffect(() => {
-    console.log("right here");
-    setCoverImg(prop);
-  }, [prop]);
+    if (isReload == true) setCoverImg("");
+  }, [isReload]);
 
   return (
     <Card className={classes.card}>

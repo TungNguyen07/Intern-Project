@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
@@ -9,26 +9,56 @@ import LeftLayout from "./LeftLayoutComponent";
 import RightLayout from "./RightLayoutComponent";
 import CenterLayout from "./CenterLayoutComponent";
 
+const paper = {
+  padding: "9px",
+  textAlign: "center",
+  color: "#757575"
+};
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
   },
   paper: {
-    padding: theme.spacing(2),
-    textAlign: "center",
-    color: theme.palette.text.secondary
+    ...paper
+  },
+  sticky: {
+    ...paper,
+    position: "fixed",
+    top: 0,
+    width: "20%"
   }
 }));
 
 const Layout = props => {
   const classes = useStyles();
+  const [isSticky, setSticky] = useState(false);
+
+  useEffect(() => {
+    const leftlayout = document.getElementById("leftlayout");
+    let bannerHeight = leftlayout.offsetTop;
+    const scrollCallBack = window.addEventListener("scroll", () => {
+      if (window.pageYOffset > bannerHeight * 1) {
+        setSticky(true);
+      } else {
+        setSticky(false);
+      }
+    });
+    return () => {
+      window.removeEventListener("scroll", scrollCallBack);
+    };
+  }, []);
+
   return (
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="lg">
         <Grid container spacing={1}>
           <Grid item xs={3}>
-            <Paper className={classes.paper}>
+            <Paper
+              id="leftlayout"
+              className={isSticky ? classes.sticky : classes.paper}
+            >
               <LeftLayout>{props.Left}</LeftLayout>
             </Paper>
           </Grid>

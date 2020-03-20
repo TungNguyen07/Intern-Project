@@ -32,9 +32,9 @@ const PostLayout = props => {
 
   useEffect(() => {
     const leftlayout = document.getElementById("leftlayout");
-    const bannerHeight = leftlayout.offsetTop;
+    let bannerHeight = leftlayout.offsetTop;
     const scrollCallBack = window.addEventListener("scroll", () => {
-      if (window.pageYOffset > bannerHeight) {
+      if (window.pageYOffset > bannerHeight * 1) {
         setSticky(true);
       } else {
         setSticky(false);

@@ -125,7 +125,10 @@ const ActivityTableComponent = ({
         }}
       />
       {isError && (
-        <MessageDialog setError={setError} message="Duplicate Activity name" />
+        <MessageDialog
+          setError={setError}
+          message={["Duplicate Activity name"]}
+        />
       )}
     </div>
   );

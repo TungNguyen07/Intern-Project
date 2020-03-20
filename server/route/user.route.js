@@ -1,5 +1,6 @@
 import express from "express";
 import userApi from "../api/user.api";
+import postApi from "../api/post.api";
 const router = express.Router();
 
 router.post("/", userApi.getUserFollowId);

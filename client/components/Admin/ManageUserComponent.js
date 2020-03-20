@@ -35,7 +35,8 @@ const UserTableComponent = ({ addUser, deleteUser }) => {
   const [isFetching, setIsFetching] = useState(true);
   const [isOpen, setOpen] = useState(false);
   const [rowData, setRowdata] = useState({});
-  const [isError, setError] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [error, setError] = useState([]);
 
   useEffect(() => {
     fetchData(`${SERVER_URL}/get-user`).then(res => {
@@ -65,22 +66,41 @@ const UserTableComponent = ({ addUser, deleteUser }) => {
   };
 
   const checkValid = newUser => {
-    let valid = true;
-    for (let user of data) {
-      if (
-        newUser.staffId == user.staffId ||
-        newUser.username == user.username
-      ) {
-        valid = false;
-        break;
-      }
+    let arrError = [];
+    if (newUser.staffId == "" || newUser.staffId == undefined)
+      arrError.push("Staff Id is required!");
+    if (newUser.fullname == "" || newUser.fullname == undefined)
+      arrError.push("Fullname Id is required!");
+    if (newUser.username == "" || newUser.username == undefined)
+      arrError.push("Username Id is required!");
+    if (newUser.staffId) {
+      if (newUser.staffId.length < 5)
+        arrError.push("Staff Id must be at least 5 charaters!");
     }
-    return valid;
+    if (newUser.username) {
+      if (newUser.username.length < 5)
+        arrError.push("Username must be at least 5 charaters!");
+    }
+
+    for (let user of data) {
+      if (user.staffId == newUser.staffId || user.username == newUser.username)
+        arrError.push("Duplicate Staff Id or Username!");
+    }
+
+    if (arrError.length) {
+      setError(arrError);
+      return false;
+    } else return true;
   };
 
   const handleAdd = newUser => {
     addUser(newUser);
     setData([...data, newUser]);
+  };
+
+  const handleDeleteAdmin = () => {
+    setError(["Cannot delete user admin!"]);
+    setIsError(true);
   };
 
   return isFetching ? (
@@ -105,7 +125,7 @@ const UserTableComponent = ({ addUser, deleteUser }) => {
             new Promise((resolve, reject) => {
               setTimeout(() => {
                 {
-                  if (!checkValid(newData)) reject(setError(true));
+                  if (!checkValid(newData)) reject(setIsError(true));
                   else handleAdd(newData);
                 }
                 resolve();
@@ -115,13 +135,17 @@ const UserTableComponent = ({ addUser, deleteUser }) => {
             new Promise((resolve, reject) => {
               setTimeout(() => {
                 {
-                  let initdata = data;
-                  const index = initdata.indexOf(oldData);
-                  const deleteUser = initdata[index];
-                  initdata.splice(index, 1);
-                  handleDelete(deleteUser);
-                  setData([...initdata]);
+                  if (oldData.staffId == "admin") reject(handleDeleteAdmin());
+                  else {
+                    let initdata = data;
+                    const index = initdata.indexOf(oldData);
+                    const deleteUser = initdata[index];
+                    initdata.splice(index, 1);
+                    handleDelete(deleteUser);
+                    setData([...initdata]);
+                  }
                 }
+
                 resolve();
               }, 600);
             })
@@ -135,12 +159,7 @@ const UserTableComponent = ({ addUser, deleteUser }) => {
         isOpen={isOpen}
         isClose={handleClose}
       />
-      {isError && (
-        <MessageDialog
-          setError={setError}
-          message="Duplicate Staff Id or Username"
-        />
-      )}
+      {isError && <MessageDialog setError={setIsError} message={error} />}
     </div>
   );
 };

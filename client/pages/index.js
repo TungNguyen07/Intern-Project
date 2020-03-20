@@ -10,7 +10,7 @@ import Banner from "../components/Header/BannerComponent";
 import Layout from "../components/Layout/LayoutComponent";
 import Nav from "../components/Layout/NavbarComponent";
 import Propaganda from "../components/Layout/PropagandaComponent";
-import LatestPost from "../components/Post/LatestPostComponent";
+import LatestPostComponent from "../components/Post/LatestPostComponent";
 import ProfileNav from "../components/User/ProfileNavComponent";
 import { userActions } from "../actions/userActions";
 import { postData } from "../libs/postData";
@@ -24,10 +24,9 @@ const useStyles = makeStyles(theme => ({
 
 export const App = ({ user, setUserDetail, isLoading }) => {
   const classes = useStyles();
-  const [loading, setLoading] = useState(isLoading);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log(isLoading);
     const token = localStorage.getItem("access_token");
     postData("http://localhost:4000/check-token", { token })
       .then(res => {
@@ -63,7 +62,7 @@ export const App = ({ user, setUserDetail, isLoading }) => {
           )
         }
         Right={<Propaganda />}
-        Center={<LatestPost />}
+        Center={<LatestPostComponent />}
       >
         {" "}
       </Layout>
