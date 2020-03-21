@@ -37,10 +37,6 @@ const useStyles = makeStyles(theme => ({
 export const TitleComponent = ({ user, Signout }) => {
   const classes = useStyles();
 
-  useEffect(() => {
-    console.log("user", user);
-  }, []);
-
   const signout = () => {
     Signout();
     Router.push("/signin");

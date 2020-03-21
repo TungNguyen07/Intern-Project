@@ -18,6 +18,7 @@ import { connect } from "react-redux";
 
 import { userActions } from "../../actions/userActions";
 import { postData } from "../../libs/postData";
+const { SERVER_URL } = process.env;
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -47,10 +48,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const LoginComponent = ({ user, error, Signin }) => {
+export const LoginComponent = ({ user, setUserDetail }) => {
   const classes = useStyles();
-  const [isValid, setIsValid] = useState(true);
-  const [isCorrect, setIsCorrect] = useState(true);
+  const [valid, setValid] = useState([]);
+  const [correct, setCorrect] = useState([]);
   const [info, setInfo] = useState({
     username: "",
     password: ""
@@ -61,15 +62,56 @@ export const LoginComponent = ({ user, error, Signin }) => {
     setInfo({ ...info, [prop]: event.target.value });
   };
 
-  const submit = () => {
-    if (info.username == "" || info.password == "") {
-      setIsValid(false);
-      setIsCorrect(true);
-    } else {
-      setIsValid(true);
-      setIsCorrect(true);
-      Signin(info);
+  const checkPassword = signInfo => {
+    const check = postData(`${SERVER_URL}/signin`, signInfo).then(res => {
+      return res;
+    });
+    return check;
+  };
+
+  const checkSigninInfo = () => {
+    let arrError = [];
+    if (info.username == "" || info.username == undefined)
+      arrError.push("Username is required!");
+    if (info.username.length > 0) {
+      if (info.username.length < 5)
+        arrError.push("Username must be at least 5 characters!");
     }
+    if (info.password == "" || info.password == undefined)
+      arrError.push("Password is required!");
+    if (info.password.length > 0) {
+      if (info.password.length < 6)
+        arrError.push("Password must be at least 6 characters!");
+    }
+
+    if (!arrError.length) {
+      setValid([]);
+      return true;
+    } else {
+      setValid(arrError);
+      return false;
+    }
+  };
+
+  const handleCheck = () => {
+    setValid([]);
+    setCorrect([]);
+    checkSigninInfo() ? handleSignin() : console.log("false");
+  };
+
+  const handleSignin = async () => {
+    const result = await checkPassword(info);
+    if (result.user && result.token) {
+      localStorage.setItem("access_token", result.token);
+      setUserDetail(result.user);
+      Router.push("/");
+    } else {
+      handleWrong();
+    }
+  };
+
+  const handleWrong = () => {
+    setCorrect(["Incorrect Username or Password!"]);
   };
 
   useEffect(() => {
@@ -85,12 +127,8 @@ export const LoginComponent = ({ user, error, Signin }) => {
   }, []);
 
   useEffect(() => {
-    if (error.length > 0) setIsCorrect(false);
-  }, [error]);
-
-  useEffect(() => {
     if (user.fullname) {
-      setIsCorrect(true);
+      setCorrect([]);
       Router.push("/");
     }
   }, [user]);
@@ -106,16 +144,31 @@ export const LoginComponent = ({ user, error, Signin }) => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          {!isValid && (
-            <Alert className={classes.alert} severity="warning">
-              Invalid Username or Password
-            </Alert>
-          )}
-          {!isCorrect && (
-            <Alert className={classes.alert} severity="error">
-              Incorrect Username or Password
-            </Alert>
-          )}
+          {valid &&
+            valid.map(item => {
+              return (
+                <Alert
+                  className={classes.alert}
+                  key={item.index}
+                  severity="warning"
+                >
+                  {item}
+                </Alert>
+              );
+            })}
+
+          {correct &&
+            correct.map(item => {
+              return (
+                <Alert
+                  className={classes.alert}
+                  key={item.index}
+                  severity="error"
+                >
+                  {item}
+                </Alert>
+              );
+            })}
           <form className={classes.form} noValidate>
             <TextField
               variant="outlined"
@@ -154,7 +207,7 @@ export const LoginComponent = ({ user, error, Signin }) => {
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={submit}
+              onClick={handleCheck}
             >
               Sign In
             </Button>
@@ -174,12 +227,12 @@ export const LoginComponent = ({ user, error, Signin }) => {
 
 function mapDispatchToProps(dispatch) {
   return {
-    Signin: bindActionCreators(userActions.Signin, dispatch)
+    setUserDetail: bindActionCreators(userActions.setUserDetail, dispatch)
   };
 }
 
 function mapStateToProps(state) {
-  return { user: state.userReducer.user, error: state.userReducer.error };
+  return { user: state.userReducer.user };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);

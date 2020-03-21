@@ -57,8 +57,8 @@ export const ProfileNav = ({ user, Signout }) => {
         </MenuItem>
 
         <MenuItem className={classes.item}>
-          <Link href="#">
-            <span>Change Passwor</span>
+          <Link href="/change-password">
+            <span>Change Password</span>
           </Link>
         </MenuItem>
 

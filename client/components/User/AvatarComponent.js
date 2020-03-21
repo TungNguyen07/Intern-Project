@@ -10,16 +10,14 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import Button from "@material-ui/core/Button";
 import { bindActionCreators } from "redux";
-import CardMedia from "@material-ui/core/CardMedia";
 
 import { userActions } from "../../actions/userActions";
+import MessageDialog from "../Dialog/MessageDialogComponent";
 
 const useStyles = makeStyles(theme => ({
   large: {
     width: theme.spacing(21),
     height: theme.spacing(21)
-    // marginTop: "2%",
-    // marginLeft: "15%"
   },
   card: {
     borderRadius: "50%",
@@ -49,6 +47,7 @@ export const AvatarComponent = ({ user, update }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [avatar, setAvatar] = useState(user.avatar);
+  const [display, setDisplay] = useState(false);
 
   const handleOpen = () => {
     setOpen(true);
@@ -79,6 +78,7 @@ export const AvatarComponent = ({ user, update }) => {
     const info = { ...user, avatar: avatar };
     update(info);
     handleClose();
+    setDisplay(true);
   };
 
   useEffect(() => {
@@ -117,6 +117,12 @@ export const AvatarComponent = ({ user, update }) => {
           </Button>
         </DialogActions>
       </Dialog>
+      {display && (
+        <MessageDialog
+          setError={setDisplay}
+          message={["Update avatar successfully!"]}
+        />
+      )}
     </React.Fragment>
   );
 };

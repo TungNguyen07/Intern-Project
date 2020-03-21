@@ -19,10 +19,6 @@ const useStyles = makeStyles(theme => ({
 export const ProfileComponent = ({ user }) => {
   const classes = useStyles();
 
-  useEffect(() => {
-    console.log("props", user);
-  }, []);
-
   return (
     <Paper>
       <Title />

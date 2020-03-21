@@ -33,8 +33,7 @@ const SigninSuccess = data => {
     payload: {
       user: data.user,
       token: data.token,
-      error: [],
-      isLoading: false
+      error: []
     }
   };
 };
@@ -45,8 +44,7 @@ const SigninFail = data => {
     payload: {
       user: {},
       token: [],
-      error: [data.message],
-      isLoading: false
+      error: [data.message]
     }
   };
 };
@@ -63,9 +61,7 @@ function SignoutSuccess() {
     type: SIGN_OUT_SUCCESS,
     payload: {
       user: {},
-      token: "",
-      error: [],
-      isLoading: false
+      token: ""
     }
   };
 }
@@ -74,8 +70,7 @@ export function setUserDetail(userDetail) {
   return {
     type: SET_USER_DETAIL,
     payload: {
-      user: userDetail,
-      isLoading: false
+      user: userDetail
     }
   };
 }
@@ -88,4 +83,11 @@ function updateInfo(info) {
       })
       .catch(err => console.log(err));
   };
+}
+
+export function changePassword(passwordInfo) {
+  console.log(passwordInfo);
+  postData(`${SERVER_URL}/profile/change-password`, passwordInfo).then(res => {
+    console.log(res);
+  });
 }

@@ -112,3 +112,18 @@ module.exports.deleteUser = async function(req, res) {
   });
   res.json({ success: true });
 };
+
+module.exports.checkCurrentPassword = function(req, res) {
+  res.json({ success: true });
+};
+
+module.exports.changePassword = function(req, res) {
+  const id = req.body.id;
+  const newPassword = req.body.newPassword;
+  userModel.findById(id, function(err, doc) {
+    if (err) throw err;
+    doc.password = newPassword;
+    doc.save();
+  });
+  res.json({ success: true });
+};

@@ -1,6 +1,7 @@
 import express from "express";
 import userApi from "../api/user.api";
 import postApi from "../api/post.api";
+import { checkPassword } from "../middlewares/checkCurrentPassword";
 const router = express.Router();
 
 router.post("/", userApi.getUserFollowId);
@@ -10,5 +11,9 @@ router.post("/update", userApi.updateInfo);
 router.get("/:id", userApi.getProfile);
 
 router.post("/delete", userApi.deleteUser);
+
+router.post("/check-current-password", checkPassword);
+
+router.post("/change-password", userApi.changePassword);
 
 module.exports = router;

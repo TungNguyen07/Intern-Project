@@ -61,6 +61,10 @@ export const EditInfoComponent = ({ user, update }) => {
   const [display, setDisplay] = useState(false);
   const [success, setSuccess] = useState(false);
 
+  useEffect(() => {
+    if (user) setInfo(user);
+  }, [user]);
+
   const handleClickOpen = () => {
     setOpen(true);
     setError([]);

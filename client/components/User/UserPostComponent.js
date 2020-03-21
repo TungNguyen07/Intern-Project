@@ -54,27 +54,27 @@ export const UserPostComponent = ({ user }) => {
   const [isFetching, setFetching] = useState(true);
 
   useEffect(() => {
-    fetchData(`${SERVER_URL}/post/get-post-by-user?id=${user.id}`).then(res => {
-      setPost(
-        res.data.map(item => {
-          return {
-            cover_img: item.cover_img,
-            title: item.title,
-            description:
-              item.description.length > 200
-                ? item.description.slice(0, 200) + "..."
-                : item.description,
-            _id: item._id
-          };
-        })
+    if (user.id) {
+      fetchData(`${SERVER_URL}/post/get-post-by-user?id=${user.id}`).then(
+        res => {
+          setPost(
+            res.data.map(item => {
+              return {
+                cover_img: item.cover_img,
+                title: item.title,
+                description:
+                  item.description.length > 200
+                    ? item.description.slice(0, 200) + "..."
+                    : item.description,
+                _id: item._id
+              };
+            })
+          );
+          setFetching(false);
+        }
       );
-    });
-  }, []);
-
-  useEffect(() => {
-    setFetching(false);
-    console.log(post, user);
-  }, [post]);
+    }
+  }, [user]);
 
   return isFetching ? (
     <div className={classes.div}>

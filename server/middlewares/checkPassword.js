@@ -5,17 +5,16 @@ export const checkPassword = async (req, res, next) => {
   const password = req.body.password;
 
   const user = await userModel.findOne({ username });
+
   if (user) {
     if (await user.comparePassword(password)) {
       next();
     } else
       res.json({
-        error: true,
-        message: "Incorrect Username or Password"
+        error: true
       });
   } else
     res.json({
-      error: true,
-      message: "Incorrect Username or Password"
+      error: true
     });
 };

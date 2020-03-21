@@ -8,8 +8,7 @@ import {
 const initUser = {
   user: {},
   token: "",
-  error: [],
-  isLoading: true
+  error: []
 };
 
 export default function userReducer(state = initUser, action) {
@@ -19,8 +18,7 @@ export default function userReducer(state = initUser, action) {
         ...state,
         user: action.payload.user,
         token: action.payload.token,
-        error: action.payload.error,
-        isLoading: action.payload.isLoading
+        error: action.payload.error
       };
 
     case SIGN_IN_FAIL:
@@ -28,8 +26,7 @@ export default function userReducer(state = initUser, action) {
         ...state,
         user: action.payload.user,
         token: action.payload.token,
-        error: action.payload.error,
-        isLoading: action.payload.isLoading
+        error: action.payload.error
       };
 
     case SIGN_OUT_SUCCESS:
@@ -37,15 +34,13 @@ export default function userReducer(state = initUser, action) {
         ...state,
         user: action.payload.user,
         token: action.payload.token,
-        error: action.payload.error,
-        isLoading: action.payload.isLoading
+        error: action.payload.error
       };
 
     case SET_USER_DETAIL:
       return {
         ...state,
-        user: action.payload.user,
-        isLoading: action.payload.isLoading
+        user: action.payload.user
       };
 
     default:
