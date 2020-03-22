@@ -10,9 +10,12 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import Collapse from "@material-ui/core/Collapse";
 import ListItemText from "@material-ui/core/ListItemText";
 import Link from "next/link";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 
 import { fetchData } from "../../libs/fetchData";
 import { ListItem } from "@material-ui/core";
+import { activityActions } from "../../actions/activityActions";
 
 const useStyles = makeStyles({
   title: {
@@ -37,7 +40,7 @@ const useStyles = makeStyles({
   }
 });
 
-function Nav() {
+const Nav = ({ activeActivity }) => {
   const classes = useStyles();
   const [activity, setActivity] = useState([]);
   const [open, setOpen] = useState(true);
@@ -59,6 +62,10 @@ function Nav() {
     });
   }, []);
 
+  const dispatchActivity = activity_id => {
+    activeActivity(activity_id);
+  };
+
   return (
     <Card className={classes.root}>
       <Typography className={classes.title} variant="h6" component="h6">
@@ -77,8 +84,15 @@ function Nav() {
           </MenuItem>
           {activity.map(item => {
             return (
-              <MenuItem key={item.id} className={classes.item}>
-                <Link href={`/activity/${item.name.toLowerCase()}`}>
+              <MenuItem
+                key={item.id}
+                className={classes.item}
+                onClick={() => dispatchActivity(item.id)}
+              >
+                <Link
+                  href={`/activity/[activity_name]`}
+                  as={`/activity/${item.name.toLowerCase()}`}
+                >
                   <span>{item.name}</span>
                 </Link>
               </MenuItem>
@@ -88,6 +102,12 @@ function Nav() {
       </Collapse>
     </Card>
   );
-}
+};
 
-export default Nav;
+const mapDispatchToProps = dispatch => {
+  return {
+    activeActivity: bindActionCreators(activityActions.setActivity, dispatch)
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Nav);

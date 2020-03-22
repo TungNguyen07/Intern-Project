@@ -4,16 +4,16 @@ import { makeStyles } from "@material-ui/styles";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-import Header from "../components/Header/HeaderComponent";
-import Footer from "../components/Layout/FooterComponent";
-import Banner from "../components/Header/BannerComponent";
-import Layout from "../components/Layout/LayoutComponent";
-import Nav from "../components/Layout/NavbarComponent";
-import Propaganda from "../components/Layout/PropagandaComponent";
-import LatestPostComponent from "../components/Post/LatestPostComponent";
-import ProfileNav from "../components/User/ProfileNavComponent";
-import { userActions } from "../actions/userActions";
-import { postData } from "../libs/postData";
+import Header from "../../components/Header/HeaderComponent";
+import Footer from "../../components/Layout/FooterComponent";
+import Banner from "../../components/Header/BannerComponent";
+import Layout from "../../components/Layout/LayoutComponent";
+import Nav from "../../components/Layout/NavbarComponent";
+import Propaganda from "../../components/Layout/PropagandaComponent";
+import ActivityPostComponent from "../../components/Post/ActivityPostComponent";
+import ProfileNav from "../../components/User/ProfileNavComponent";
+import { userActions } from "../../actions/userActions";
+import { postData } from "../../libs/postData";
 
 const useStyles = makeStyles(theme => ({
   loading: {
@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   div: { textAlign: "center" }
 }));
 
-export const App = ({ user, setUserDetail }) => {
+export const Activity = ({ user, setUserDetail }) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
 
@@ -62,7 +62,7 @@ export const App = ({ user, setUserDetail }) => {
           )
         }
         Right={<Propaganda />}
-        Center={<LatestPostComponent />}
+        Center={<ActivityPostComponent />}
       >
         {" "}
       </Layout>
@@ -83,4 +83,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(Activity);

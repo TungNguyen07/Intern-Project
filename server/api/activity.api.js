@@ -1,4 +1,5 @@
 import activityModel from "../model/activity.model";
+import postModel from "../model/post.model";
 
 module.exports.getAllActivity = async function(req, res) {
   const activity = await activityModel.find({});
@@ -35,4 +36,10 @@ module.exports.deleteActivity = async function(req, res) {
     console.log("Delete successfully");
   });
   res.json({ success: true });
+};
+
+module.exports.getPost = async function(req, res) {
+  const activity_id = req.params.activity_id;
+  const activity_post = await postModel.find({ activity_id: activity_id });
+  res.json(activity_post);
 };

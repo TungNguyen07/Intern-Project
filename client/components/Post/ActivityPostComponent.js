@@ -1,28 +1,61 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 import CardPostItem from "./CardPostItemComponent";
-import { makeStyles } from "@material-ui/core/styles";
+import { fetchData } from "../../libs/fetchData";
+import { connect } from "react-redux";
+const { SERVER_URL } = process.env;
 
 const useStyles = makeStyles(theme => ({
-  title: {
-    color: "black",
-    display: "flex",
-    margin: 0
+  loading: {
+    marginTop: "15%"
   },
-  hr: {
-    width: "90%",
-    marginBottom: theme.spacing(2)
-  }
+  div: { textAlign: "center" },
+  card: { marginTop: theme.spacing(1) }
 }));
 
-const ActivityPostComponent = () => {
+const ActivityPostComponent = ({ activity_id }) => {
   const classes = useStyles();
-  return (
+  const [post, setPost] = useState([]);
+  const [isFetching, setFetching] = useState(true);
+
+  useEffect(() => {
+    console.log(activity_id);
+    fetchData(`${SERVER_URL}/activity/${activity_id}`).then(res => {
+      console.log(res);
+      setPost(
+        res.data.map(item => {
+          return {
+            cover_img: item.cover_img,
+            title: item.title,
+            description:
+              item.description.length > 200
+                ? item.description.slice(0, 200) + "..."
+                : item.description,
+            _id: item._id
+          };
+        })
+      );
+      setFetching(false);
+    });
+  }, [activity_id]);
+
+  return isFetching ? (
+    <div className={classes.div}>
+      <CircularProgress className={classes.loading} />
+    </div>
+  ) : (
     <div>
-      <h1 className={classes.title}>Activity</h1>
-      <hr className={classes.hr} />
-      <CardPostItem />
+      {post.map(item => (
+        <CardPostItem className={classes.card} key={item._id} post={item} />
+      ))}
     </div>
   );
 };
 
-export default ActivityPostComponent;
+const mapStateToProps = state => {
+  return { activity_id: state.activityReducer.activity_id };
+};
+
+export default connect(mapStateToProps, null)(ActivityPostComponent);
