@@ -39,18 +39,24 @@ const UserTableComponent = ({ addUser, deleteUser }) => {
   const [error, setError] = useState([]);
 
   useEffect(() => {
+    let unmounted = false;
     fetchData(`${SERVER_URL}/get-user`).then(res => {
-      setData(
-        res.data.map(item => {
-          return {
-            staffId: item.staffId,
-            fullname: item.fullname,
-            username: item.username
-          };
-        })
-      );
+      if (!unmounted) {
+        setData(
+          res.data.map(item => {
+            return {
+              staffId: item.staffId,
+              fullname: item.fullname,
+              username: item.username
+            };
+          })
+        );
+      }
       setIsFetching(false);
     });
+    return () => {
+      unmounted = true;
+    };
   }, []);
 
   const handleOpen = rowData => {

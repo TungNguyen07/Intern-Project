@@ -37,15 +37,18 @@ const Layout = props => {
   useEffect(() => {
     const leftlayout = document.getElementById("leftlayout");
     let bannerHeight = leftlayout.offsetTop;
+    let unmouted = false;
     const scrollCallBack = window.addEventListener("scroll", () => {
       if (window.pageYOffset > bannerHeight * 1) {
-        setSticky(true);
+        if (!unmouted) setSticky(true);
       } else {
-        setSticky(false);
+        if (!unmouted) setSticky(false);
       }
     });
+
     return () => {
       window.removeEventListener("scroll", scrollCallBack);
+      unmouted = true;
     };
   }, []);
 

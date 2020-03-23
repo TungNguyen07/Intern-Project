@@ -38,8 +38,23 @@ module.exports.deleteActivity = async function(req, res) {
   res.json({ success: true });
 };
 
-module.exports.getPost = async function(req, res) {
+module.exports.getSomePost = async function(req, res) {
   const activity_id = req.params.activity_id;
-  const activity_post = await postModel.find({ activity_id: activity_id });
-  res.json(activity_post);
+  const page = parseInt(req.params.page);
+  const activity_post = await postModel
+    .find({ activity_id: activity_id, active: true })
+    .limit(10)
+    .skip((page - 1) * 10);
+  const activity = await activityModel.findOne(
+    { _id: activity_id },
+    { activity_name: 1, _id: 0 }
+  );
+  let count = await postModel.countDocuments({ activity_id: activity_id });
+  count = Math.ceil(count / 10);
+
+  res.json({
+    activity: activity,
+    activity_post: activity_post,
+    count: count
+  });
 };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { fetchData } from "../../libs/fetchData";
@@ -10,36 +10,70 @@ const useStyles = makeStyles({
   content: {
     padding: 15,
     "& img": {
-      maxWidth: "100%"
+      maxWidth: "100%",
+      textAlign: "justify"
     },
-    "& .ql-align-justify": {
+    "& p": {
       textAlign: "start"
     }
+  },
+  loading: {
+    marginTop: "15%"
+  },
+  div: { textAlign: "center" },
+  author: {
+    textAlign: "end",
+    fontWeight: "bold"
+  },
+  created_at: {
+    textAlign: "start",
+    marginLeft: 16
+  },
+  description: {
+    textAlign: "start",
+    fontWeight: "bold",
+    padding: "0px 16px 0px 16px"
+  },
+  post: {
+    color: "black"
   }
 });
 
-const ReadPostComponent = ({ getTitle }) => {
+const ReadPostComponent = () => {
   const classes = useStyles();
   const [post, setPost] = useState([]);
   const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
     const post_id = localStorage.getItem("post_id");
+    let unmounted = false;
     fetchData(`${SERVER_URL}/post/get-post/${post_id}`).then(res => {
-      setPost(res.data);
-      setFetching(false);
-      getTitle(post.title);
+      if (!unmounted) {
+        setPost(res.data);
+        setFetching(false);
+      }
     });
+    return () => {
+      unmounted = true;
+    };
   }, []);
 
-  return (
-    <div>
-      <h2>{post.title}</h2>
-      <p>{post.created_at}</p>
+  return fetching ? (
+    <div className={classes.div}>
+      <CircularProgress className={classes.loading} />
+    </div>
+  ) : (
+    <div className={classes.post}>
+      <h1>{post.title}</h1>
+      <p className={classes.created_at}>
+        Created at: {new Date(post.created_at).toLocaleDateString()}
+      </p>
+      <p className={classes.description}>{post.description}</p>
       <div
         className={classes.content}
         dangerouslySetInnerHTML={{ __html: post.content }}
       />
+      <p className={classes.author}>{post.fullname}</p>
     </div>
   );
 };

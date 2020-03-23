@@ -10,6 +10,6 @@ router.post("/update-activity", activityApi.updateActivity);
 
 router.post("/delete-activity", activityApi.deleteActivity);
 
-router.get("/:activity_id", activityApi.getPost);
+router.get("/:activity_id/:page", activityApi.getSomePost);
 
 module.exports = router;

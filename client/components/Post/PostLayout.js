@@ -33,15 +33,17 @@ const PostLayout = props => {
   useEffect(() => {
     const leftlayout = document.getElementById("leftlayout");
     let bannerHeight = leftlayout.offsetTop;
+    let unmounted = false;
     const scrollCallBack = window.addEventListener("scroll", () => {
       if (window.pageYOffset > bannerHeight * 1) {
-        setSticky(true);
+        if (!unmounted) setSticky(true);
       } else {
-        setSticky(false);
+        if (!unmounted) setSticky(false);
       }
     });
     return () => {
       window.removeEventListener("scroll", scrollCallBack);
+      unmounted = true;
     };
   }, []);
 

@@ -8,7 +8,8 @@ const useStyles = makeStyles(theme => ({
   root: {
     paddingTop: theme.spacing(2),
     lineHeight: "70%",
-    maxWidth: "90%"
+    maxWidth: "90%",
+    marginBottom: theme.spacing(1)
   },
   title: {
     fontWeight: "bold"

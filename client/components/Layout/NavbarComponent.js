@@ -48,16 +48,22 @@ const Nav = ({ activeActivity }) => {
   };
 
   useEffect(() => {
+    let unmouted = false;
     fetchData("http://localhost:4000/activity/get-activity").then(res => {
-      setActivity(
-        res.data.map(item => {
-          return {
-            id: item._id,
-            name: item.activity_name
-          };
-        })
-      );
+      if (!unmouted) {
+        setActivity(
+          res.data.map(item => {
+            return {
+              id: item._id,
+              name: item.activity_name
+            };
+          })
+        );
+      }
     });
+    return () => {
+      unmouted = true;
+    };
   }, []);
 
   const dispatchActivity = activity_id => {

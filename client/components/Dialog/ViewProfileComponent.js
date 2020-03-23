@@ -55,11 +55,17 @@ const ViewProfileComponent = ({ user, isOpen, isClose }) => {
   // }, [user]);
 
   useEffect(() => {
+    let unmounted = false;
     if (user)
       fetchData(`http://localhost:4000/profile/${user.staffId}`).then(res => {
-        setInfo(res.data);
-        setFetching(false);
+        if (!unmounted) {
+          setInfo(res.data);
+          setFetching(false);
+        }
       });
+    return () => {
+      unmounted = true;
+    };
   }, [user]);
 
   return (

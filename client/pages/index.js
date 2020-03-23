@@ -28,17 +28,23 @@ export const App = ({ user, setUserDetail }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
+    let unmounted = false;
     postData("http://localhost:4000/check-token", { token })
       .then(res => {
-        if (res.fullname) {
-          setUserDetail(res);
-          user = res;
-        } else return;
+        if (!unmounted) {
+          if (res.fullname) {
+            setUserDetail(res);
+            user = res;
+          } else return;
+        }
       })
       .catch(err => {
         return err;
       });
     setLoading(false);
+    return () => {
+      unmounted = true;
+    };
   }, []);
 
   return loading ? (

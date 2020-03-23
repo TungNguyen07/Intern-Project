@@ -97,16 +97,18 @@ module.exports.denyPost = function(req, res) {
 };
 
 module.exports.getSomePost = async function(req, res) {
-  const somePost = await postModel.find(
-    { active: true },
-    { _id: 1, cover_img: 1, description: 1, title: 1 }
-  );
-  res.json(somePost);
+  const page = parseInt(req.params.page);
+  let count = await postModel.countDocuments({ active: true });
+  const somePost = await postModel
+    .find({ active: true }, { _id: 1, cover_img: 1, description: 1, title: 1 })
+    .limit(10)
+    .skip((page - 1) * 10);
+  count = Math.ceil(count / 10);
+  res.json({ somePost, count });
 };
 
 module.exports.getPostFollowUser = async function(req, res) {
-  const id = req.query.id;
-  console.log("id", id);
+  const id = mongoose.Types.ObjectId(req.query.id);
   const post = await postModel.find(
     { author_id: id, active: true },
     { _id: 1, cover_img: 1, description: 1, title: 1 }
@@ -115,36 +117,34 @@ module.exports.getPostFollowUser = async function(req, res) {
 };
 
 module.exports.getPost = async function(req, res) {
-  const id = req.params.id;
-  const post = await postModel.findOne({ _id: id });
-  // const post = await postModel.aggregate([
-  //   {
-  //     $match: { _id: id }
-  //   },
-  //   {
-  //     $lookup: {
-  //       from: "users",
-  //       localField: "author_id",
-  //       foreignField: "_id",
-  //       as: "author"
-  //     }
-  //   },
-  //   {
-  //     $unwind: "$author"
-  //   },
-  //   {
-  //     $project: {
-  //       _id: 1,
-  //       title: 1,
-  //       description: 1,
-  //       content: 1,
-  //       created_at: 1,
-  //       author: "$author.fullname",
-  //       view: 1
-  //     }
-  //   }
-  // ]);
-  console.log(id);
-  console.log(post.title);
-  res.json(post);
+  const id = mongoose.Types.ObjectId(req.params.id);
+  // const post = await postModel.findOne({ _id: id });
+  const post = await postModel.aggregate([
+    {
+      $match: { _id: id }
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "author_id",
+        foreignField: "_id",
+        as: "author"
+      }
+    },
+    {
+      $unwind: "$author"
+    },
+    {
+      $project: {
+        _id: 1,
+        view: 1,
+        title: 1,
+        description: 1,
+        content: 1,
+        created_at: 1,
+        fullname: "$author.fullname"
+      }
+    }
+  ]);
+  res.json(post[0]);
 };

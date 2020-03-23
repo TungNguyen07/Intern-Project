@@ -31,18 +31,24 @@ const PendingPostTableComponent = () => {
   const [isFetching, setFetching] = useState(true);
 
   useEffect(() => {
+    let unmounted = false;
     fetchData(`${SERVER_URL}/post/get-pending-post`).then(res => {
-      setPendingPost(
-        res.data.map(item => {
-          return {
-            title: item.title,
-            author: item.fullname,
-            _id: item._id
-          };
-        })
-      );
+      if (!unmounted) {
+        setPendingPost(
+          res.data.map(item => {
+            return {
+              title: item.title,
+              author: item.fullname,
+              _id: item._id
+            };
+          })
+        );
+      }
       setFetching(false);
     });
+    return () => {
+      unmounted = true;
+    };
   }, []);
 
   const handleApprove = postId => {

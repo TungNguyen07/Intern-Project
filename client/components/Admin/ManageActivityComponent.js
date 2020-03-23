@@ -34,18 +34,24 @@ const ActivityTableComponent = ({
   const [isError, setError] = useState(false);
 
   useEffect(() => {
+    let unmouted = false;
     fetchData(`${SERVER_URL}/activity/get-activity`).then(res => {
-      setActivity(
-        res.data.map(item => {
-          return {
-            activity_name: item.activity_name,
-            description: item.description,
-            _id: item._id
-          };
-        })
-      );
+      if (!unmouted) {
+        setActivity(
+          res.data.map(item => {
+            return {
+              activity_name: item.activity_name,
+              description: item.description,
+              _id: item._id
+            };
+          })
+        );
+      }
       setFetching(false);
     });
+    return () => {
+      unmouted = true;
+    };
   }, []);
 
   const checkValid = newActivity => {

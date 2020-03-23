@@ -12,7 +12,7 @@ router.post("/approve-post", postApi.approvePost);
 
 router.post("/deny-post", postApi.denyPost);
 
-router.get("/get-some-post", postApi.getSomePost);
+router.get("/get-some-post/:page", postApi.getSomePost);
 
 router.get("/get-post-by-user", postApi.getPostFollowUser);
 

@@ -11,28 +11,30 @@ import { postData } from "../../libs/postData";
 
 const ReadPost = ({ user, setUserDetail }) => {
   const [title, setTitle] = useState("");
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    postData("http://localhost:4000/check-token", { token })
-      .then(res => {
+    const token = window.localStorage.getItem("access_token");
+    const post_title = window.localStorage.getItem("post_title");
+    let unmounted = false;
+    postData("http://localhost:4000/check-token", { token }).then(res => {
+      if (!unmounted) {
         if (res.fullname) {
           setUserDetail(res);
           user = res;
         } else return;
-      })
-      .catch(err => {
-        return err;
-      });
-    setLoading(false);
+      }
+      setTitle(post_title);
+    });
+    return () => {
+      unmounted = true;
+    };
   }, []);
 
   return (
     <div>
-      <Header title={"abc"} />
+      <Header title={title} />
       <Banner />
-      <PostLayout Right={<ReadPostComponent getTitle={setTitle} />} />
+      <PostLayout Right={<ReadPostComponent />} />
       <Footer />
     </div>
   );

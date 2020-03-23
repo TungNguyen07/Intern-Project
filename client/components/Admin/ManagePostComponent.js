@@ -34,19 +34,25 @@ const PostTableComponent = (
   const [isFetching, setFetching] = useState(true);
 
   useEffect(() => {
+    let unmounted = false;
     fetchData(`${SERVER_URL}/post/get-active-post`).then(res => {
-      setActivePost(
-        res.data.map(item => {
-          return {
-            title: item.title,
-            activity: item.activity,
-            author: item.fullname,
-            _id: item._id
-          };
-        })
-      );
+      if (!unmounted) {
+        setActivePost(
+          res.data.map(item => {
+            return {
+              title: item.title,
+              activity: item.activity,
+              author: item.fullname,
+              _id: item._id
+            };
+          })
+        );
+      }
       setFetching(false);
     });
+    return () => {
+      unmounted = true;
+    };
   }, []);
 
   //   const handleAdd = newActivity => {

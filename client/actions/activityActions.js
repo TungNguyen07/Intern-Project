@@ -5,6 +5,7 @@ export const activityActions = {
 };
 
 function setActivity(activity_id) {
+  localStorage.setItem("activity_id", activity_id);
   return {
     type: SET_ACTIVITY,
     payload: {

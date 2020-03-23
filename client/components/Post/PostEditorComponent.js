@@ -129,17 +129,23 @@ export const PostEditor = ({ author }) => {
   };
 
   useEffect(() => {
+    let unmounted = false;
     fetchData("http://localhost:4000/activity/get-activity").then(res => {
-      setActivity(
-        res.data.map(item => {
-          return {
-            id: item._id,
-            name: item.activity_name
-          };
-        })
-      );
+      if (!unmounted) {
+        setActivity(
+          res.data.map(item => {
+            return {
+              id: item._id,
+              name: item.activity_name
+            };
+          })
+        );
+      }
       setFetching(false);
     });
+    return () => {
+      unmounted = true;
+    };
   }, []);
 
   return isFetching ? (

@@ -44,10 +44,16 @@ const StatisticComponent = ({ isReload }) => {
   const [isFetching, setFetching] = useState(true);
 
   const fetchingData = () => {
+    let unmounted = false;
     fetchData(`${SERVER_URL}/get-statistics-data`).then(res => {
-      setData(res.data);
+      if (!unmounted) {
+        setData(res.data);
+        setFetching(false);
+      }
     });
-    setFetching(false);
+    return () => {
+      unmounted = true;
+    };
   };
 
   useEffect(() => {

@@ -42,15 +42,21 @@ const withAuth = WrappedComponent => {
     const classes = useStyles();
 
     useEffect(() => {
+      let unmounted = false;
       const token = localStorage.getItem("access_token");
       if (!token) Router.push("/signin");
       else
         checkTokenNGetUser(token).then(res => {
-          if (verifyUser(res)) {
-            saveUser(res);
-            setUserDetail(res);
-          } else Router.push("/signin");
+          if (!unmounted) {
+            if (verifyUser(res)) {
+              saveUser(res);
+              setUserDetail(res);
+            } else Router.push("/signin");
+          }
         });
+      return () => {
+        unmounted = true;
+      };
     }, []);
 
     const saveUser = data => {
