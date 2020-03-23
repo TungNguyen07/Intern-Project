@@ -9,6 +9,7 @@ import {
 
 const initPost = {
   post: {},
+  post_id: "",
   message: []
 };
 
@@ -24,6 +25,12 @@ export default function postReducer(state = initPost, action) {
       return {
         ...state,
         message: action.payload.error
+      };
+
+    case GET_POST:
+      return {
+        ...state,
+        post_id: action.payload.id
       };
 
     default:

@@ -21,7 +21,6 @@ const LatestPostComponent = () => {
 
   useEffect(() => {
     fetchData(`${SERVER_URL}/post/get-some-post`).then(res => {
-      console.log(res);
       setPost(
         res.data.map(item => {
           return {

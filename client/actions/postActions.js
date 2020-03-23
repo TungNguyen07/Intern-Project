@@ -28,3 +28,14 @@ export const denyPost = postId => {
     else console.log(res);
   });
 };
+
+export const getPost = (postId, postTitle) => {
+  localStorage.setItem("post_id", postId);
+  localStorage.setItem("post_title", postTitle);
+  return {
+    type: GET_POST,
+    payload: {
+      id: postId
+    }
+  };
+};

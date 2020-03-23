@@ -5,6 +5,10 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import Collapse from "@material-ui/core/Collapse";
+import ListItem from "@material-ui/core/ListItem";
 import Link from "next/link";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -14,11 +18,10 @@ import { userActions } from "../../actions/userActions";
 const useStyles = makeStyles({
   title: {
     backgroundColor: "#4fd9ff",
-    padding: "5px"
+    padding: "1px",
+    lineHeight: 1
   },
-  profile: {
-    marginTop: "0px"
-  },
+
   item: {
     lineHeight: "1.3",
     paddingTop: "4px"
@@ -28,6 +31,10 @@ const useStyles = makeStyles({
     "&:visited": {
       color: "inherit"
     }
+  },
+  div: {
+    width: "85%",
+    textAlign: "center"
   }
 });
 
@@ -38,52 +45,58 @@ export const ProfileNav = ({ user, Signout }) => {
     Signout();
   };
 
-  useEffect(() => {
-    console.log(user);
-  }, []);
+  const [open, setOpen] = useState(true);
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
 
   return (
     <Card>
-      <CardContent className={classes.title}>
-        <Typography variant="h6" component="h6" className={classes.profile}>
-          {user.fullname}
-        </Typography>
-      </CardContent>
-      <MenuList tabIndex="-1">
-        <MenuItem className={classes.item}>
-          <Link href="/profile">
-            <span>Profile</span>
-          </Link>
-        </MenuItem>
+      <Typography variant="h6" component="h6" className={classes.title}>
+        <ListItem button onClick={handleClick}>
+          <div className={classes.div}>{user.fullname}</div>
+          {open ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+      </Typography>
 
-        <MenuItem className={classes.item}>
-          <Link href="/change-password">
-            <span>Change Password</span>
-          </Link>
-        </MenuItem>
-
-        <MenuItem className={classes.item}>
-          <Link href="/create-post">
-            <span>Write post</span>
-          </Link>
-        </MenuItem>
-
-        {/* <MenuItem className={classes.item}>
-          <Link href="/create-post">Write post</Link>
-        </MenuItem> */}
-
-        {user.role == 1 && (
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <MenuList tabIndex="-1">
           <MenuItem className={classes.item}>
-            <Link href="/admin">
-              <span>Dashboard</span>
+            <Link href="/profile">
+              <span>Profile</span>
             </Link>
           </MenuItem>
-        )}
 
-        <MenuItem className={classes.item} onClick={signout}>
-          Logout
-        </MenuItem>
-      </MenuList>
+          <MenuItem className={classes.item}>
+            <Link href="/change-password">
+              <span>Change Password</span>
+            </Link>
+          </MenuItem>
+
+          <MenuItem className={classes.item}>
+            <Link href="/create-post">
+              <span>Write post</span>
+            </Link>
+          </MenuItem>
+
+          {/* <MenuItem className={classes.item}>
+            <Link href="/create-post">Write post</Link>
+          </MenuItem> */}
+
+          {user.role == 1 && (
+            <MenuItem className={classes.item}>
+              <Link href="/admin">
+                <span>Dashboard</span>
+              </Link>
+            </MenuItem>
+          )}
+
+          <MenuItem className={classes.item} onClick={signout}>
+            Logout
+          </MenuItem>
+        </MenuList>
+      </Collapse>
     </Card>
   );
 };

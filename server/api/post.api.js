@@ -113,3 +113,38 @@ module.exports.getPostFollowUser = async function(req, res) {
   );
   res.json(post);
 };
+
+module.exports.getPost = async function(req, res) {
+  const id = req.params.id;
+  const post = await postModel.findOne({ _id: id });
+  // const post = await postModel.aggregate([
+  //   {
+  //     $match: { _id: id }
+  //   },
+  //   {
+  //     $lookup: {
+  //       from: "users",
+  //       localField: "author_id",
+  //       foreignField: "_id",
+  //       as: "author"
+  //     }
+  //   },
+  //   {
+  //     $unwind: "$author"
+  //   },
+  //   {
+  //     $project: {
+  //       _id: 1,
+  //       title: 1,
+  //       description: 1,
+  //       content: 1,
+  //       created_at: 1,
+  //       author: "$author.fullname",
+  //       view: 1
+  //     }
+  //   }
+  // ]);
+  console.log(id);
+  console.log(post.title);
+  res.json(post);
+};

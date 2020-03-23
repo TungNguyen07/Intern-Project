@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import Collapse from "@material-ui/core/Collapse";
-import ListItemText from "@material-ui/core/ListItemText";
+import Card from "@material-ui/core/Card";
+import ListItem from "@material-ui/core/ListItem";
 import Link from "next/link";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
 import { fetchData } from "../../libs/fetchData";
-import { ListItem } from "@material-ui/core";
 import { activityActions } from "../../actions/activityActions";
 
 const useStyles = makeStyles({

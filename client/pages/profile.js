@@ -7,7 +7,7 @@ import UserPostComponent from "../components/User/UserPostComponent";
 import Header from "../components/Header/HeaderComponent";
 import Footer from "../components/Layout/FooterComponent";
 import Banner from "../components/Header/BannerComponent";
-import withAuth from "../middlewares/AuthHOC";
+import withAuth from "../auth/AuthHOC";
 
 const Profile = () => {
   return (

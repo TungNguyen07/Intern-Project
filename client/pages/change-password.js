@@ -7,7 +7,7 @@ import Layout from "../components/Post/PostLayout";
 import Header from "../components/Header/HeaderComponent";
 import Banner from "../components/Header/BannerComponent";
 import Footer from "../components/Layout/FooterComponent";
-import withAuth from "../middlewares/AuthHOC";
+import withAuth from "../auth/AuthHOC";
 
 const useStyles = makeStyles(theme => ({
   loading: {

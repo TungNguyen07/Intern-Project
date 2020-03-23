@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/styles";
 
 import Header from "../components/Header/HeaderComponent";
 import Dashboard from "../components/Admin/DashboardComponent";
-import withAuth from "../middlewares/AuthHOC";
+import withAuth from "../auth/AuthHOC";
 
 const useStyles = makeStyles(theme => ({
   top: {

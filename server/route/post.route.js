@@ -16,4 +16,6 @@ router.get("/get-some-post", postApi.getSomePost);
 
 router.get("/get-post-by-user", postApi.getPostFollowUser);
 
+router.get("/get-post/:id", postApi.getPost);
+
 module.exports = router;
