@@ -10,7 +10,7 @@ import Banner from "../components/Header/BannerComponent";
 import Layout from "../components/Layout/LayoutComponent";
 import Nav from "../components/Layout/NavbarComponent";
 import Propaganda from "../components/Layout/PropagandaComponent";
-import HomePagePostComponent from "../components/Post/HomePagePostComponent";
+import LatestPostComponent from "../components/Post/LatestPostComponent";
 import ProfileNav from "../components/User/ProfileNavComponent";
 import { userActions } from "../actions/userActions";
 import { postData } from "../libs/postData";
@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   div: { textAlign: "center" }
 }));
 
-export const App = ({ user, setUserDetail }) => {
+export const NewestPost = ({ user, setUserDetail }) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
 
@@ -68,7 +68,7 @@ export const App = ({ user, setUserDetail }) => {
           )
         }
         Right={<Propaganda />}
-        Center={<HomePagePostComponent />}
+        Center={<LatestPostComponent />}
       >
         {" "}
       </Layout>
@@ -89,4 +89,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(NewestPost);

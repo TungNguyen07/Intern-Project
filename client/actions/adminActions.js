@@ -14,7 +14,8 @@ export const adminActions = {
   deleteUser,
   addActivity,
   updateActivity,
-  deleteActivity
+  deleteActivity,
+  activeActivity
 };
 
 function addUser(newUser) {
@@ -91,21 +92,22 @@ function addActivitySuccess() {
 }
 
 function updateActivity(newActivity) {
-  return dispatch => {
-    postData(`${SERVER_URL}/activity/update-activity`, newActivity).then(
-      res => {
-        if (res.error) console.log(res.error);
-        else dispatch(addActivitySuccess());
-      }
-    );
-  };
+  postData(`${SERVER_URL}/activity/update-activity`, newActivity).then(res => {
+    if (res.error) console.log(res.error);
+    else console.log(res);
+  });
 }
 
 function deleteActivity(activity) {
-  return dispatch => {
-    postData(`${SERVER_URL}/activity/delete-activity`, activity).then(res => {
-      if (res.error) console.log(res.error);
-      else dispatch(addActivitySuccess());
-    });
-  };
+  postData(`${SERVER_URL}/activity/delete-activity`, activity).then(res => {
+    if (res.error) console.log(res.error);
+    else console.log(res);
+  });
+}
+
+function activeActivity(activity) {
+  console.log(activity);
+  // postData(`${SERVER_URL}/activity/active-activity`, activity).then(res => {
+  //   console.log(res);
+  // });
 }

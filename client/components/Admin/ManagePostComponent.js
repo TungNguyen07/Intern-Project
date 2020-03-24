@@ -25,7 +25,11 @@ const PostTableComponent = (
 ) => {
   const classes = useStyles();
   const columns = [
-    { title: "Title", field: "title" },
+    {
+      title: "Title",
+      field: "title",
+      width: "50%"
+    },
     { title: "Activity", field: "activity" },
     { title: "Author", field: "author" },
     { title: "_id", field: "_id", hidden: true }

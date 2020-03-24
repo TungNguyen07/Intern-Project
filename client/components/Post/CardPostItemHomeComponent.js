@@ -14,24 +14,27 @@ import { getPost } from "../../actions/postActions";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: "100%",
-    marginBottom: "1rem"
+    width: "48%",
+    marginBottom: "1rem",
+    display: "inline-flex",
+    margin: "0 1% 1rem 1%"
   },
   cardActionArea: {
-    display: "flex",
     maxHeight: "200px",
     height: "140px"
   },
   media: {
-    maxHeight: 120,
-    maxWidth: 200,
-    marginLeft: "1rem"
+    maxWidth: "30%",
+    float: "left",
+    margin: "0.5rem 0.5rem 0.1rem 1rem"
   },
   content: {
     textAlign: "left"
   },
   title: {
-    lineHeight: "inherit"
+    lineHeight: "1.3",
+    marginTop: -theme.spacing(1),
+    fontSize: "0.9rem"
   }
 }));
 

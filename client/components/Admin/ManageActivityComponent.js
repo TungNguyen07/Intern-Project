@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import Checkbox from "@material-ui/core/Checkbox";
 const { SERVER_URL } = process.env;
 
 import { fetchData } from "../../libs/fetchData";

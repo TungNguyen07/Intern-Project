@@ -33,26 +33,21 @@ const useStyles = makeStyles(theme => ({
     padding: "3px 0px 0px 8px",
     borderRadius: "4px",
     display: "block"
-  },
-  pagination: {
-    width: "fit-content",
-    margin: "auto"
   }
 }));
 
-const LatestPostComponent = () => {
+const HomePagePostComponent = () => {
   const classes = useStyles();
   const [post, setPost] = useState([]);
   const [isFetching, setFetching] = useState(true);
-  const [length, setLength] = useState(1);
-  const [currentPage, setPage] = useState(1);
+  const [activityList, setActivityList] = useState([]);
 
   useEffect(() => {
     let unmounted = false;
-    fetchData(`${SERVER_URL}/post/get-newest-post/${currentPage}`).then(res => {
+    fetchData(`${SERVER_URL}/post/get-some-post`).then(res => {
       if (!unmounted) {
         setPost(
-          res.data.post.map(item => {
+          res.data.somePost.map(item => {
             return {
               cover_img: item.cover_img,
               title: item.title,
@@ -64,8 +59,8 @@ const LatestPostComponent = () => {
             };
           })
         );
-
-        setLength(res.data.length);
+        setActivityList(res.data.activityList);
+        // setLength(res.data.count);
       }
       setFetching(false);
     });
@@ -73,11 +68,7 @@ const LatestPostComponent = () => {
     return () => {
       unmounted = true;
     };
-  }, [currentPage]);
-
-  const handleChange = (event, page) => {
-    setPage(page);
-  };
+  }, []);
 
   return isFetching ? (
     <div className={classes.div}>
@@ -85,25 +76,27 @@ const LatestPostComponent = () => {
     </div>
   ) : (
     <div>
-      <span className={classes.span}>
-        <Typography className={classes.title} variant="h5">
-          NEWEST ACTIVITY
-        </Typography>
-      </span>
-
+      <Link href="/newest-activity">
+        <span className={classes.span}>
+          <Typography className={classes.title} variant="h5">
+            NEWEST ACTIVITY
+          </Typography>
+        </span>
+      </Link>
       {post.map(item => (
         <CardPostItem className={classes.card} key={item._id} post={item} />
       ))}
-      <div className={classes.pagination}>
-        <Pagination
-          count={length}
-          showFirstButton
-          showLastButton
-          onChange={handleChange}
-        />
-      </div>
+      {activityList.map(item => {
+        return (
+          <HomeActivityPostComponent
+            key={item._id}
+            name={item.activity_name}
+            id={item._id}
+          />
+        );
+      })}
     </div>
   );
 };
 
-export default LatestPostComponent;
+export default HomePagePostComponent;

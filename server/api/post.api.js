@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import postModel from "../model/post.model";
+import activityModel from "../model/activity.model";
 import { defaultCoverImg } from "../defaultCoverImg";
 
 module.exports.newPost = async function(req, res) {
@@ -97,14 +98,16 @@ module.exports.denyPost = function(req, res) {
 };
 
 module.exports.getSomePost = async function(req, res) {
-  const page = parseInt(req.params.page);
-  let count = await postModel.countDocuments({ active: true });
+  const activityList = await activityModel.find(
+    {},
+    { activity_name: 1, _id: 1 }
+  );
   const somePost = await postModel
     .find({ active: true }, { _id: 1, cover_img: 1, description: 1, title: 1 })
-    .limit(10)
-    .skip((page - 1) * 10);
-  count = Math.ceil(count / 10);
-  res.json({ somePost, count });
+    .limit(4)
+    .sort({ created_at: 1 });
+
+  res.json({ somePost, activityList });
 };
 
 module.exports.getPostFollowUser = async function(req, res) {
@@ -147,4 +150,32 @@ module.exports.getPost = async function(req, res) {
     }
   ]);
   res.json(post[0]);
+};
+
+module.exports.getPostByActivity = async function(req, res) {
+  const id = req.params.id;
+  const post = await postModel
+    .find(
+      { activity_id: id, active: true },
+      { title: 1, cover_img: 1, description: 1 }
+    )
+    .limit(4)
+    .sort({ created_at: 1 });
+
+  res.json(post);
+};
+
+module.exports.getNewestPost = async function(req, res) {
+  const page = parseInt(req.params.page);
+  let length = await postModel.countDocuments({ active: true });
+  const post = await postModel
+    .find({ active: true })
+    .sort({ created: 1 })
+    .limit(10)
+    .skip((page - 1) * 10);
+  length = Math.ceil(length / 10);
+  res.json({
+    post,
+    length
+  });
 };

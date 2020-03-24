@@ -1,5 +1,6 @@
 import activityModel from "../model/activity.model";
 import postModel from "../model/post.model";
+import mongoose from "mongoose";
 
 module.exports.getAllActivity = async function(req, res) {
   const activity = await activityModel.find({});

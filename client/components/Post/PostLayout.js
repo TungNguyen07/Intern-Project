@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PostLayout = props => {
+const PostLayout = ({ user, Right }) => {
   const classes = useStyles();
   const [isSticky, setSticky] = useState(false);
 
@@ -53,17 +53,26 @@ const PostLayout = props => {
       <Container maxWidth="lg">
         <Grid container spacing={1}>
           <Grid item xs>
-            <Paper
-              id="leftlayout"
-              className={isSticky ? classes.sticky : classes.paper}
-            >
-              <Nav />
-              <br />
-              <NavProfile />
-            </Paper>
+            {user.fullname ? (
+              <Paper
+                id="leftlayout"
+                className={isSticky ? classes.sticky : classes.paper}
+              >
+                <Nav />
+                <br />
+                <NavProfile />
+              </Paper>
+            ) : (
+              <Paper
+                id="leftlayout"
+                className={isSticky ? classes.sticky : classes.paper}
+              >
+                <Nav />
+              </Paper>
+            )}
           </Grid>
           <Grid item xs={9}>
-            <Paper className={classes.paper}>{props.Right}</Paper>
+            <Paper className={classes.paper}>{Right}</Paper>
           </Grid>
         </Grid>
       </Container>

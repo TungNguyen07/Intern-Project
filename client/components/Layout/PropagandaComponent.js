@@ -46,7 +46,7 @@ const Propaganda = () => {
           <CardActionArea>
             <img
               className={classes.media}
-              src="https://lh3.googleusercontent.com/proxy/UVnA4SWs1JHC2dk56x43ZB6O5EU8Z1iF0YmtDn2D8b6OAhzTDUJDNXx1xS7k2-Ves2sF5b8-SikSfEbgi9UQePJcXdr7srle0WoY4XIZ5IuwXxobPuLCduUvjmxhcI3tbC-qYIV_bTI64Ec6LvsE7mCB_MuWb0U_bDO-yseEyyudyrPZmzX7R18owHkSUqdm0TcaSjdXN2q9Be59gn-OFkgyVDstctuPR_ZFEoAin-Zm7YVAxZ4"
+              src="https://f2.photo.talk.zdn.vn/5155484822123900880/e3dbd55a9f9364cd3d82.jpg"
             />
           </CardActionArea>
         </Card>

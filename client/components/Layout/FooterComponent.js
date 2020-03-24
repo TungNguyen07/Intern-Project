@@ -15,7 +15,8 @@ const useStyles = makeStyles(theme => ({
     fontWeight: "bold"
   },
   card: {
-    padding: theme.spacing(1.5)
+    padding: theme.spacing(1.5),
+    background: "linear-gradient(#a3f1ff,#03c8ff)"
   },
   link: {
     float: "right"
@@ -39,13 +40,12 @@ const Footer = () => {
   return (
     <div className={classes.root}>
       <Grid className={classes.grid}>
-        <Card
-          className={classes.card}
-          style={{ background: "linear-gradient(#a3f1ff,#03c8ff)" }}
-        >
-          <h2 className={classes.title}>
-            CENTER FOR CULTURAL AND SPORTS IN LONG XUYEN CITY
-          </h2>
+        <Card className={classes.card}>
+          <Link href="/">
+            <h2 className={classes.title}>
+              CENTER FOR CULTURAL AND SPORTS IN LONG XUYEN CITY
+            </h2>
+          </Link>
           <p>
             Address: 268 Nguyen Truong To, Binh Khanh Ward, Long Xuyen City, An
             Giang
