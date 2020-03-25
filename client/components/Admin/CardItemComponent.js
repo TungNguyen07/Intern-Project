@@ -11,9 +11,6 @@ const useStyles = makeStyles(theme => ({
   data: {
     textAlign: "start",
     width: "80%"
-  },
-  title: {
-    fontSize: "0.750rem"
   }
 }));
 
@@ -23,7 +20,7 @@ const CardItemComponent = props => {
     <Card style={props.style}>
       <div className={classes.content}>
         <div className={classes.data}>
-          <Typography variant="subtitle2" className={classes.title}>
+          <Typography variant="subtitle2" c>
             {props.title}
           </Typography>
           <Typography variant="h5">{props.quantity}</Typography>

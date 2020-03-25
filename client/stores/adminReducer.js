@@ -4,7 +4,11 @@ import {
   DELETE_SUCCESS,
   DELETE_FAIL
 } from "../actions/adminActionType";
-import { NEW_ACTIVITY_SUCCESS } from "../actions/activityActionType";
+import {
+  NEW_ACTIVITY_SUCCESS,
+  UPDATE_ACTIVITY_SUCCESS,
+  DELETE_ACTIVITY_SUCCESS
+} from "../actions/activityActionType";
 const initAdmin = {
   owner: {},
   error: [],
@@ -38,6 +42,18 @@ export default function adminReducer(state = initAdmin, action) {
       };
 
     case NEW_ACTIVITY_SUCCESS:
+      return {
+        ...state,
+        message: action.payload.message
+      };
+
+    case UPDATE_ACTIVITY_SUCCESS:
+      return {
+        ...state,
+        message: action.payload.message
+      };
+
+    case DELETE_ACTIVITY_SUCCESS:
       return {
         ...state,
         message: action.payload.message

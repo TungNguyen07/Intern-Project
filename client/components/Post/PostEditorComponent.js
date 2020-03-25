@@ -102,7 +102,6 @@ export const PostEditor = ({ author }) => {
   };
 
   const handleSave = () => {
-    console.log(checkValid(post));
     checkValid(post) ? handleAdd() : handleError();
   };
 
@@ -111,12 +110,12 @@ export const PostEditor = ({ author }) => {
   };
 
   const handleAdd = () => {
-    const initPost = {
+    const new_post = {
       ...post,
       author_id: author.id,
       created_at: new Date().toISOString()
     };
-    newPost(initPost);
+    newPost(new_post);
     setPost(initPost);
     setReload(true);
     setDisplay(true);

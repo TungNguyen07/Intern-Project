@@ -17,7 +17,8 @@ const useStyles = makeStyles(theme => ({
     width: "48%",
     marginBottom: "1rem",
     display: "inline-flex",
-    margin: "0 1% 1rem 1%"
+    margin: "0 1% 1rem 1%",
+    color: "black"
   },
   cardActionArea: {
     maxHeight: "200px",

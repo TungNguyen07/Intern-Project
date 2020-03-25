@@ -8,6 +8,9 @@ import Header from "../components/Header/HeaderComponent";
 import Banner from "../components/Header/BannerComponent";
 import Footer from "../components/Layout/FooterComponent";
 import withAuth from "../auth/AuthHOC";
+import { userActions } from "../actions/userActions";
+import { postData } from "../libs/postData";
+import { Grid } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   loading: {
@@ -19,16 +22,14 @@ const useStyles = makeStyles(theme => ({
 const ChangePassword = () => {
   const classes = useStyles();
   const [isLoading, setLoading] = useState(true);
-  useEffect(() => {
-    setLoading(false);
-  }, []);
+
   return (
-    <div>
+    <Grid>
       <Header title="Change password" />
       <Banner />
       <Layout Right={<ChangePasswordComponent />} />
       <Footer />
-    </div>
+    </Grid>
   );
 };
 

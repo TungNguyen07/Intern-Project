@@ -69,13 +69,14 @@ const LatestPostComponent = () => {
       }
       setFetching(false);
     });
-    window.scrollTo({ top: 0, behavior: "smooth" });
+
     return () => {
       unmounted = true;
     };
   }, [currentPage]);
 
   const handleChange = (event, page) => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     setPage(page);
   };
 
@@ -86,7 +87,7 @@ const LatestPostComponent = () => {
   ) : (
     <div>
       <span className={classes.span}>
-        <Typography className={classes.title} variant="h5">
+        <Typography className={classes.title} variant="h6">
           NEWEST ACTIVITY
         </Typography>
       </span>

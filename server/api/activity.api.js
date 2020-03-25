@@ -34,7 +34,11 @@ module.exports.deleteActivity = async function(req, res) {
   const condition = { _id: id };
   await activityModel.deleteOne(condition, function(err, res) {
     if (err) throw err;
-    console.log("Delete successfully");
+    console.log("Delete activity successfully");
+  });
+  await postModel.deleteMany({ activity_id: id }, function(err, res) {
+    if (err) throw err;
+    console.log("Delete post successfully");
   });
   res.json({ success: true });
 };

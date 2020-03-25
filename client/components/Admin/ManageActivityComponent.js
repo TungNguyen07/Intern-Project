@@ -58,13 +58,18 @@ const ActivityTableComponent = ({
   const checkValid = newActivity => {
     let valid = true;
     for (let item of activity) {
-      if (newActivity.activity_name == item.activity_name) {
+      if (
+        newActivity.activity_name.toLowerCase() ==
+        item.activity_name.toLowerCase()
+      ) {
         valid = false;
         break;
       }
     }
     return valid;
   };
+
+  const confirmDelete = () => {};
 
   const handleAdd = newActivity => {
     addActivity(newActivity);
@@ -92,6 +97,14 @@ const ActivityTableComponent = ({
         options={{
           actionsColumnIndex: -1,
           tableLayout: "fixed"
+        }}
+        localization={{
+          body: {
+            editRow: {
+              deleteText:
+                "Delete Activity will also delete all Post of this Activity!"
+            }
+          }
         }}
         editable={{
           onRowAdd: newData =>

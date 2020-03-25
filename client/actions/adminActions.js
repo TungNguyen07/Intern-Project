@@ -4,7 +4,11 @@ import {
   DELETE_SUCCESS,
   DELETE_FAIL
 } from "./adminActionType";
-import { NEW_ACTIVITY_SUCCESS } from "./activityActionType";
+import {
+  NEW_ACTIVITY_SUCCESS,
+  UPDATE_ACTIVITY_SUCCESS,
+  DELETE_ACTIVITY_SUCCESS
+} from "./activityActionType";
 import { postData } from "../libs/postData";
 import { fetchData } from "../libs/fetchData";
 const { SERVER_URL } = process.env;
@@ -14,8 +18,7 @@ export const adminActions = {
   deleteUser,
   addActivity,
   updateActivity,
-  deleteActivity,
-  activeActivity
+  deleteActivity
 };
 
 function addUser(newUser) {
@@ -92,22 +95,39 @@ function addActivitySuccess() {
 }
 
 function updateActivity(newActivity) {
-  postData(`${SERVER_URL}/activity/update-activity`, newActivity).then(res => {
-    if (res.error) console.log(res.error);
-    else console.log(res);
-  });
+  return dispatch => {
+    postData(`${SERVER_URL}/activity/update-activity`, newActivity).then(
+      res => {
+        if (res.error) dispatch(updateActivitySuccess());
+        else console.log(res);
+      }
+    );
+  };
 }
 
 function deleteActivity(activity) {
-  postData(`${SERVER_URL}/activity/delete-activity`, activity).then(res => {
-    if (res.error) console.log(res.error);
-    else console.log(res);
-  });
+  return dispatch => {
+    postData(`${SERVER_URL}/activity/delete-activity`, activity).then(res => {
+      if (res.error) dispatch(deleteActivitySuccess());
+      else console.log(res);
+    });
+  };
 }
 
-function activeActivity(activity) {
-  console.log(activity);
-  // postData(`${SERVER_URL}/activity/active-activity`, activity).then(res => {
-  //   console.log(res);
-  // });
+function deleteActivitySuccess() {
+  return {
+    type: DELETE_ACTIVITY_SUCCESS,
+    payload: {
+      message: ["Delete activity successfully!"]
+    }
+  };
+}
+
+function updateActivitySuccess() {
+  return {
+    type: UPDATE_ACTIVITY_SUCCESS,
+    payload: {
+      message: ["Update activity successfully!"]
+    }
+  };
 }

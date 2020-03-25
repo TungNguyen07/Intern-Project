@@ -111,7 +111,7 @@ module.exports.getSomePost = async function(req, res) {
 };
 
 module.exports.getPostFollowUser = async function(req, res) {
-  const id = mongoose.Types.ObjectId(req.query.id);
+  const id = mongoose.Types.ObjectId(req.params.id);
   const post = await postModel.find(
     { author_id: id, active: true },
     { _id: 1, cover_img: 1, description: 1, title: 1 }

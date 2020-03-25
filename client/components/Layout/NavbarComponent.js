@@ -15,7 +15,7 @@ import { connect } from "react-redux";
 import { fetchData } from "../../libs/fetchData";
 import { activityActions } from "../../actions/activityActions";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   title: {
     backgroundColor: "#4fd9ff",
     padding: "1px",
@@ -25,18 +25,14 @@ const useStyles = makeStyles({
     lineHeight: "1.3",
     paddingTop: "4px"
   },
-  link: {
-    textDecoration: "none",
-    color: "black",
-    "&:visited": {
-      color: "inherit"
-    }
-  },
   div: {
     width: "85%",
     textAlign: "center"
+  },
+  button: {
+    padding: "8px 16px 8px 16px"
   }
-});
+}));
 
 const Nav = ({ activeActivity }) => {
   const classes = useStyles();
@@ -73,7 +69,7 @@ const Nav = ({ activeActivity }) => {
   return (
     <Card className={classes.root}>
       <Typography className={classes.title} variant="h6" component="h6">
-        <ListItem button onClick={handleClick}>
+        <ListItem className={classes.button} button onClick={handleClick}>
           <div className={classes.div}>Activity</div>
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItem>

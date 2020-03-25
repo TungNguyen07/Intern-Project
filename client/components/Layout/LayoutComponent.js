@@ -16,9 +16,6 @@ const paper = {
 };
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1
-  },
   paper: {
     ...paper
   },
@@ -70,7 +67,7 @@ const Layout = props => {
               <CenterLayout>{props.Center}</CenterLayout>
             </Paper>
           </Grid>
-          <Grid item xs>
+          <Grid item xs={3}>
             <Paper className={classes.paper}>
               <RightLayout>{props.Right}</RightLayout>
             </Paper>

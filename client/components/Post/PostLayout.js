@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import NavProfile from "../User/ProfileNavComponent";
 
 import Nav from "../Layout/NavbarComponent";
+import { connect } from "react-redux";
 
 const paper = {
   padding: "8px",
@@ -80,4 +81,8 @@ const PostLayout = ({ user, Right }) => {
   );
 };
 
-export default PostLayout;
+const mapStateToProps = state => {
+  return { user: state.userReducer.user };
+};
+
+export default connect(mapStateToProps, null)(PostLayout);

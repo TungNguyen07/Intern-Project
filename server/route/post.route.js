@@ -14,7 +14,7 @@ router.post("/deny-post", postApi.denyPost);
 
 router.get("/get-some-post/", postApi.getSomePost);
 
-router.get("/get-post-by-user", postApi.getPostFollowUser);
+router.get("/get-post-by-user/:id", postApi.getPostFollowUser);
 
 router.get("/get-post/:id", postApi.getPost);
 

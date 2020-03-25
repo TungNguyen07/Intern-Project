@@ -12,7 +12,8 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(1)
   },
   title: {
-    fontWeight: "bold"
+    fontWeight: "bold",
+    cursor: "pointer"
   },
   card: {
     padding: theme.spacing(1.5),

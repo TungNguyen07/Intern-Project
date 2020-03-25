@@ -81,7 +81,7 @@ const HomeActivityPostComponent = ({ name, id }) => {
         as={`/activity/${name.toLowerCase()}`}
       >
         <span className={classes.span}>
-          <Typography className={classes.title} variant="h5">
+          <Typography className={classes.title} variant="h6">
             {name}
           </Typography>
         </span>

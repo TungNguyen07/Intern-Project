@@ -15,7 +15,7 @@ import { bindActionCreators } from "redux";
 
 import { userActions } from "../../actions/userActions";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   title: {
     backgroundColor: "#4fd9ff",
     padding: "1px",
@@ -35,8 +35,11 @@ const useStyles = makeStyles({
   div: {
     width: "85%",
     textAlign: "center"
+  },
+  button: {
+    padding: "8px 16px 8px 16px"
   }
-});
+}));
 
 export const ProfileNav = ({ user, Signout }) => {
   const classes = useStyles();
@@ -54,7 +57,7 @@ export const ProfileNav = ({ user, Signout }) => {
   return (
     <Card>
       <Typography variant="h6" component="h6" className={classes.title}>
-        <ListItem button onClick={handleClick}>
+        <ListItem className={classes.button} button onClick={handleClick}>
           <div className={classes.div}>{user.fullname}</div>
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItem>

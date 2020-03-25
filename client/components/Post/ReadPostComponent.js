@@ -9,12 +9,13 @@ const { SERVER_URL } = process.env;
 const useStyles = makeStyles({
   content: {
     padding: 15,
-    "& img": {
-      maxWidth: "100%",
-      textAlign: "justify"
-    },
     "& p": {
       textAlign: "start"
+    },
+    "& img": {
+      margin: "auto",
+      display: "flex",
+      maxWidth: "100%"
     }
   },
   loading: {
@@ -35,7 +36,8 @@ const useStyles = makeStyles({
     padding: "0px 16px 0px 16px"
   },
   post: {
-    color: "black"
+    color: "black",
+    paddingRight: "1rem"
   }
 });
 

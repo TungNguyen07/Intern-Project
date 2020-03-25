@@ -64,6 +64,7 @@ const ActivityPostComponent = ({ activity_id }) => {
   }, [activity_id, initPage]);
 
   const handleChange = (event, page) => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     setPage(page);
   };
 

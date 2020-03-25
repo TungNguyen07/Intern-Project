@@ -15,7 +15,8 @@ import { getPost } from "../../actions/postActions";
 const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
-    marginBottom: "1rem"
+    marginBottom: "1rem",
+    color: "black"
   },
   cardActionArea: {
     display: "flex",
