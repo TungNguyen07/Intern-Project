@@ -27,6 +27,9 @@ app.use(
 );
 app.use(helmet());
 
+app.use(express.static("public"));
+app.use("/images", express.static(__dirname + "/images"));
+
 app.use("/profile", userRouter);
 app.use("/", indexRouter);
 app.use("/post", postRouter);

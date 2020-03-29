@@ -2,7 +2,8 @@ import {
   ADD_USER_FAIL,
   ADD_USER_SUCCESS,
   DELETE_SUCCESS,
-  DELETE_FAIL
+  DELETE_FAIL,
+  IS_CHANGE
 } from "./adminActionType";
 import {
   NEW_ACTIVITY_SUCCESS,
@@ -34,7 +35,8 @@ function addUserSuccess() {
   return {
     type: ADD_USER_SUCCESS,
     payload: {
-      message: ["Add new user successfully!"]
+      message: ["Add new user successfully!"],
+      isChange: true
     }
   };
 }
@@ -62,7 +64,8 @@ function deleteSuccess() {
   return {
     type: DELETE_SUCCESS,
     payload: {
-      message: ["Delete user successfully!"]
+      message: ["Delete user successfully!"],
+      isChange: true
     }
   };
 }
@@ -89,7 +92,8 @@ function addActivitySuccess() {
   return {
     type: NEW_ACTIVITY_SUCCESS,
     payload: {
-      message: ["Add activity successfully!"]
+      message: ["Add activity successfully!"],
+      isChange: true
     }
   };
 }
@@ -118,7 +122,8 @@ function deleteActivitySuccess() {
   return {
     type: DELETE_ACTIVITY_SUCCESS,
     payload: {
-      message: ["Delete activity successfully!"]
+      message: ["Delete activity successfully!"],
+      isChange: true
     }
   };
 }

@@ -7,6 +7,7 @@ import {
 } from "./userActionsType";
 import Router from "next/router";
 const { SERVER_URL } = process.env;
+import { checkToken } from "../auth/auth";
 
 export const userActions = {
   Signin,
@@ -51,7 +52,8 @@ const SigninFail = data => {
 
 function Signout() {
   return dispatch => {
-    localStorage.removeItem("access_token"), Router.push("/signin");
+    localStorage.removeItem("access_token");
+    if (Router.pathname != "/") Router.push("/signin");
     dispatch(SignoutSuccess());
   };
 }

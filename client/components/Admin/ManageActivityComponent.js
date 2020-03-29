@@ -69,8 +69,6 @@ const ActivityTableComponent = ({
     return valid;
   };
 
-  const confirmDelete = () => {};
-
   const handleAdd = newActivity => {
     addActivity(newActivity);
     setActivity([...activity, newActivity]);

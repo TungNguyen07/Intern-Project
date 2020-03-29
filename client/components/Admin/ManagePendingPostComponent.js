@@ -68,13 +68,6 @@ const PendingPostTableComponent = () => {
       title="Manage Pending Post"
       columns={columns}
       data={pendingPost}
-      components={{
-        OverlayLoading: () => (
-          <div className={classes.div}>
-            <CircularProgress className={classes.loading} />
-          </div>
-        )
-      }}
       actions={[
         rowData => ({
           icon: () => <CheckCircleIcon />,

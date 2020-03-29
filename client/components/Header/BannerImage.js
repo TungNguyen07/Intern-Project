@@ -3,7 +3,8 @@ import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles(theme => ({
   image: {
-    width: "100%"
+    width: "100%",
+    height: 200
   }
 }));
 
@@ -14,7 +15,7 @@ const Banner = () => {
       <img
         id="banner"
         className={classes.image}
-        src="../../static/images/top-banner.jpg"
+        src="http://localhost:4000/images/top-banner.jpg"
       />
     </React.Fragment>
   );

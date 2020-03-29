@@ -16,4 +16,6 @@ router.post("/check-current-password", checkPassword);
 
 router.post("/change-password", userApi.changePassword);
 
+router.post("/reset-password", userApi.resetPassword);
+
 module.exports = router;

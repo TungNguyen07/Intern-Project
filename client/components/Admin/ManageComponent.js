@@ -9,6 +9,7 @@ import ManageUser from "./ManageUserComponent";
 import ManageActivity from "./ManageActivityComponent";
 import ManagePost from "./ManagePostComponent";
 import ManagePendingPost from "./ManagePendingPostComponent";
+import ChangeBannerComponent from "./ChangeBannerComponent";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -27,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 
 const ManageComponent = ({ tableDisplay }) => {
   const classes = useStyles();
-  const [display, setDisplay] = useState();
+  const [display, setDisplay] = useState(<ChangeBannerComponent />);
 
   useEffect(() => {
     switch (tableDisplay) {
@@ -39,8 +40,8 @@ const ManageComponent = ({ tableDisplay }) => {
         return setDisplay(<ManageActivity />);
       case "PENDING_POST":
         return setDisplay(<ManagePendingPost />);
-      case "DASHBOARD":
-        return setDisplay();
+      case "BANNER":
+        return setDisplay(<ChangeBannerComponent />);
       default:
         return;
     }

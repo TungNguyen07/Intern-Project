@@ -2,7 +2,8 @@ import {
   ADD_USER_FAIL,
   ADD_USER_SUCCESS,
   DELETE_SUCCESS,
-  DELETE_FAIL
+  DELETE_FAIL,
+  IS_CHANGE
 } from "../actions/adminActionType";
 import {
   NEW_ACTIVITY_SUCCESS,
@@ -12,7 +13,8 @@ import {
 const initAdmin = {
   owner: {},
   error: [],
-  message: []
+  message: [],
+  isChange: false
 };
 
 export default function adminReducer(state = initAdmin, action) {
@@ -20,7 +22,8 @@ export default function adminReducer(state = initAdmin, action) {
     case ADD_USER_SUCCESS:
       return {
         ...state,
-        message: action.payload.message
+        message: action.payload.message,
+        isChange: action.payload.isChange
       };
 
     case ADD_USER_FAIL:
@@ -32,7 +35,8 @@ export default function adminReducer(state = initAdmin, action) {
     case DELETE_SUCCESS:
       return {
         ...state,
-        message: action.payload.message
+        message: action.payload.message,
+        isChange: action.payload.isChange
       };
 
     case DELETE_FAIL:
@@ -44,7 +48,8 @@ export default function adminReducer(state = initAdmin, action) {
     case NEW_ACTIVITY_SUCCESS:
       return {
         ...state,
-        message: action.payload.message
+        message: action.payload.message,
+        isChange: action.payload.isChange
       };
 
     case UPDATE_ACTIVITY_SUCCESS:
@@ -56,7 +61,8 @@ export default function adminReducer(state = initAdmin, action) {
     case DELETE_ACTIVITY_SUCCESS:
       return {
         ...state,
-        message: action.payload.message
+        message: action.payload.message,
+        isChange: action.payload.isChange
       };
 
     default:

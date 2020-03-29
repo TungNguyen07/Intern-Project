@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
@@ -10,6 +10,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 import CardItems from "./CardItemComponent";
 import { fetchData } from "../../libs/fetchData";
+import { connect } from "react-redux";
 const { SERVER_URL } = process.env;
 
 const cardBorder = {
@@ -38,31 +39,33 @@ const useStyles = makeStyles(theme => ({
   div: { textAlign: "center" }
 }));
 
-const StatisticComponent = ({ isReload }) => {
+const StatisticComponent = ({ isChange }) => {
   const classes = useStyles();
   const [data, setData] = useState({});
   const [isFetching, setFetching] = useState(true);
+  const [, updateState] = React.useState();
+  const forceUpdate = useCallback(() => updateState({}), []);
 
-  const fetchingData = () => {
-    let unmounted = false;
+  const fetchingData = status => {
     fetchData(`${SERVER_URL}/get-statistics-data`).then(res => {
-      if (!unmounted) {
+      if (!status) {
         setData(res.data);
         setFetching(false);
       }
     });
-    return () => {
-      unmounted = true;
-    };
   };
 
   useEffect(() => {
-    fetchingData();
+    let unmouted = false;
+    fetchingData(unmouted);
+    return () => {
+      unmouted = true;
+    };
   }, []);
 
   useEffect(() => {
-    fetchingData();
-  }, [isReload]);
+    isChange && fetchData(false);
+  }, [isChange]);
 
   return isFetching ? (
     <div className={classes.div}>
@@ -101,4 +104,8 @@ const StatisticComponent = ({ isReload }) => {
   );
 };
 
-export default StatisticComponent;
+const mapStateToProps = state => {
+  return { isChange: state.adminReducer.isChange };
+};
+
+export default connect(mapStateToProps, null)(StatisticComponent);

@@ -1,7 +1,7 @@
 import userModel from "../model/user.model";
 import mongoose from "mongoose";
 import jwt, { verify } from "jsonwebtoken";
-const { SECRET_KEY } = process.env;
+// const { SECRET_KEY } = process.env;
 
 module.exports.signin = async function(req, res) {
   const data = (await userModel.find({ username: req.body.username }))[0];
@@ -79,15 +79,9 @@ module.exports.getAllUser = async function(req, res) {
   const allUser = await userModel.find(
     {},
     {
-      _id: 0,
-      password: 0,
-      role: 0,
-      avatar: 0,
-      address: 0,
-      email: 0,
-      phone_number: 0,
-      gender: 0,
-      birth_date: 0
+      staffId: 1,
+      fullname: 1,
+      username: 1
     }
   );
   res.json(allUser);
@@ -123,6 +117,16 @@ module.exports.changePassword = function(req, res) {
   userModel.findById(id, function(err, doc) {
     if (err) throw err;
     doc.password = newPassword;
+    doc.save();
+  });
+  res.json({ success: true });
+};
+
+module.exports.resetPassword = async function(req, res) {
+  const staffId = req.body.staffId;
+  userModel.findOne({ staffId: staffId }, (err, doc) => {
+    if (err) throw err;
+    doc.password = "123456";
     doc.save();
   });
   res.json({ success: true });

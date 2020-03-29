@@ -6,7 +6,7 @@ import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import CategoryIcon from "@material-ui/icons/Category";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import AssignmentLateIcon from "@material-ui/icons/AssignmentLate";
-import DashboardIcon from "@material-ui/icons/Dashboard";
+import PanoramaIcon from "@material-ui/icons/Panorama";
 import HomeIcon from "@material-ui/icons/Home";
 import Router from "next/router";
 
@@ -28,13 +28,13 @@ const DashboardItemComponent = ({ setState }) => {
       <ListItem
         button
         onClick={() => {
-          setState("DASHBOARD");
+          setState("BANNER");
         }}
       >
         <ListItemIcon>
-          <DashboardIcon />
+          <PanoramaIcon />
         </ListItemIcon>
-        <ListItemText primary="DASHBOARD" />
+        <ListItemText primary="BANNER" />
       </ListItem>
 
       <ListItem

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Router from "next/router";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const withAuth = WrappedComponent => {
-  const MiddlewareAuth = ({ setUserDetail, props, isLoading }) => {
+  const MiddlewareAuth = ({ setUserDetail, props }) => {
     // static async getInitialProps(ctx) {
     //     const { store } = ctx;
     //     if (!store.getState().get('auth').get('loaded')) {
@@ -40,6 +40,7 @@ const withAuth = WrappedComponent => {
     // }
 
     const classes = useStyles();
+    const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
       let unmounted = false;
@@ -51,6 +52,7 @@ const withAuth = WrappedComponent => {
             if (verifyUser(res)) {
               saveUser(res);
               setUserDetail(res);
+              setLoading(false);
             } else Router.push("/signin");
           }
         });
@@ -71,18 +73,12 @@ const withAuth = WrappedComponent => {
       <WrappedComponent {...props} />
     );
   };
-  return connect(mapStateToProps, mapDispatchToProps)(MiddlewareAuth);
+  return connect(null, mapDispatchToProps)(MiddlewareAuth);
 };
 
 function mapDispatchToProps(dispatch) {
   return {
     setUserDetail: bindActionCreators(userActions.setUserDetail, dispatch)
-  };
-}
-
-function mapStateToProps(state) {
-  return {
-    isLoading: state.userReducer.isLoading
   };
 }
 

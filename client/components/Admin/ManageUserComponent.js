@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/styles";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
+import CachedIcon from "@material-ui/icons/Cached";
 import MaterialTable from "material-table";
 const { SERVER_URL } = process.env;
 
@@ -11,6 +12,7 @@ import { adminActions } from "../../actions/adminActions";
 import ViewProfileComponent from "../Dialog/ViewProfileComponent";
 import MessageDialog from "../Dialog/MessageDialogComponent";
 import { fetchData } from "../../libs/fetchData";
+import { postData } from "../../libs/postData";
 
 const useStyles = makeStyles(theme => ({
   loading: {
@@ -89,7 +91,10 @@ const UserTableComponent = ({ addUser, deleteUser }) => {
     }
 
     for (let user of data) {
-      if (user.staffId == newUser.staffId || user.username == newUser.username)
+      if (
+        user.staffId.toLowerCase() == newUser.staffId.toLowerCase() ||
+        user.username.toLowerCase() == newUser.username.toLowerCase()
+      )
         arrError.push("Duplicate Staff Id or Username!");
     }
 
@@ -109,6 +114,16 @@ const UserTableComponent = ({ addUser, deleteUser }) => {
     setIsError(true);
   };
 
+  const handleReset = user => {
+    postData("http://localhost:4000/profile/reset-password", {
+      staffId: user.staffId
+    }).then(res => {
+      if (res.success) {
+        setError(["Reset password successfully!"]), setIsError(true);
+      }
+    });
+  };
+
   return isFetching ? (
     <div className={classes.div}>
       <CircularProgress className={classes.loading} />
@@ -124,6 +139,11 @@ const UserTableComponent = ({ addUser, deleteUser }) => {
             icon: () => <AccountBoxIcon />,
             tooltip: "Profile",
             onClick: (event, rowData) => handleOpen(rowData)
+          }),
+          rowData => ({
+            icon: () => <CachedIcon />,
+            tooltip: "Reset password",
+            onClick: (event, rowData) => handleReset(rowData)
           })
         ]}
         editable={{

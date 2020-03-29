@@ -7,16 +7,15 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import Badge from "@material-ui/core/Badge";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import NotificationsIcon from "@material-ui/icons/Notifications";
 import Avatar from "@material-ui/core/Avatar";
+import { connect } from "react-redux";
 
 import DashboardItems from "./DashboardItemComponent";
 import StatisticComponent from "./StatisticsComponent";
 import ManageComponent from "./ManageComponent";
-import { connect } from "react-redux";
+import AvatarComponent from "./AvatarComponent";
 
 const drawerWidth = 240;
 
@@ -139,9 +138,7 @@ export const Dashboard = ({ user }) => {
             Dashboard
           </Typography>
           <p>{user.fullname}</p>
-          <IconButton color="inherit">
-            <Avatar src={user.avatar} />
-          </IconButton>
+          <AvatarComponent avatar={user.avatar} />
         </Toolbar>
       </AppBar>
       <Drawer
@@ -163,6 +160,7 @@ export const Dashboard = ({ user }) => {
         <StatisticComponent />
         <ManageComponent tableDisplay={display} />
       </main>
+      <br />
     </div>
   );
 };
