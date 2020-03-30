@@ -18,11 +18,7 @@ const useStyles = makeStyles(theme => ({
   div: { textAlign: "center" }
 }));
 
-const ActivityTableComponent = ({
-  addActivity,
-  updateActivity,
-  deleteActivity
-}) => {
+const ActivityTableComponent = ({ isChange }) => {
   const classes = useStyles();
   const columns = [
     { title: "Activity", field: "activity_name" },
@@ -70,16 +66,20 @@ const ActivityTableComponent = ({
   };
 
   const handleAdd = newActivity => {
-    addActivity(newActivity);
+    isChange(false);
+    adminActions.addActivity(newActivity);
     setActivity([...activity, newActivity]);
+    isChange(true);
   };
 
   const handleUpdate = activity => {
-    updateActivity(activity);
+    adminActions.updateActivity(activity);
   };
 
   const handleDelete = activity => {
-    deleteActivity(activity);
+    isChange(false);
+    adminActions.deleteActivity(activity);
+    isChange(true);
   };
 
   return isFetching ? (
@@ -105,7 +105,7 @@ const ActivityTableComponent = ({
           }
         }}
         editable={{
-          onRowAdd: newData =>
+          onRowAdd: newData => {
             new Promise((resolve, reject) => {
               setTimeout(() => {
                 {
@@ -115,7 +115,8 @@ const ActivityTableComponent = ({
                 }
                 resolve();
               }, 600);
-            }),
+            });
+          },
           onRowUpdate: (newData, oldData) =>
             new Promise(resolve => {
               setTimeout(() => {
@@ -154,9 +155,7 @@ const ActivityTableComponent = ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    addActivity: bindActionCreators(adminActions.addActivity, dispatch),
-    updateActivity: bindActionCreators(adminActions.updateActivity, dispatch),
-    deleteActivity: bindActionCreators(adminActions.deleteActivity, dispatch)
+    isChange: bindActionCreators(adminActions.isChange, dispatch)
   };
 };
 

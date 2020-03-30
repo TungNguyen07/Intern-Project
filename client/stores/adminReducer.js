@@ -22,8 +22,7 @@ export default function adminReducer(state = initAdmin, action) {
     case ADD_USER_SUCCESS:
       return {
         ...state,
-        message: action.payload.message,
-        isChange: action.payload.isChange
+        message: action.payload.message
       };
 
     case ADD_USER_FAIL:
@@ -35,8 +34,7 @@ export default function adminReducer(state = initAdmin, action) {
     case DELETE_SUCCESS:
       return {
         ...state,
-        message: action.payload.message,
-        isChange: action.payload.isChange
+        message: action.payload.message
       };
 
     case DELETE_FAIL:
@@ -48,8 +46,7 @@ export default function adminReducer(state = initAdmin, action) {
     case NEW_ACTIVITY_SUCCESS:
       return {
         ...state,
-        message: action.payload.message,
-        isChange: action.payload.isChange
+        message: action.payload.message
       };
 
     case UPDATE_ACTIVITY_SUCCESS:
@@ -61,7 +58,12 @@ export default function adminReducer(state = initAdmin, action) {
     case DELETE_ACTIVITY_SUCCESS:
       return {
         ...state,
-        message: action.payload.message,
+        message: action.payload.message
+      };
+
+    case IS_CHANGE:
+      return {
+        ...state,
         isChange: action.payload.isChange
       };
 

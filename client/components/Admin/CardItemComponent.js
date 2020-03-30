@@ -20,9 +20,7 @@ const CardItemComponent = props => {
     <Card style={props.style}>
       <div className={classes.content}>
         <div className={classes.data}>
-          <Typography variant="subtitle2" c>
-            {props.title}
-          </Typography>
+          <Typography variant="subtitle2">{props.title}</Typography>
           <Typography variant="h5">{props.quantity}</Typography>
         </div>
         {props.icon}

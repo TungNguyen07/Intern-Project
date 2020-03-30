@@ -43,8 +43,6 @@ const StatisticComponent = ({ isChange }) => {
   const classes = useStyles();
   const [data, setData] = useState({});
   const [isFetching, setFetching] = useState(true);
-  const [, updateState] = React.useState();
-  const forceUpdate = useCallback(() => updateState({}), []);
 
   const fetchingData = status => {
     fetchData(`${SERVER_URL}/get-statistics-data`).then(res => {
@@ -64,7 +62,10 @@ const StatisticComponent = ({ isChange }) => {
   }, []);
 
   useEffect(() => {
-    isChange && fetchData(false);
+    isChange &&
+      setTimeout(() => {
+        fetchingData(false);
+      }, 500);
   }, [isChange]);
 
   return isFetching ? (
@@ -105,7 +106,9 @@ const StatisticComponent = ({ isChange }) => {
 };
 
 const mapStateToProps = state => {
-  return { isChange: state.adminReducer.isChange };
+  return {
+    isChange: state.adminReducer.isChange
+  };
 };
 
 export default connect(mapStateToProps, null)(StatisticComponent);

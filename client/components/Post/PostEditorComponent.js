@@ -66,6 +66,10 @@ export const PostEditor = ({ author }) => {
   const [, updateState] = React.useState();
   const forceUpdate = useCallback(() => updateState({}), []);
 
+  useEffect(() => {
+    !display && window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [display]);
+
   const handleChange = prop => event => {
     setReload(false);
     setPost({ ...post, [prop]: event.target.value });

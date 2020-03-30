@@ -1,17 +1,5 @@
-import {
-  ADD_USER_FAIL,
-  ADD_USER_SUCCESS,
-  DELETE_SUCCESS,
-  DELETE_FAIL,
-  IS_CHANGE
-} from "./adminActionType";
-import {
-  NEW_ACTIVITY_SUCCESS,
-  UPDATE_ACTIVITY_SUCCESS,
-  DELETE_ACTIVITY_SUCCESS
-} from "./activityActionType";
 import { postData } from "../libs/postData";
-import { fetchData } from "../libs/fetchData";
+import { IS_CHANGE } from "./adminActionType";
 const { SERVER_URL } = process.env;
 
 export const adminActions = {
@@ -19,120 +7,50 @@ export const adminActions = {
   deleteUser,
   addActivity,
   updateActivity,
-  deleteActivity
+  deleteActivity,
+  isChange
 };
 
 function addUser(newUser) {
-  return dispatch => {
-    postData(`${SERVER_URL}/add-user`, newUser).then(res => {
-      if (res.error) dispatch(addUserFail);
-      else dispatch(addUserSuccess());
-    });
-  };
-}
-
-function addUserSuccess() {
-  return {
-    type: ADD_USER_SUCCESS,
-    payload: {
-      message: ["Add new user successfully!"],
-      isChange: true
-    }
-  };
-}
-
-function addUserFail() {
-  return {
-    type: ADD_USER_FAIL,
-    payload: {
-      error: ["Duplicate Staff Id or Username!"]
-    }
-  };
+  postData(`${SERVER_URL}/add-user`, newUser).then(res => {
+    if (res.error) console.log(res.error);
+    else console.log(res);
+  });
 }
 
 function deleteUser(staffId) {
-  console.log("right here", staffId);
-  return dispatch => {
-    postData(`${SERVER_URL}/profile/delete`, staffId).then(res => {
-      if (res.error) dispatch(deleteFail());
-      else dispatch(deleteSuccess());
-    });
-  };
-}
-
-function deleteSuccess() {
-  return {
-    type: DELETE_SUCCESS,
-    payload: {
-      message: ["Delete user successfully!"],
-      isChange: true
-    }
-  };
-}
-
-function deleteFail() {
-  return {
-    type: DELETE_FAIL,
-    payload: {
-      error: ["Delete user failed!"]
-    }
-  };
+  postData(`${SERVER_URL}/profile/delete`, staffId).then(res => {
+    if (res.error) console.log(res.error);
+    else console.log(res);
+  });
 }
 
 function addActivity(newActivity) {
-  return dispatch => {
-    postData(`${SERVER_URL}/activity/new-activity`, newActivity).then(res => {
-      if (res.error) console.log(res.error);
-      else dispatch(addActivitySuccess(res));
-    });
-  };
-}
-
-function addActivitySuccess() {
-  return {
-    type: NEW_ACTIVITY_SUCCESS,
-    payload: {
-      message: ["Add activity successfully!"],
-      isChange: true
-    }
-  };
+  postData(`${SERVER_URL}/activity/new-activity`, newActivity).then(res => {
+    if (res.error) console.log(res.error);
+    else console.log(res);
+  });
 }
 
 function updateActivity(newActivity) {
-  return dispatch => {
-    postData(`${SERVER_URL}/activity/update-activity`, newActivity).then(
-      res => {
-        if (res.error) dispatch(updateActivitySuccess());
-        else console.log(res);
-      }
-    );
-  };
+  postData(`${SERVER_URL}/activity/update-activity`, newActivity).then(res => {
+    if (res.error) console.log(res.error);
+    else console.log(res);
+  });
 }
 
 function deleteActivity(activity) {
-  return dispatch => {
-    postData(`${SERVER_URL}/activity/delete-activity`, activity).then(res => {
-      if (res.error) dispatch(deleteActivitySuccess());
-      else console.log(res);
-    });
-  };
+  postData(`${SERVER_URL}/activity/delete-activity`, activity).then(res => {
+    if (res.error) console.log(res.error);
+    else console.log(res);
+  });
 }
 
-function deleteActivitySuccess() {
+function isChange(status) {
   return {
-    type: DELETE_ACTIVITY_SUCCESS,
+    type: IS_CHANGE,
     payload: {
-      message: ["Delete activity successfully!"],
-      isChange: true
-    }
-  };
-}
-
-function updateActivitySuccess() {
-  return {
-    type: UPDATE_ACTIVITY_SUCCESS,
-    payload: {
-      message: ["Update activity successfully!"]
+      isChange: status
     }
   };
 }

@@ -1,10 +1,5 @@
 import { postData } from "../libs/postData";
-import {
-  NEW_POST,
-  GET_POST,
-  NEW_POST_SUCCESS,
-  NEW_POST_FAIL
-} from "./postActionType";
+import { GET_POST } from "./postActionType";
 const { SERVER_URL } = process.env;
 
 export const newPost = post => {
@@ -38,4 +33,17 @@ export const getPost = (postId, postTitle) => {
       id: postId
     }
   };
+};
+
+export const deletePost = postId => {
+  if (postId == localStorage.getItem("post_id")) {
+    localStorage.removeItem("post_id");
+    localStorage.removeItem("post_title");
+  }
+  postData(`${SERVER_URL}/post/delete-post/${postId}`, { id: postId }).then(
+    res => {
+      if (res.error) console.log(error);
+      console.log(res);
+    }
+  );
 };

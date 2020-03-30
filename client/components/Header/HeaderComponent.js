@@ -13,7 +13,8 @@ const Header = props => {
         href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
         rel="stylesheet"
       />
-      <link rel="icon" type="image/x-icon" href="/static/images/logo.png" />
+      <link rel="icon" href="http://localhost:4000/images/logo.png" />
+      <link rel="shortcut icon" href="favicon.ico"></link>
     </div>
   );
 };

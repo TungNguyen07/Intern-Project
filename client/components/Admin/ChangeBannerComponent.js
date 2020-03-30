@@ -7,6 +7,8 @@ import { makeStyles } from "@material-ui/styles";
 import { Button, Typography } from "@material-ui/core";
 import axios from "axios";
 
+import MessageDialog from "../Dialog/MessageDialogComponent";
+
 const useStyles = makeStyles(theme => ({
   card: {
     border: "dotted 1.5px",
@@ -54,6 +56,8 @@ const ChangeBannerComponent = () => {
   const bannerUrl = "http://localhost:4000/images/top-banner.jpg";
   const [displayBanner, setDisplayBanner] = useState(bannerUrl);
   const [banner, setBanner] = useState();
+  const [display, setDisplay] = useState(false);
+  const [message, setMessage] = useState([]);
 
   function base64(files, callback) {
     if (files.length) {
@@ -67,10 +71,6 @@ const ChangeBannerComponent = () => {
       reader.readAsDataURL(file);
     }
   }
-
-  useEffect(() => {
-    console.log(banner);
-  }, []);
 
   const onDrop = event => {
     base64(event.target.files, function(data) {
@@ -86,7 +86,14 @@ const ChangeBannerComponent = () => {
         "content-type": "multipart/form-data"
       }
     };
-    axios.post("http://localhost:4000/upload-banner", formData, config);
+    axios
+      .post("http://localhost:4000/upload-banner", formData, config)
+      .then(res => {
+        if (res.data.success) {
+          setDisplay(true);
+          setMessage(["Change banner successfully!"]);
+        }
+      });
   };
 
   const handleCancel = () => {
@@ -139,6 +146,7 @@ const ChangeBannerComponent = () => {
           Cancel
         </Button>
       </div>
+      {display && <MessageDialog setError={setDisplay} message={message} />}
     </div>
   );
 };

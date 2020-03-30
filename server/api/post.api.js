@@ -179,3 +179,13 @@ module.exports.getNewestPost = async function(req, res) {
     length
   });
 };
+
+module.exports.deletePost = async function(req, res) {
+  const id = req.params.id;
+  const condition = { _id: id };
+  await postModel.deleteOne(condition, function(err, res) {
+    if (err) throw err;
+    console.log("Delete post successfully!");
+  });
+  res.json({ success: true });
+};

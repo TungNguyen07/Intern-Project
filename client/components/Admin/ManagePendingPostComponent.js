@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   div: { textAlign: "center" }
 }));
 
-const PendingPostTableComponent = () => {
+const PendingPostTableComponent = ({ isChange }) => {
   const classes = useStyles();
   const columns = [
     { title: "Title", field: "title", width: "50%" },
@@ -52,11 +52,15 @@ const PendingPostTableComponent = () => {
   }, []);
 
   const handleApprove = postId => {
+    isChange(false);
     approvePost({ id: postId });
+    isChange(true);
   };
 
   const handleDeny = postId => {
+    isChange(false);
     denyPost({ id: postId });
+    isChange(true);
   };
 
   return isFetching ? (
@@ -73,6 +77,7 @@ const PendingPostTableComponent = () => {
           icon: () => <CheckCircleIcon />,
           tooltip: "Approve",
           onClick: (event, rowData) => {
+            console.log(event);
             new Promise((resolve, reject) => {
               setTimeout(() => {
                 {
@@ -117,4 +122,10 @@ const PendingPostTableComponent = () => {
   );
 };
 
-export default PendingPostTableComponent;
+const mapDispatchToProps = dispatch => {
+  return {
+    isChange: bindActionCreators(adminActions.isChange, dispatch)
+  };
+};
+
+export default connect(null, mapDispatchToProps)(PendingPostTableComponent);

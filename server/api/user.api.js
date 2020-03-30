@@ -99,8 +99,8 @@ module.exports.getProfile = async function(req, res) {
 
 module.exports.deleteUser = async function(req, res) {
   const id = req.body.staffId;
-  let condition = { staffId: id };
-  userModel.remove(condition, function(err, res) {
+  const condition = { staffId: id };
+  await userModel.deleteOne(condition, function(err, res) {
     if (err) throw err;
     console.log("Delete user sucessfully!");
   });

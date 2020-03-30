@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import MaterialTable from "material-table";
 import { makeStyles } from "@material-ui/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
 const { SERVER_URL } = process.env;
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 import { fetchData } from "../../libs/fetchData";
+import { deletePost } from "../../actions/postActions";
 import { adminActions } from "../../actions/adminActions";
 
 const useStyles = makeStyles(theme => ({
@@ -16,13 +17,7 @@ const useStyles = makeStyles(theme => ({
   div: { textAlign: "center" }
 }));
 
-const PostTableComponent = (
-  {
-    //   addActivity,
-    //   updateActivity,
-    //   deleteActivity
-  }
-) => {
+const PostTableComponent = ({ isChange }) => {
   const classes = useStyles();
   const columns = [
     {
@@ -59,17 +54,11 @@ const PostTableComponent = (
     };
   }, []);
 
-  //   const handleAdd = newActivity => {
-  //     addActivity(newActivity);
-  //   };
-
-  //   const handleUpdate = activity => {
-  //     updateActivity(activity);
-  //   };
-
-  //   const handleDelete = activity => {
-  //     deleteActivity(activity);
-  //   };
+  const handleDelete = post => {
+    isChange(false);
+    deletePost(post._id);
+    isChange(true);
+  };
 
   return isFetching ? (
     <div className={classes.div}>
@@ -80,6 +69,13 @@ const PostTableComponent = (
       title="Manage Post"
       columns={columns}
       data={activePost}
+      localization={{
+        body: {
+          editRow: {
+            deleteText: "Are you sure want to delete this post?"
+          }
+        }
+      }}
       actions={[
         rowData => ({
           icon: () => <div />,
@@ -95,10 +91,10 @@ const PostTableComponent = (
           new Promise(resolve => {
             setTimeout(() => {
               {
-                // const oldActivity = activity;
-                // oldActivity.splice(oldActivity.indexOf(oldData), 1);
-                // handleDelete(oldData);
-                // setActivity([...oldActivity]);
+                const oldPost = activePost;
+                oldPost.splice(oldPost.indexOf(oldData), 1);
+                handleDelete(oldData);
+                setActivePost([...oldPost]);
               }
               resolve();
             }, 600);
@@ -108,4 +104,10 @@ const PostTableComponent = (
   );
 };
 
-export default PostTableComponent;
+const mapDispatchToProps = dispatch => {
+  return {
+    isChange: bindActionCreators(adminActions.isChange, dispatch)
+  };
+};
+
+export default connect(null, mapDispatchToProps)(PostTableComponent);

@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const UserTableComponent = ({ addUser, deleteUser }) => {
+const UserTableComponent = ({ isChange }) => {
   const classes = useStyles();
   const columns = [
     { title: "Staff ID", field: "staffId" },
@@ -70,7 +70,9 @@ const UserTableComponent = ({ addUser, deleteUser }) => {
   };
 
   const handleDelete = user => {
-    deleteUser({ staffId: user.staffId });
+    isChange(false);
+    adminActions.deleteUser({ staffId: user.staffId });
+    isChange(true);
   };
 
   const checkValid = newUser => {
@@ -105,8 +107,10 @@ const UserTableComponent = ({ addUser, deleteUser }) => {
   };
 
   const handleAdd = newUser => {
-    addUser(newUser);
+    isChange(false);
+    adminActions.addUser(newUser);
     setData([...data, newUser]);
+    isChange(true);
   };
 
   const handleDeleteAdmin = () => {
@@ -134,6 +138,13 @@ const UserTableComponent = ({ addUser, deleteUser }) => {
         title="MANAGE USER"
         columns={columns}
         data={data}
+        localization={{
+          body: {
+            editRow: {
+              deleteText: "Are you sure want to delete this user?"
+            }
+          }
+        }}
         actions={[
           rowData => ({
             icon: () => <AccountBoxIcon />,
@@ -192,8 +203,7 @@ const UserTableComponent = ({ addUser, deleteUser }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addUser: bindActionCreators(adminActions.addUser, dispatch),
-    deleteUser: bindActionCreators(adminActions.deleteUser, dispatch)
+    isChange: bindActionCreators(adminActions.isChange, dispatch)
   };
 };
 
