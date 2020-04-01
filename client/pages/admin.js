@@ -1,23 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/styles";
+import React from "react";
 
 import Header from "../components/Header/HeaderComponent";
 import Dashboard from "../components/Admin/DashboardComponent";
-import withAuth from "../auth/AuthHOC";
-
-const useStyles = makeStyles(theme => ({
-  top: {
-    padding: theme.spacing(2),
-    backgroundColor: "#e0e0e0"
-  },
-  paper: {
-    marginTop: theme.spacing(2)
-  },
-  loading: {
-    marginTop: "15%"
-  },
-  div: { textAlign: "center" }
-}));
+import withAuthAdmin from "../auth/AuthAdminHOC";
 
 const Admin = () => {
   const classes = useStyles();
@@ -30,4 +15,4 @@ const Admin = () => {
   );
 };
 
-export default withAuth(Admin);
+export default withAuthAdmin(Admin);

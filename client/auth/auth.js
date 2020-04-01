@@ -17,3 +17,8 @@ export const verifyUser = user => {
   if (user) return true;
   else return false;
 };
+
+export const verifyAdmin = user => {
+  if (user.role == 1) return true;
+  else return false;
+};

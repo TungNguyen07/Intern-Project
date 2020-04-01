@@ -1,9 +1,9 @@
-import React from "react";
-import Link from "next/link";
-import CardMedia from "@material-ui/core/CardMedia";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
+
+import SearchComponent from "../Post/SearchComponent";
 
 const useStyles = makeStyles({
   root: {
@@ -11,13 +11,19 @@ const useStyles = makeStyles({
   },
   media: {
     width: 280
+  },
+
+  paper: {
+    marginBottom: "1rem"
   }
 });
 
 const Propaganda = () => {
   const classes = useStyles();
+
   return (
     <div>
+      <SearchComponent />
       <a href="http://dangcongsan.vn" target="blank">
         <Card className={classes.root}>
           <CardActionArea>

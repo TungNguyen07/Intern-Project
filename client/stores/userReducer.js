@@ -2,13 +2,15 @@ import {
   SIGN_OUT_SUCCESS,
   SIGN_IN_SUCCESS,
   SIGN_IN_FAIL,
-  SET_USER_DETAIL
+  SET_USER_DETAIL,
+  SEARCH
 } from "../actions/userActionsType";
 
 const initUser = {
   user: {},
   token: "",
-  error: []
+  error: [],
+  search: ""
 };
 
 export default function userReducer(state = initUser, action) {
@@ -41,6 +43,12 @@ export default function userReducer(state = initUser, action) {
       return {
         ...state,
         user: action.payload.user
+      };
+
+    case SEARCH:
+      return {
+        ...state,
+        search: action.payload.search
       };
 
     default:

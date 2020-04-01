@@ -43,4 +43,6 @@ router.post(
   }
 );
 
+router.get("/search/:query/:page", indexApi.search);
+
 module.exports = router;

@@ -40,3 +40,22 @@ module.exports.getStatisticsData = async function(req, res) {
     pendingPost: countPendingPost
   });
 };
+
+module.exports.search = async function(req, res) {
+  const query = req.params.query;
+  const page = parseInt(req.params.page);
+  const length = await postModel.countDocuments({
+    title: { $regex: new RegExp(query) }
+  });
+  const data = await postModel
+    .find(
+      { title: { $regex: new RegExp(query) } },
+      { title: 1, description: 1, cover_img: 1, _id: 1 }
+    )
+    .limit(10)
+    .skip((page - 1) * 10);
+  res.json({
+    result: data,
+    count: Math.ceil(length / 10)
+  });
+};

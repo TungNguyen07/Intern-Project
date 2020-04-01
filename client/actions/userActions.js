@@ -3,17 +3,20 @@ import {
   SIGN_IN_SUCCESS,
   SIGN_IN_FAIL,
   SIGN_OUT_SUCCESS,
-  SET_USER_DETAIL
+  SET_USER_DETAIL,
+  SEARCH
 } from "./userActionsType";
 import Router from "next/router";
 const { SERVER_URL } = process.env;
 import { checkToken } from "../auth/auth";
+import { titleToURL } from "../libs/changeTitleToURL";
 
 export const userActions = {
   Signin,
   Signout,
   setUserDetail,
-  updateInfo
+  updateInfo,
+  setQuery
 };
 
 function Signin(signinInfo) {
@@ -92,4 +95,14 @@ export function changePassword(passwordInfo) {
   postData(`${SERVER_URL}/profile/change-password`, passwordInfo).then(res => {
     console.log(res);
   });
+}
+
+export function setQuery(text) {
+  localStorage.setItem("query", text);
+  return {
+    type: SEARCH,
+    payload: {
+      search: text
+    }
+  };
 }
