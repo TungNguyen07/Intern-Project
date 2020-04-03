@@ -10,12 +10,10 @@ import { userActions } from "../../actions/userActions";
 import { postData } from "../../libs/postData";
 
 const ReadPost = ({ user, setUserDetail }) => {
-  const [title, setTitle] = useState("");
   const [loginUser, setUser] = useState({});
 
   useEffect(() => {
     const token = window.localStorage.getItem("access_token");
-    const post_title = window.localStorage.getItem("post_title");
     let unmounted = false;
     if (!user) {
       postData("http://localhost:4000/check-token", { token }).then(res => {
@@ -25,7 +23,6 @@ const ReadPost = ({ user, setUserDetail }) => {
             setUser(res);
           } else return;
         }
-        setTitle(post_title);
       });
     } else setUser(user);
     return () => {
@@ -35,7 +32,7 @@ const ReadPost = ({ user, setUserDetail }) => {
 
   return (
     <div>
-      <Header title={title} />
+      <Header title={localStorage.getItem("post_title")} />
       <Banner />
       <PostLayout user={loginUser} Right={<ReadPostComponent />} />
       <Footer />

@@ -5,8 +5,6 @@ import Dashboard from "../components/Admin/DashboardComponent";
 import withAuthAdmin from "../auth/AuthAdminHOC";
 
 const Admin = () => {
-  const classes = useStyles();
-
   return (
     <div>
       <Header title="Admin" />

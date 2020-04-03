@@ -43,7 +43,7 @@ const useStyles = makeStyles({
 
 const ReadPostComponent = () => {
   const classes = useStyles();
-  const [post, setPost] = useState([]);
+  const [post, setPost] = useState({});
   const [fetching, setFetching] = useState(true);
 
   useEffect(() => {

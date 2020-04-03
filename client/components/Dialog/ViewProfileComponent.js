@@ -10,6 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { fetchData } from "../../libs/fetchData";
+const { SERVER_URL } = process.env;
 
 const useStyles = makeStyles(theme => ({
   otherInfo: {
@@ -50,14 +51,10 @@ const ViewProfileComponent = ({ user, isOpen, isClose }) => {
     setOpen(isOpen);
   }, [isOpen]);
 
-  // useEffect(() => {
-  //   console.log(user);
-  // }, [user]);
-
   useEffect(() => {
     let unmounted = false;
     if (user)
-      fetchData(`http://localhost:4000/profile/${user.staffId}`).then(res => {
+      fetchData(`${SERVER_URL}/profile/${user.staffId}`).then(res => {
         if (!unmounted) {
           setInfo(res.data);
           setFetching(false);

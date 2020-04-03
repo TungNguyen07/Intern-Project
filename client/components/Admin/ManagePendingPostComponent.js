@@ -6,11 +6,13 @@ import BlockIcon from "@material-ui/icons/Block";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 
 import { fetchData } from "../../libs/fetchData";
 import { adminActions } from "../../actions/adminActions";
-import { postActions, approvePost, denyPost } from "../../actions/postActions";
+import { approvePost, refusePost } from "../../actions/postActions";
 const { SERVER_URL } = process.env;
+import PreviewPostConponent from "../Dialog/PreviewPostComponent";
 
 const useStyles = makeStyles(theme => ({
   loading: {
@@ -29,6 +31,8 @@ const PendingPostTableComponent = ({ isChange }) => {
 
   const [pendingPost, setPendingPost] = useState([]);
   const [isFetching, setFetching] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState({});
 
   useEffect(() => {
     let unmounted = false;
@@ -57,10 +61,19 @@ const PendingPostTableComponent = ({ isChange }) => {
     isChange(true);
   };
 
-  const handleDeny = postId => {
+  const handleRefuse = postId => {
     isChange(false);
-    denyPost({ id: postId });
+    refusePost({ id: postId });
     isChange(true);
+  };
+
+  const handleOpen = rowData => {
+    setData(rowData);
+    setOpen(true);
+  };
+
+  const handleClose = isClose => {
+    setOpen(isClose);
   };
 
   return isFetching ? (
@@ -68,57 +81,68 @@ const PendingPostTableComponent = ({ isChange }) => {
       <CircularProgress className={classes.loading} />
     </div>
   ) : (
-    <MaterialTable
-      title="Manage Pending Post"
-      columns={columns}
-      data={pendingPost}
-      actions={[
-        rowData => ({
-          icon: () => <CheckCircleIcon />,
-          tooltip: "Approve",
-          onClick: (event, rowData) => {
-            console.log(event);
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                {
-                  let initdata = pendingPost;
-                  const index = initdata.indexOf(rowData);
-                  const approveItem = initdata[index];
-                  initdata.splice(index, 1);
-                  handleApprove(approveItem._id);
-                  setPendingPost([...initdata]);
-                }
-                resolve();
-              }, 600);
-            });
-          }
-        }),
-        rowData => ({
-          icon: () => <BlockIcon />,
-          tooltip: "Deny",
-          onClick: (event, rowData) => {
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                {
-                  let initdata = pendingPost;
-                  const index = initdata.indexOf(rowData);
-                  const deletePost = initdata[index];
-                  initdata.splice(index, 1);
-                  handleDeny(deletePost);
-                  setPendingPost([...initdata]);
-                }
-                resolve();
-              }, 600);
-            });
-          }
-        })
-      ]}
-      options={{
-        actionsColumnIndex: -1,
-        tableLayout: "fixed",
-        loadingType: "overlay"
-      }}
-    />
+    <div>
+      <MaterialTable
+        title="Manage Pending Post"
+        columns={columns}
+        data={pendingPost}
+        actions={[
+          rowData => ({
+            icon: () => <VisibilityIcon />,
+            tooltip: "Preview",
+            onClick: (event, rowData) => handleOpen(rowData)
+          }),
+          rowData => ({
+            icon: () => <CheckCircleIcon />,
+            tooltip: "Approve",
+            onClick: (event, rowData) => {
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  {
+                    let initdata = pendingPost;
+                    const index = initdata.indexOf(rowData);
+                    const approveItem = initdata[index];
+                    initdata.splice(index, 1);
+                    handleApprove(approveItem._id);
+                    setPendingPost([...initdata]);
+                  }
+                  resolve();
+                }, 600);
+              });
+            }
+          }),
+          rowData => ({
+            icon: () => <BlockIcon />,
+            tooltip: "Refuse",
+            onClick: (event, rowData) => {
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  {
+                    let initdata = pendingPost;
+                    const index = initdata.indexOf(rowData);
+                    const deletePost = initdata[index];
+                    initdata.splice(index, 1);
+                    handleRefuse(deletePost);
+                    setPendingPost([...initdata]);
+                  }
+                  resolve();
+                }, 600);
+              });
+            }
+          })
+        ]}
+        options={{
+          actionsColumnIndex: -1,
+          tableLayout: "fixed",
+          loadingType: "overlay"
+        }}
+      />
+      <PreviewPostConponent
+        isOpen={open}
+        isClose={handleClose}
+        rowData={data}
+      />
+    </div>
   );
 };
 

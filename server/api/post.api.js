@@ -87,12 +87,12 @@ module.exports.approvePost = function(req, res) {
   res.json({ success: true });
 };
 
-module.exports.denyPost = function(req, res) {
+module.exports.refusePost = function(req, res) {
   const id = req.body.id;
   const condition = { _id: id };
   postModel.remove(condition, function(err, res) {
     if (err) throw err;
-    console.log("Denied!");
+    console.log("Refused!");
   });
   res.json({ success: true });
 };
@@ -120,36 +120,37 @@ module.exports.getPostFollowUser = async function(req, res) {
 };
 
 module.exports.getPost = async function(req, res) {
-  const id = mongoose.Types.ObjectId(req.params.id);
-  // const post = await postModel.findOne({ _id: id });
-  const post = await postModel.aggregate([
-    {
-      $match: { _id: id }
-    },
-    {
-      $lookup: {
-        from: "users",
-        localField: "author_id",
-        foreignField: "_id",
-        as: "author"
+  if (req.params.id) {
+    const id = mongoose.Types.ObjectId(req.params.id);
+    const post = await postModel.aggregate([
+      {
+        $match: { _id: id }
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "author_id",
+          foreignField: "_id",
+          as: "author"
+        }
+      },
+      {
+        $unwind: "$author"
+      },
+      {
+        $project: {
+          _id: 1,
+          view: 1,
+          title: 1,
+          description: 1,
+          content: 1,
+          created_at: 1,
+          fullname: "$author.fullname"
+        }
       }
-    },
-    {
-      $unwind: "$author"
-    },
-    {
-      $project: {
-        _id: 1,
-        view: 1,
-        title: 1,
-        description: 1,
-        content: 1,
-        created_at: 1,
-        fullname: "$author.fullname"
-      }
-    }
-  ]);
-  res.json(post[0]);
+    ]);
+    res.json(post[0]);
+  }
 };
 
 module.exports.getPostByActivity = async function(req, res) {

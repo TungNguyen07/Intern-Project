@@ -129,6 +129,7 @@ export const PostEditor = ({ author }) => {
   const handleDelete = () => {
     setPost(initPost);
     setReload(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   useEffect(() => {

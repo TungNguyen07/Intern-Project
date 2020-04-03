@@ -1,8 +1,6 @@
 import { postData } from "../libs/postData";
 
 export const checkTokenNGetUser = async token => {
-  //console.log("token", token);
-
   return postData("http://localhost:4000/check-token", { token })
     .then(res => {
       if (res.error) return null;

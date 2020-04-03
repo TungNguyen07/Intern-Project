@@ -39,13 +39,15 @@ export const CoverImgComponent = ({ isReload, getImg }) => {
   const [coverImg, setCoverImg] = useState("");
 
   function base64(files, callback) {
-    var file = files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      var dataUrl = reader.result;
-      callback(dataUrl);
-    };
-    reader.readAsDataURL(file);
+    if (files.length) {
+      var file = files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        var dataUrl = reader.result;
+        callback(dataUrl);
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
   const onDrop = event => {
