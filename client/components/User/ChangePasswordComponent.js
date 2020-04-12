@@ -10,29 +10,36 @@ import { postData } from "../../libs/postData";
 import { changePassword } from "../../actions/userActions";
 const { SERVER_URL } = process.env;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   textField: {
     width: "100%",
-    marginBottom: theme.spacing(1.5)
+    marginBottom: theme.spacing(1.5),
+    fontSize: "1rem",
   },
   title: {
-    color: "black"
+    color: "black",
+    "@media (min-width:600px)": {
+      fontSize: "1.2rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1.5rem",
+    },
   },
   div: {
     marginTop: theme.spacing(3),
     width: "55%",
-    margin: "auto"
+    margin: "auto",
   },
   button: {
     marginBottom: theme.spacing(3),
-    marginLeft: theme.spacing(1)
+    marginLeft: theme.spacing(1),
   },
   checkbox: {
     marginBottom: theme.spacing(1),
     width: "55%",
     textAlign: "start",
-    margin: "auto"
-  }
+    margin: "auto",
+  },
 }));
 
 export const ChangePasswordComponent = ({ user }) => {
@@ -40,24 +47,24 @@ export const ChangePasswordComponent = ({ user }) => {
   const initPassword = {
     currentPassword: "",
     newPassword: "",
-    confirmPassword: ""
+    confirmPassword: "",
   };
   const [passwordInfo, setPasswordInfo] = useState(initPassword);
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState([]);
   const [display, setDisplay] = useState(false);
 
-  const checkCurrentPassword = checkInfo => {
+  const checkCurrentPassword = (checkInfo) => {
     const check = postData(
       `${SERVER_URL}/profile/check-current-password`,
       checkInfo
-    ).then(res => {
+    ).then((res) => {
       return res;
     });
     return check;
   };
 
-  const checkValidPassword = async password => {
+  const checkValidPassword = async (password) => {
     let arrError = [];
     if (password.currentPassword == "" || password.currentPassword == undefined)
       arrError.push("Current password is required!");
@@ -84,7 +91,7 @@ export const ChangePasswordComponent = ({ user }) => {
 
     const checked = await checkCurrentPassword({
       id: user.id,
-      currentPassword: password.currentPassword
+      currentPassword: password.currentPassword,
     });
 
     if (!checked.result) arrError.push("Current password is incorrect!");
@@ -98,7 +105,7 @@ export const ChangePasswordComponent = ({ user }) => {
     }
   };
 
-  const handleChange = prop => event => {
+  const handleChange = (prop) => (event) => {
     setPasswordInfo({ ...passwordInfo, [prop]: event.target.value });
   };
 
@@ -185,9 +192,9 @@ export const ChangePasswordComponent = ({ user }) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    user: state.userReducer.user
+    user: state.userReducer.user,
   };
 };
 

@@ -17,26 +17,32 @@ const cardBorder = {
   width: "100%",
   height: "5rem",
   display: "flex",
-  marginRight: 16
+  marginRight: 16,
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4)
+    paddingBottom: theme.spacing(4),
   },
   icon: {
     fontSize: "3rem",
-    opacity: 0.3
+    opacity: 0.3,
+    "@media (min-width:600px)": {
+      fontSize: "1.5rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "3rem",
+    },
   },
   grid: {
     display: "flex",
-    paddingLeft: theme.spacing(2)
+    paddingLeft: theme.spacing(2),
   },
   loading: {
-    marginTop: "15%"
+    marginTop: "15%",
   },
-  div: { textAlign: "center" }
+  div: { textAlign: "center" },
 }));
 
 const StatisticComponent = ({ isChange }) => {
@@ -44,8 +50,8 @@ const StatisticComponent = ({ isChange }) => {
   const [data, setData] = useState({});
   const [isFetching, setFetching] = useState(true);
 
-  const fetchingData = status => {
-    fetchData(`${SERVER_URL}/get-statistics-data`).then(res => {
+  const fetchingData = (status) => {
+    fetchData(`${SERVER_URL}/get-statistics-data`).then((res) => {
       if (!status) {
         setData(res.data);
         setFetching(false);
@@ -62,10 +68,14 @@ const StatisticComponent = ({ isChange }) => {
   }, []);
 
   useEffect(() => {
+    let unmouted = false;
     isChange &&
       setTimeout(() => {
-        fetchingData(false);
+        fetchingData(unmouted);
       }, 500);
+    return () => {
+      unmouted = true;
+    };
   }, [isChange]);
 
   return isFetching ? (
@@ -105,9 +115,9 @@ const StatisticComponent = ({ isChange }) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    isChange: state.adminReducer.isChange
+    isChange: state.adminReducer.isChange,
   };
 };
 

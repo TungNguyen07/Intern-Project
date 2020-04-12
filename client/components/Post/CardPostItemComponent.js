@@ -12,28 +12,52 @@ import { connect } from "react-redux";
 import { titleToURL } from "../../libs/changeTitleToURL";
 import { getPost } from "../../actions/postActions";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginBottom: "1rem",
-    color: "black"
+    color: "black",
   },
   cardActionArea: {
     display: "flex",
-    maxHeight: "200px",
-    height: "140px"
+    height: "9rem",
+    justifyContent: "start",
   },
   media: {
-    maxHeight: 120,
-    maxWidth: 200,
-    marginLeft: "1rem"
+    maxHeight: "8rem",
+    maxWidth: "13rem",
+    marginLeft: "1rem",
+    "@media (min-width:600px)": {
+      maxHeight: "5rem",
+      maxWidth: "8rem",
+    },
+    [theme.breakpoints.up("lg")]: {
+      maxHeight: "8rem",
+      maxWidth: "13rem",
+    },
   },
   content: {
-    textAlign: "left"
+    textAlign: "left",
   },
   title: {
-    lineHeight: "inherit"
-  }
+    lineHeight: "inherit",
+    fontSize: "1rem",
+    "@media (min-width:600px)": {
+      fontSize: "0.750rem",
+    },
+    [theme.breakpoints.up("lg")]: {
+      fontSize: "1rem",
+    },
+  },
+  description: {
+    fontSize: "0.875rem",
+    "@media (min-width:600px)": {
+      fontSize: "0.650rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "0.875rem",
+    },
+  },
 }));
 
 const CardPost = ({ post, getPost }) => {
@@ -61,7 +85,12 @@ const CardPost = ({ post, getPost }) => {
             >
               {post.title}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
+            <Typography
+              className={classes.description}
+              variant="body2"
+              color="textSecondary"
+              component="p"
+            >
               {post.description}
             </Typography>
           </CardContent>
@@ -71,9 +100,9 @@ const CardPost = ({ post, getPost }) => {
   );
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    getPost: bindActionCreators(getPost, dispatch)
+    getPost: bindActionCreators(getPost, dispatch),
   };
 };
 

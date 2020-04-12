@@ -7,15 +7,15 @@ import SearchComponent from "../Post/SearchComponent";
 
 const useStyles = makeStyles({
   root: {
-    marginBottom: 16
+    marginBottom: 16,
   },
   media: {
-    width: 280
+    width: "100%",
   },
 
   paper: {
-    marginBottom: "1rem"
-  }
+    marginBottom: "1rem",
+  },
 });
 
 const Propaganda = () => {
@@ -29,7 +29,7 @@ const Propaganda = () => {
           <CardActionArea>
             <img
               className={classes.media}
-              src="http://trungtamvanhoathethaotanbinh.vn:7777/mediaroot/media/userfiles/useruploads/800/image/%C4%90%E1%BA%A3ng%20CS.PNG"
+              src="https://f12.photo.talk.zdn.vn/2048302144937371919/44fe8041ddf626a87fe7.jpg"
             />
           </CardActionArea>
         </Card>
@@ -42,7 +42,7 @@ const Propaganda = () => {
           <CardActionArea>
             <img
               className={classes.media}
-              src="http://media.angiang.gov.vn/pictures/2018/12/32/congdvcongquocgia.jpg"
+              src="https://f14.photo.talk.zdn.vn/836643282698433221/19cf9670cbc7309969d6.jpg"
             />
           </CardActionArea>
         </Card>
@@ -52,7 +52,7 @@ const Propaganda = () => {
           <CardActionArea>
             <img
               className={classes.media}
-              src="https://f2.photo.talk.zdn.vn/5155484822123900880/e3dbd55a9f9364cd3d82.jpg"
+              src="https://f11.photo.talk.zdn.vn/3666640873223991712/305049e51452ef0cb643.jpg"
             />
           </CardActionArea>
         </Card>
@@ -65,19 +65,22 @@ const Propaganda = () => {
           <CardActionArea>
             <img
               className={classes.media}
-              src="http://media.angiang.gov.vn/pictures/2018/12/32/VB%20CHI%20DAO%20DIEU%20HANH.png"
+              src="https://f11.photo.talk.zdn.vn/5302077411369275592/f76e90ddcd6a36346f7b.jpg"
             />
           </CardActionArea>
         </Card>
       </a>
-      <img src="http://media.angiang.gov.vn/thu%20tuc%20hanh%20chanh/KQ-TTHC/2020/1/virus%20corona-hotline-S.jpg" />
       <img
         className={classes.media}
-        src="http://longxuyen.angiang.gov.vn/wps/wcm/connect/5467ee004289fc118e34cf3d881d2cb8/Hotline_tplx.gif?MOD=AJPERES&CACHEID=5467ee004289fc118e34cf3d881d2cb8"
+        src="https://f8.photo.talk.zdn.vn/5720011895907003075/283450870d30f66eaf21.jpg"
       />
       <img
         className={classes.media}
-        src="http://longxuyen.angiang.gov.vn/wps/wcm/connect/9dc329804289fb8e8e25cf3d881d2cb8/Hotline_tinh.gif?MOD=AJPERES&CACHEID=9dc329804289fb8e8e25cf3d881d2cb8"
+        src="https://b.f3.photo.talk.zdn.vn/3371653541661994894/b793d47d7bca8094d9db.jpg"
+      />
+      <img
+        className={classes.media}
+        src="https://b.f4.photo.talk.zdn.vn/5819871661116310597/f7677f89d03e2b60722f.jpg"
       />
     </div>
   );

@@ -18,39 +18,52 @@ import MessageDialog from "../Dialog/MessageDialogComponent";
 import { fetchData } from "../../libs/fetchData";
 import { newPost } from "../../actions/postActions";
 
-const useStyle = makeStyles(theme => ({
+const useStyle = makeStyles((theme) => ({
   buttonSave: {
     marginTop: theme.spacing(1),
     marginRight: theme.spacing(1),
-    backgroundColor: "#4fd9ff"
+    backgroundColor: "#4fd9ff",
   },
   buttonDelete: {
     marginTop: theme.spacing(1),
-    backgroundColor: "#ed4242"
+    backgroundColor: "#ed4242",
   },
   formButton: {
-    marginTop: theme.spacing(5),
-    display: "block"
+    paddingTop: "2.5rem",
+    display: "block",
+    "@media (min-width:600px)": {
+      paddingTop: "4.1rem",
+    },
+    [theme.breakpoints.up("lg")]: {
+      paddingTop: "2.5rem",
+    },
   },
   textField: {
     width: "100%",
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
   },
   select: {
     width: "70%",
     display: "flex",
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
   },
   icon: {
-    marginRight: theme.spacing(1) - 2
+    marginRight: theme.spacing(1) - 2,
   },
   title: {
-    color: "black"
+    color: "black",
+    fontSize: "2.5rem",
+    "@media (min-width:600px)": {
+      fontSize: "2rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "2.5rem",
+    },
   },
   loading: {
-    marginTop: "15%"
+    marginTop: "15%",
   },
-  div: { textAlign: "center" }
+  div: { textAlign: "center" },
 }));
 
 export const PostEditor = ({ author }) => {
@@ -70,22 +83,22 @@ export const PostEditor = ({ author }) => {
     !display && window.scrollTo({ top: 0, behavior: "smooth" });
   }, [display]);
 
-  const handleChange = prop => event => {
+  const handleChange = (prop) => (event) => {
     setReload(false);
     setPost({ ...post, [prop]: event.target.value });
   };
 
-  const getCoverImg = img => {
+  const getCoverImg = (img) => {
     setReload(false);
     setPost({ ...post, cover_img: img });
   };
 
-  const getContent = content => {
+  const getContent = (content) => {
     setReload(false);
     setPost({ ...post, content: content });
   };
 
-  const checkValid = newPost => {
+  const checkValid = (newPost) => {
     let arrError = [];
     if (newPost.title == "" || newPost.title == undefined)
       arrError.push("Title is required!");
@@ -117,7 +130,7 @@ export const PostEditor = ({ author }) => {
     const new_post = {
       ...post,
       author_id: author.id,
-      created_at: new Date().toISOString()
+      created_at: new Date().toISOString(),
     };
     newPost(new_post);
     setPost(initPost);
@@ -134,13 +147,13 @@ export const PostEditor = ({ author }) => {
 
   useEffect(() => {
     let unmounted = false;
-    fetchData("http://localhost:4000/activity/get-activity").then(res => {
+    fetchData("http://localhost:4000/activity/get-activity").then((res) => {
       if (!unmounted) {
         setActivity(
-          res.data.map(item => {
+          res.data.map((item) => {
             return {
               id: item._id,
-              name: item.activity_name
+              name: item.activity_name,
             };
           })
         );
@@ -178,7 +191,7 @@ export const PostEditor = ({ author }) => {
             defaultValue={activity[0].id}
             onChange={handleChange("activity_id")}
           >
-            {activity.map(item => {
+            {activity.map((item) => {
               return (
                 <MenuItem key={item.id} value={item.id}>
                   {item.name}
@@ -200,7 +213,7 @@ export const PostEditor = ({ author }) => {
         <CoverImgComponent isReload={reload} getImg={getCoverImg} />
         <TextEditorComponent isReload={reload} getContent={getContent} />
 
-        <FormControl className={classes.formButton}>
+        <div className={classes.formButton}>
           <Button className={classes.buttonSave} onClick={handleSave}>
             <SaveIcon className={classes.icon} />
             Save
@@ -209,14 +222,14 @@ export const PostEditor = ({ author }) => {
             <DeleteIcon className={classes.icon} />
             Cannel
           </Button>
-        </FormControl>
+        </div>
       </form>
       {display && <MessageDialog setError={setDisplay} message={notify} />}
     </div>
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { author: state.userReducer.user };
 };
 

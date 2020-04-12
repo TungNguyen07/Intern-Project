@@ -12,44 +12,64 @@ import { titleToURL } from "../../libs/changeTitleToURL";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   paper: {
-    marginBottom: "1rem"
-  }
-});
+    marginBottom: "1rem",
+    width: "100%",
+  },
+  icon: {
+    fontSize: "1.25rem",
+    "@media (min-width:600px)": {
+      fontSize: "0.750rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1.25rem",
+    },
+  },
+  input: {
+    width: "60%",
+    fontSize: "1rem",
+    "@media (min-width:600px)": {
+      fontSize: "0.700rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1rem",
+    },
+  },
+}));
 
 const SearchComponent = ({ setQuery }) => {
   const classes = useStyles();
   const [search, setSearch] = useState("");
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setSearch(event.target.value);
   };
 
   const handleClick = () => {
     if (search) {
       setQuery(search);
+      Router.push(`/search?query=${titleToURL(search.toLowerCase())}`);
     }
   };
 
   return (
     <Paper className={classes.paper}>
-      <InputBase placeholder="Search" onChange={handleChange} />
-      <Link
-        href="/search"
-        as={`/search?query=${titleToURL(search.toLowerCase())}`}
-      >
-        <IconButton onClick={handleClick}>
-          <SearchIcon />
-        </IconButton>
-      </Link>
+      <InputBase
+        className={classes.input}
+        placeholder="Search"
+        onChange={handleChange}
+      />
+      <IconButton onClick={handleClick}>
+        <SearchIcon className={classes.icon} />
+      </IconButton>
     </Paper>
   );
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    setQuery: bindActionCreators(userActions.setQuery, dispatch)
+    setQuery: bindActionCreators(userActions.setQuery, dispatch),
   };
 };
 

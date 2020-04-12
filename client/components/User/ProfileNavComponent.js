@@ -15,30 +15,44 @@ import { bindActionCreators } from "redux";
 
 import { userActions } from "../../actions/userActions";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   title: {
     backgroundColor: "#4fd9ff",
     padding: "1px",
-    lineHeight: 1
+    lineHeight: 1,
+    fontSize: "1.25rem",
+    "@media (min-width:600px)": {
+      fontSize: "0.875rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1.25rem",
+    },
   },
 
   item: {
     lineHeight: "1.3",
-    paddingTop: "4px"
+    paddingTop: "4px",
+    fontSize: "1rem",
+    "@media (min-width:600px)": {
+      fontSize: "0.750rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1rem",
+    },
   },
   link: {
     textDecoration: "none",
     "&:visited": {
-      color: "inherit"
-    }
+      color: "inherit",
+    },
   },
   div: {
     width: "85%",
-    textAlign: "center"
+    textAlign: "center",
   },
   button: {
-    padding: "8px 16px 8px 16px"
-  }
+    padding: "8px 16px 8px 16px",
+  },
 }));
 
 export const ProfileNav = ({ user, Signout }) => {
@@ -104,11 +118,11 @@ export const ProfileNav = ({ user, Signout }) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { user: state.userReducer.user };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return { Signout: bindActionCreators(userActions.Signout, dispatch) };
 };
 

@@ -1,11 +1,17 @@
 import React from "react";
 import { makeStyles } from "@material-ui/styles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   image: {
     width: "100%",
-    height: 200
-  }
+    height: "12rem",
+    "@media (min-width:600px)": {
+      height: "8rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      height: "12rem",
+    },
+  },
 }));
 
 const Banner = () => {

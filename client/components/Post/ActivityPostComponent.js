@@ -9,21 +9,28 @@ import CardPostItem from "./CardPostItemComponent";
 import { fetchData } from "../../libs/fetchData";
 const { SERVER_URL } = process.env;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   loading: {
-    marginTop: "15%"
+    marginTop: "15%",
   },
   div: { textAlign: "center" },
   card: { marginTop: theme.spacing(1) },
   title: {
     color: "black",
     textAlign: "start",
-    margin: "0px 0px 16px 8px"
+    margin: "0px 0px 16px 8px",
+    fontSize: "1.25rem",
+    "@media (min-width:600px)": {
+      fontSize: "0.750rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1.25rem",
+    },
   },
   pagination: {
     width: "fit-content",
-    margin: "auto"
-  }
+    margin: "auto",
+  },
 }));
 
 const ActivityPostComponent = ({ activity_id }) => {
@@ -37,10 +44,10 @@ const ActivityPostComponent = ({ activity_id }) => {
   useEffect(() => {
     const id = activity_id || localStorage.getItem("activity_id");
     let unmounted = false;
-    fetchData(`${SERVER_URL}/activity/${id}/${initPage}`).then(res => {
+    fetchData(`${SERVER_URL}/activity/${id}/${initPage}`).then((res) => {
       if (!unmounted) {
         setPost(
-          res.data.activity_post.map(item => {
+          res.data.activity_post.map((item) => {
             return {
               cover_img: item.cover_img,
               title: item.title,
@@ -48,7 +55,7 @@ const ActivityPostComponent = ({ activity_id }) => {
                 item.description.length > 200
                   ? item.description.slice(0, 200) + "..."
                   : item.description,
-              _id: item._id
+              _id: item._id,
             };
           })
         );
@@ -77,7 +84,7 @@ const ActivityPostComponent = ({ activity_id }) => {
       <Typography className={classes.title} variant="h5">
         {title}
       </Typography>
-      {post.map(item => (
+      {post.map((item) => (
         <CardPostItem className={classes.card} key={item._id} post={item} />
       ))}
       <Pagination
@@ -91,7 +98,7 @@ const ActivityPostComponent = ({ activity_id }) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { activity_id: state.activityReducer.activity_id };
 };
 

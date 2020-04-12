@@ -12,31 +12,46 @@ import { connect } from "react-redux";
 import { titleToURL } from "../../libs/changeTitleToURL";
 import { getPost } from "../../actions/postActions";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "48%",
     marginBottom: "1rem",
     display: "inline-flex",
     margin: "0 1% 1rem 1%",
-    color: "black"
+    color: "black",
   },
   cardActionArea: {
-    maxHeight: "200px",
-    height: "140px"
+    height: "9rem",
   },
   media: {
     maxWidth: "30%",
+    maxHeight: "50%",
     float: "left",
-    margin: "0.5rem 0.5rem 0.1rem 1rem"
+    margin: "0.5rem 0.5rem 0.1rem 1rem",
   },
   content: {
-    textAlign: "left"
+    textAlign: "left",
   },
   title: {
     lineHeight: "1.3",
     marginTop: -theme.spacing(1),
-    fontSize: "0.9rem"
-  }
+    fontSize: "0.9rem",
+    "@media (min-width:600px)": {
+      fontSize: "0.650rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "0.9rem",
+    },
+  },
+  description: {
+    fontSize: "0.800rem",
+    "@media (min-width:600px)": {
+      fontSize: "0.600rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "0.800rem",
+    },
+  },
 }));
 
 const CardPost = ({ post, getPost }) => {
@@ -64,7 +79,12 @@ const CardPost = ({ post, getPost }) => {
             >
               {post.title}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
+            <Typography
+              className={classes.description}
+              variant="body2"
+              color="textSecondary"
+              component="p"
+            >
               {post.description}
             </Typography>
           </CardContent>
@@ -74,9 +94,9 @@ const CardPost = ({ post, getPost }) => {
   );
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    getPost: bindActionCreators(getPost, dispatch)
+    getPost: bindActionCreators(getPost, dispatch),
   };
 };
 

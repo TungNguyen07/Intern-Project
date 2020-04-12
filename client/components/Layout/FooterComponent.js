@@ -1,42 +1,54 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     paddingTop: theme.spacing(2),
     lineHeight: "70%",
     maxWidth: "90%",
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
   },
   title: {
     fontWeight: "bold",
-    cursor: "pointer"
+    cursor: "pointer",
+    fontSize: "1.5rem",
+    "@media (min-width:600px)": {
+      fontSize: "1rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1.5rem",
+    },
   },
   card: {
     padding: theme.spacing(1.5),
-    background: "linear-gradient(#a3f1ff,#03c8ff)"
+    background: "linear-gradient(#a3f1ff,#03c8ff)",
+    "& p": {
+      "@media (min-width:600px)": {
+        fontSize: "0.6rem",
+      },
+      [theme.breakpoints.up("md")]: {
+        fontSize: "0.875rem",
+      },
+    },
   },
   link: {
-    float: "right"
+    color: "black",
+    float: "right",
+    textDecoration: "none",
+    "& visited": {
+      textDecoration: "none",
+    },
   },
   grid: {
-    marginLeft: "11%"
-  }
+    marginLeft: "11%",
+  },
 }));
 
 const Footer = () => {
   const classes = useStyles();
-  const [isSignedIn, setIsSignedIn] = useState(false);
-
-  useEffect(() => {
-    const access_user = JSON.parse(localStorage.getItem("access_user"));
-    if (access_user) {
-      if (access_user.isSignedIn) setIsSignedIn(true);
-    }
-  });
 
   return (
     <div className={classes.root}>
@@ -57,11 +69,9 @@ const Footer = () => {
             <a href="mailto:ttvhtt.longxuyen@angiang.gov.vn">
               ttvhtt.longxuyen@angiang.gov.vn
             </a>
-            {!isSignedIn && (
-              <a href="/signin" className={classes.link}>
-                Signin
-              </a>
-            )}
+            <Link href="/signin">
+              <a className={classes.link}>Signin</a>
+            </Link>
           </p>
         </Card>
       </Grid>

@@ -12,22 +12,22 @@ import CenterLayout from "./CenterLayoutComponent";
 const paper = {
   padding: "9px",
   textAlign: "center",
-  color: "#757575"
+  color: "#757575",
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
-    ...paper
+    ...paper,
   },
   sticky: {
     ...paper,
     position: "fixed",
     top: 0,
-    width: "20%"
-  }
+    width: "20%",
+  },
 }));
 
-const Layout = props => {
+const Layout = (props) => {
   const classes = useStyles();
   const [isSticky, setSticky] = useState(false);
 

@@ -22,35 +22,35 @@ import { bindActionCreators } from "redux";
 import { userActions } from "../../actions/userActions";
 import MessageDialog from "./MessageDialogComponent";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   icon: {
-    fontSize: "3rem"
+    fontSize: "2rem",
   },
   button: {
-    marginLeft: theme.spacing(2),
-    marginTop: "-1rem"
+    width: "2.9rem",
+    height: "2.9rem",
   },
   infoItem: {
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
   },
   datePicker: {
     marginBottom: theme.spacing(2),
-    width: "fit-content"
+    width: "fit-content",
   },
   gender: {
     display: "flex",
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
   },
   genderGroup: {
     display: "block",
-    marginLeft: theme.spacing(2)
+    marginLeft: theme.spacing(2),
   },
   genderTitle: {
-    marginTop: theme.spacing(2) - 2
+    marginTop: theme.spacing(2) - 2,
   },
   form: {
-    width: "100%"
-  }
+    width: "100%",
+  },
 }));
 
 export const EditInfoComponent = ({ user, update }) => {
@@ -75,28 +75,28 @@ export const EditInfoComponent = ({ user, update }) => {
     setError([]);
   };
 
-  const handleDateChange = date => {
+  const handleDateChange = (date) => {
     setInfo({ ...info, birth_date: date.toISOString() });
   };
 
-  const handleChange = prop => event => {
+  const handleChange = (prop) => (event) => {
     setInfo({ ...info, [prop]: event.target.value });
   };
 
-  const validateEmail = email => {
+  const validateEmail = (email) => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   };
 
-  const validatePhone = phone => {
+  const validatePhone = (phone) => {
     return isNaN(phone);
   };
 
-  const checkValid = infor => {
+  const checkValid = (infor) => {
     let arrError = [];
     if (!validateEmail(infor.email) || infor.email == "")
       arrError.push("Invalid Email!");
-    if (validatePhone(infor.phone_number))
+    if (validatePhone(infor.phone_number) || infor.phone_number.length < 10)
       arrError.push("Invalid Number Phone!");
     if (infor.fullname == "") arrError.push("Fullname is required!");
     if (infor.address == "") arrError.push("Address is required!");
@@ -178,7 +178,7 @@ export const EditInfoComponent = ({ user, update }) => {
                 value={info.birth_date}
                 onChange={handleDateChange}
                 KeyboardButtonProps={{
-                  "aria-label": "change date"
+                  "aria-label": "change date",
                 }}
               />
             </MuiPickersUtilsProvider>
@@ -231,13 +231,13 @@ export const EditInfoComponent = ({ user, update }) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { user: state.userReducer.user };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    update: bindActionCreators(userActions.updateInfo, dispatch)
+    update: bindActionCreators(userActions.updateInfo, dispatch),
   };
 };
 

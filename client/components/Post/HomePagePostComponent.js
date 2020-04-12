@@ -11,9 +11,9 @@ import HomeActivityPostComponent from "./HomeActivityPostComponent";
 
 const { SERVER_URL } = process.env;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   loading: {
-    marginTop: "15%"
+    marginTop: "15%",
   },
   div: { textAlign: "center" },
   card: { marginTop: theme.spacing(1) },
@@ -21,19 +21,26 @@ const useStyles = makeStyles(theme => ({
     color: "black",
     textAlign: "start",
     cursor: "pointer",
-    width: "fit-content"
+    width: "fit-content",
+    fontSize: "1.25rem",
+    "@media (min-width:600px)": {
+      fontSize: "0.875rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1.25rem",
+    },
   },
   pagination: {
     width: "fit-content",
-    margin: "auto"
+    margin: "auto",
   },
   span: {
     margin: "0px 8px 8px 8px",
     background: "linear-gradient(#a3f1ff,#03c8ff)",
     padding: "3px 0px 0px 8px",
     borderRadius: "4px",
-    display: "block"
-  }
+    display: "block",
+  },
 }));
 
 const HomePagePostComponent = () => {
@@ -44,10 +51,10 @@ const HomePagePostComponent = () => {
 
   useEffect(() => {
     let unmounted = false;
-    fetchData(`${SERVER_URL}/post/get-some-post`).then(res => {
+    fetchData(`${SERVER_URL}/post/get-some-post`).then((res) => {
       if (!unmounted) {
         setPost(
-          res.data.somePost.map(item => {
+          res.data.somePost.map((item) => {
             return {
               cover_img: item.cover_img,
               title: item.title,
@@ -55,7 +62,7 @@ const HomePagePostComponent = () => {
                 item.description.length > 100
                   ? item.description.slice(0, 100) + "..."
                   : item.description,
-              _id: item._id
+              _id: item._id,
             };
           })
         );
@@ -83,10 +90,10 @@ const HomePagePostComponent = () => {
           </Typography>
         </span>
       </Link>
-      {post.map(item => (
+      {post.map((item) => (
         <CardPostItem className={classes.card} key={item._id} post={item} />
       ))}
-      {activityList.map(item => {
+      {activityList.map((item) => {
         return (
           <HomeActivityPostComponent
             key={item._id}

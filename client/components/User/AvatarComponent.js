@@ -14,33 +14,41 @@ import { bindActionCreators } from "redux";
 import { userActions } from "../../actions/userActions";
 import MessageDialog from "../Dialog/MessageDialogComponent";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   large: {
-    width: theme.spacing(21),
-    height: theme.spacing(21)
+    width: "12rem",
+    height: "12rem",
+    "@media (min-width:600px)": {
+      width: "9rem",
+      height: "9rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      width: "12rem",
+      height: "12rem",
+    },
   },
   card: {
     borderRadius: "50%",
     width: theme.spacing(21),
     height: theme.spacing(21),
     marginTop: "2%",
-    marginLeft: "15%"
+    marginLeft: "15%",
   },
   reviewAvatar: {
     width: theme.spacing(21),
     height: theme.spacing(21),
-    margin: "auto"
+    margin: "auto",
   },
   button: {
     display: "flex",
-    margin: "auto"
+    margin: "auto",
   },
   input: {
     width: "100%",
     height: "100%",
     opacity: 0,
-    position: "absolute"
-  }
+    position: "absolute",
+  },
 }));
 
 export const AvatarComponent = ({ user, update }) => {
@@ -68,8 +76,8 @@ export const AvatarComponent = ({ user, update }) => {
     reader.readAsDataURL(file);
   }
 
-  const onDrop = event => {
-    base64(event.target.files, function(data) {
+  const onDrop = (event) => {
+    base64(event.target.files, function (data) {
       setAvatar(data);
     });
   };
@@ -127,11 +135,11 @@ export const AvatarComponent = ({ user, update }) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { user: state.userReducer.user };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return { update: bindActionCreators(userActions.updateInfo, dispatch) };
 };
 

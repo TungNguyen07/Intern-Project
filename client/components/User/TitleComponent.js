@@ -10,28 +10,35 @@ import Router from "next/router";
 
 import { userActions } from "../../actions/userActions";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: theme.spacing(4)
+    marginTop: theme.spacing(4),
   },
 
   icon: {
-    fontSize: "3rem"
+    fontSize: "3rem",
   },
   radio: {
-    fontSize: "1em"
+    fontSize: "1em",
   },
   top: {
     display: "flex",
-    marginBottom: "-1rem"
+    marginBottom: "-1rem",
   },
   title: {
     margin: "auto",
-    paddingTop: "1rem"
+    paddingTop: "1rem",
+    fontSize: "1.6rem",
+    "@media (min-width:600px)": {
+      fontSize: "1.2rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1.6rem",
+    },
   },
   signout: {
-    textAlign: "end"
-  }
+    textAlign: "end",
+  },
 }));
 
 export const TitleComponent = ({ user, Signout }) => {
@@ -62,11 +69,11 @@ export const TitleComponent = ({ user, Signout }) => {
   );
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return { Signout: bindActionCreators(userActions.Signout, dispatch) };
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { user: state.userReducer.user };
 };
 

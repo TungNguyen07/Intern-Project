@@ -4,7 +4,6 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -17,42 +16,80 @@ const { SERVER_URL } = process.env;
 import { titleToURL } from "../../libs/changeTitleToURL";
 import { getPost } from "../../actions/postActions";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: theme.spacing(4)
+    marginTop: theme.spacing(4),
   },
   hr: {
-    width: "80%"
+    width: "80%",
   },
   cardImage: {
     borderRadius: 5,
-    maxWidth: "100%"
+    width: "90%",
+    height: "13rem",
+    "@media (min-width:600px)": {
+      height: "9rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      height: "13rem",
+    },
   },
   cardItem: {
     width: "30%",
     margin: "2% 1% 1% 2%",
     "& p": {
-      textAlign: "start"
-    }
+      textAlign: "start",
+    },
   },
   title: {
     paddingTop: "1rem",
-    display: "inline-flex"
+    display: "inline-flex",
+    fontSize: "1.6rem",
+    "@media (min-width:600px)": {
+      fontSize: "1.2rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1.6rem",
+    },
   },
   icon: {
     fontSize: "2.5rem",
     marginBottom: "-0.5rem",
-    marginLeft: theme.spacing(1)
+    marginLeft: theme.spacing(1),
+
+    "@media (min-width:600px)": {
+      fontSize: "2rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "2.5rem",
+    },
   },
   link: {
     "&:visited": {
-      color: "inherit"
-    }
+      color: "inherit",
+    },
   },
   loading: {
-    marginTop: "15%"
+    marginTop: "15%",
   },
-  div: { textAlign: "center" }
+  div: { textAlign: "center" },
+  postTitle: {
+    fontSize: "1.3rem",
+    "@media (min-width:600px)": {
+      fontSize: "1rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1.3rem",
+    },
+  },
+  description: {
+    "@media (min-width:600px)": {
+      fontSize: "0.8rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "0.875rem",
+    },
+  },
 }));
 
 export const UserPostComponent = ({ user, getPost }) => {
@@ -63,24 +100,26 @@ export const UserPostComponent = ({ user, getPost }) => {
   useEffect(() => {
     let unmounted = false;
     if (user.id) {
-      fetchData(`${SERVER_URL}/post/get-post-by-user/${user.id}`).then(res => {
-        if (!unmounted) {
-          setPost(
-            res.data.map(item => {
-              return {
-                cover_img: item.cover_img,
-                title: item.title,
-                description:
-                  item.description.length > 100
-                    ? item.description.slice(0, 100) + "..."
-                    : item.description,
-                _id: item._id
-              };
-            })
-          );
-          setFetching(false);
+      fetchData(`${SERVER_URL}/post/get-post-by-user/${user.id}`).then(
+        (res) => {
+          if (!unmounted) {
+            setPost(
+              res.data.map((item) => {
+                return {
+                  cover_img: item.cover_img,
+                  title: item.title,
+                  description:
+                    item.description.length > 100
+                      ? item.description.slice(0, 100) + "..."
+                      : item.description,
+                  _id: item._id,
+                };
+              })
+            );
+            setFetching(false);
+          }
         }
-      });
+      );
     }
 
     return () => {
@@ -104,7 +143,7 @@ export const UserPostComponent = ({ user, getPost }) => {
         <hr className={classes.hr} />
         <div>
           <Grid container spacing={0}>
-            {post.map(item => {
+            {post.map((item) => {
               return (
                 <Link
                   href="/post/[post]"
@@ -117,10 +156,16 @@ export const UserPostComponent = ({ user, getPost }) => {
                   >
                     <img className={classes.cardImage} src={item.cover_img} />
                     <CardContent>
-                      <Typography gutterBottom variant="h5" component="h2">
+                      <Typography
+                        className={classes.postTitle}
+                        gutterBottom
+                        variant="h5"
+                        component="h2"
+                      >
                         {item.title}
                       </Typography>
                       <Typography
+                        className={classes.description}
                         variant="body2"
                         color="textSecondary"
                         component="p"
@@ -139,13 +184,13 @@ export const UserPostComponent = ({ user, getPost }) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { user: state.userReducer.user };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    getPost: bindActionCreators(getPost, dispatch)
+    getPost: bindActionCreators(getPost, dispatch),
   };
 };
 

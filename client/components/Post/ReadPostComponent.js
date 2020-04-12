@@ -10,35 +10,38 @@ const useStyles = makeStyles({
   content: {
     padding: 15,
     "& p": {
-      textAlign: "start"
+      textAlign: "start",
     },
     "& img": {
       margin: "auto",
       display: "flex",
-      maxWidth: "100%"
-    }
+      maxWidth: "100%",
+    },
   },
   loading: {
-    marginTop: "15%"
+    marginTop: "15%",
   },
   div: { textAlign: "center" },
   author: {
     textAlign: "end",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   created_at: {
     textAlign: "start",
-    marginLeft: 16
+    marginLeft: 16,
   },
   description: {
     textAlign: "start",
     fontWeight: "bold",
-    padding: "0px 16px 0px 16px"
+    padding: "0px 16px 0px 16px",
   },
   post: {
     color: "black",
-    paddingRight: "1rem"
-  }
+    paddingRight: "1rem",
+  },
+  title: {
+    fontSize: "1.5rem",
+  },
 });
 
 const ReadPostComponent = () => {
@@ -49,7 +52,7 @@ const ReadPostComponent = () => {
   useEffect(() => {
     const post_id = localStorage.getItem("post_id");
     let unmounted = false;
-    fetchData(`${SERVER_URL}/post/get-post/${post_id}`).then(res => {
+    fetchData(`${SERVER_URL}/post/get-post/${post_id}`).then((res) => {
       if (!unmounted) {
         setPost(res.data);
         setFetching(false);
@@ -66,7 +69,7 @@ const ReadPostComponent = () => {
     </div>
   ) : (
     <div className={classes.post}>
-      <h1>{post.title}</h1>
+      <h1 className={classes.title}>{post.title}</h1>
       <p className={classes.created_at}>
         Created at: {new Date(post.created_at).toLocaleDateString()}
       </p>
@@ -79,11 +82,5 @@ const ReadPostComponent = () => {
     </div>
   );
 };
-
-// const mapStateToProps = state => {
-//   return {
-//     post_id: state.postReducer.post_id
-//   };
-// };
 
 export default ReadPostComponent;

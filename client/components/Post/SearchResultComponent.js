@@ -9,21 +9,28 @@ import { fetchData } from "../../libs/fetchData";
 import { connect } from "react-redux";
 const { SERVER_URL } = process.env;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   loading: {
-    marginTop: "15%"
+    marginTop: "15%",
   },
   div: { textAlign: "center" },
   card: { marginTop: theme.spacing(1) },
   title: {
     color: "black",
     textAlign: "start",
-    margin: "0px 0px 16px 8px"
+    margin: "0px 0px 16px 8px",
+    fontSize: "1.5rem",
+    "@media (min-width:600px)": {
+      fontSize: "0.875rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1.5rem",
+    },
   },
   pagination: {
     width: "fit-content",
-    margin: "auto"
-  }
+    margin: "auto",
+  },
 }));
 
 const SearchResultComponent = ({ query }) => {
@@ -37,22 +44,22 @@ const SearchResultComponent = ({ query }) => {
   useEffect(() => {
     let unmounted = false;
     const q = query || localStorage.getItem("query");
-    fetchData(`${SERVER_URL}/search/${q}/${initPage}`).then(res => {
+    fetchData(`${SERVER_URL}/search/${q}/${initPage}`).then((res) => {
       if (!unmounted) {
         setPost(
-          res.data.result.map(item => {
+          res.data.result.map((item) => {
             return {
               cover_img: item.cover_img,
               title: item.title,
               description:
-                item.description.length > 200
-                  ? item.description.slice(0, 200) + "..."
+                item.description.length > 100
+                  ? item.description.slice(0, 100) + "..."
                   : item.description,
-              _id: item._id
+              _id: item._id,
             };
           })
         );
-        setLength(res.data.count);
+        res.data.count ? setLength(res.data.count) : setLength(1);
         setTitle(q);
       }
       setFetching(false);
@@ -77,9 +84,13 @@ const SearchResultComponent = ({ query }) => {
       <Typography className={classes.title} variant="h5">
         Search: {title}
       </Typography>
-      {post.map(item => (
-        <CardPostItem className={classes.card} key={item._id} post={item} />
-      ))}
+      {post.length ? (
+        post.map((item) => (
+          <CardPostItem className={classes.card} key={item._id} post={item} />
+        ))
+      ) : (
+        <h4>Nothing found!</h4>
+      )}
       <Pagination
         className={classes.pagination}
         count={length}
@@ -91,9 +102,9 @@ const SearchResultComponent = ({ query }) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    query: state.userReducer.search
+    query: state.userReducer.search,
   };
 };
 

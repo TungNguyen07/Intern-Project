@@ -15,23 +15,37 @@ import { connect } from "react-redux";
 import { fetchData } from "../../libs/fetchData";
 import { activityActions } from "../../actions/activityActions";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   title: {
     backgroundColor: "#4fd9ff",
     padding: "1px",
-    lineHeight: 1
+    lineHeight: 1,
+    fontSize: "1.25rem",
+    "@media (min-width:600px)": {
+      fontSize: "0.875rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1.25rem",
+    },
   },
   item: {
     lineHeight: "1.3",
-    paddingTop: "4px"
+    paddingTop: "4px",
+    fontSize: "1rem",
+    "@media (min-width:600px)": {
+      fontSize: "0.750rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1rem",
+    },
   },
   div: {
     width: "85%",
-    textAlign: "center"
+    textAlign: "center",
   },
   button: {
-    padding: "8px 16px 8px 16px"
-  }
+    padding: "8px 16px 8px 16px",
+  },
 }));
 
 const Nav = ({ activeActivity }) => {
@@ -45,13 +59,13 @@ const Nav = ({ activeActivity }) => {
 
   useEffect(() => {
     let unmouted = false;
-    fetchData("http://localhost:4000/activity/get-activity").then(res => {
+    fetchData("http://localhost:4000/activity/get-activity").then((res) => {
       if (!unmouted) {
         setActivity(
-          res.data.map(item => {
+          res.data.map((item) => {
             return {
               id: item._id,
-              name: item.activity_name
+              name: item.activity_name,
             };
           })
         );
@@ -62,7 +76,7 @@ const Nav = ({ activeActivity }) => {
     };
   }, []);
 
-  const dispatchActivity = activity_id => {
+  const dispatchActivity = (activity_id) => {
     activeActivity(activity_id);
   };
 
@@ -82,7 +96,7 @@ const Nav = ({ activeActivity }) => {
               <span>Home</span>
             </Link>
           </MenuItem>
-          {activity.map(item => {
+          {activity.map((item) => {
             return (
               <MenuItem
                 key={item.id}
@@ -104,9 +118,9 @@ const Nav = ({ activeActivity }) => {
   );
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    activeActivity: bindActionCreators(activityActions.setActivity, dispatch)
+    activeActivity: bindActionCreators(activityActions.setActivity, dispatch),
   };
 };
 

@@ -4,26 +4,36 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import EditInfoComponent from "../Dialog/EditInfoComponent";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   fullname: {
     marginLeft: "5rem",
-    marginBottom: "1rem"
+    marginBottom: "1rem",
+    fontSize: "2.3rem",
+    "@media (min-width:600px)": {
+      fontSize: "1.6rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "2.3rem",
+    },
   },
   otherInfo: {
     textAlign: "left",
     marginLeft: "5rem",
-    marginBottom: "1rem"
+    marginBottom: "1rem",
   },
   groupInfo: {
-    display: "flex"
+    display: "flex",
   },
   displayInfo: {
     marginLeft: "3rem",
-    textAlign: "left"
+    textAlign: "left",
   },
   root: {
-    display: "flex"
-  }
+    display: "flex",
+  },
+  div: {
+    marginTop: "-0.550rem",
+  },
 }));
 
 export const InfoComponent = ({ user }) => {
@@ -41,11 +51,14 @@ export const InfoComponent = ({ user }) => {
             <Typography variant="h3" className={classes.fullname}>
               {user.fullname}
             </Typography>
-            <EditInfoComponent />
+            <div className={classes.div}>
+              <EditInfoComponent />
+            </div>
           </div>
 
           <div className={classes.groupInfo}>
             <div className={classes.otherInfo}>
+              <Typography variant="subtitle1">ID: </Typography>
               <Typography variant="subtitle1">Gender: </Typography>
               <Typography variant="subtitle1">Birthday: </Typography>
               <Typography variant="subtitle1">Phone: </Typography>
@@ -53,6 +66,7 @@ export const InfoComponent = ({ user }) => {
               <Typography variant="subtitle1">Address: </Typography>
             </div>
             <div className={classes.displayInfo}>
+              <Typography variant="subtitle1">{user.staffId}</Typography>
               <Typography variant="subtitle1">
                 {parseInt(user.gender) ? "Male" : "Female"}
               </Typography>

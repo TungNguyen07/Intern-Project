@@ -12,19 +12,19 @@ import { connect } from "react-redux";
 const paper = {
   padding: "8px",
   textAlign: "center",
-  color: "#757575"
+  color: "#757575",
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
-    ...paper
+    ...paper,
   },
   sticky: {
     ...paper,
     position: "fixed",
     top: 0,
-    width: "20%"
-  }
+    width: "20%",
+  },
 }));
 
 const PostLayout = ({ user, Right }) => {
@@ -81,7 +81,7 @@ const PostLayout = ({ user, Right }) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { user: state.userReducer.user };
 };
 
