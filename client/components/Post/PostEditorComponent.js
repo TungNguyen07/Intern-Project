@@ -104,7 +104,11 @@ export const PostEditor = ({ author }) => {
       arrError.push("Title is required!");
     if (newPost.description == "" || newPost.description == undefined)
       arrError.push("Description is required!");
-    if (newPost.content == "" || newPost.content == undefined)
+    if (
+      newPost.content == "" ||
+      newPost.content == undefined ||
+      newPost.content == "<p><br></p>"
+    )
       arrError.push("Content is required!");
     if (arrError.length) {
       setNotify(arrError);
@@ -113,6 +117,7 @@ export const PostEditor = ({ author }) => {
       arrError.push(
         "Make new post successfully. Waiting for admin approve your post!"
       );
+      !newPost.activity_id && (newPost.activity_id = activity[0].id);
       setNotify(arrError);
       return true;
     }

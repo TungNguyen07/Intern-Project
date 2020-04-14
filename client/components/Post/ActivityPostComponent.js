@@ -59,7 +59,7 @@ const ActivityPostComponent = ({ activity_id }) => {
             };
           })
         );
-        setLength(res.data.count);
+        res.data.count ? setLength(res.data.count) : setLength(1);
         setTitle(res.data.activity.activity_name);
       }
       setFetching(false);
@@ -84,9 +84,13 @@ const ActivityPostComponent = ({ activity_id }) => {
       <Typography className={classes.title} variant="h5">
         {title}
       </Typography>
-      {post.map((item) => (
-        <CardPostItem className={classes.card} key={item._id} post={item} />
-      ))}
+      {post.length ? (
+        post.map((item) => (
+          <CardPostItem className={classes.card} key={item._id} post={item} />
+        ))
+      ) : (
+        <h4>Nothing found!</h4>
+      )}
       <Pagination
         className={classes.pagination}
         count={length}
