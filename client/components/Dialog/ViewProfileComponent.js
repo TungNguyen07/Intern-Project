@@ -12,27 +12,27 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { fetchData } from "../../libs/fetchData";
 const { SERVER_URL } = process.env;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   otherInfo: {
     textAlign: "left",
     marginLeft: "5rem",
-    marginBottom: "1rem"
+    marginBottom: "1rem",
   },
   groupInfo: {
-    display: "flex"
+    display: "flex",
   },
   displayInfo: {
     marginLeft: "3rem",
-    textAlign: "left"
+    textAlign: "left",
   },
   loading: {
-    marginTop: "15%"
+    marginTop: "15%",
   },
   div: { textAlign: "center" },
   reviewAvatar: {
     width: theme.spacing(21),
-    height: theme.spacing(21)
-  }
+    height: theme.spacing(21),
+  },
 }));
 
 const ViewProfileComponent = ({ user, isOpen, isClose }) => {
@@ -53,13 +53,14 @@ const ViewProfileComponent = ({ user, isOpen, isClose }) => {
 
   useEffect(() => {
     let unmounted = false;
-    if (user)
-      fetchData(`${SERVER_URL}/profile/${user.staffId}`).then(res => {
+    if (user) {
+      fetchData(`${SERVER_URL}/profile/${user.staffId}`).then((res) => {
         if (!unmounted) {
           setInfo(res.data);
           setFetching(false);
         }
       });
+    }
     return () => {
       unmounted = true;
     };

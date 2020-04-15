@@ -16,23 +16,23 @@ const useStyles = makeStyles({
   description: {
     textAlign: "start",
     fontWeight: "bold",
-    padding: "0px 16px 0px 16px"
+    padding: "0px 16px 0px 16px",
   },
   loading: {
-    marginTop: "15%"
+    marginTop: "15%",
   },
   div: { textAlign: "center" },
   content: {
     padding: 15,
     "& p": {
-      textAlign: "start"
+      textAlign: "start",
     },
     "& img": {
       margin: "auto",
       display: "flex",
-      maxWidth: "100%"
-    }
-  }
+      maxWidth: "100%",
+    },
+  },
 });
 
 const PreviewPostComponent = ({ rowData, isOpen, isClose }) => {
@@ -50,13 +50,13 @@ const PreviewPostComponent = ({ rowData, isOpen, isClose }) => {
     let unmounted = false;
     if (rowData._id) {
       fetchData(`${SERVER_URL}/post/get-post/${rowData._id}`)
-        .then(res => {
+        .then((res) => {
           if (!unmounted) {
             setPost(res.data);
             setFetching(false);
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     }
@@ -75,7 +75,7 @@ const PreviewPostComponent = ({ rowData, isOpen, isClose }) => {
     </div>
   ) : (
     <div>
-      <Dialog open={open} onClose={handleClose} scroll="paper">
+      <Dialog maxWidth="md" open={open} onClose={handleClose} scroll="paper">
         <DialogTitle>Preview</DialogTitle>
         <DialogContent dividers={true}>
           <Typography variant="h5">{post.title}</Typography>

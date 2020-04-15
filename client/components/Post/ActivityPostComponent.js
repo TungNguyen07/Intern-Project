@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ActivityPostComponent = ({ activity_id }) => {
+const ActivityPostComponent = ({ setTitleActivity, activity_id }) => {
   const classes = useStyles();
   const [post, setPost] = useState([]);
   const [isFetching, setFetching] = useState(true);
@@ -59,8 +59,9 @@ const ActivityPostComponent = ({ activity_id }) => {
             };
           })
         );
-        res.data.count ? setLength(res.data.count) : setLength(1);
+        setLength(res.data.count);
         setTitle(res.data.activity.activity_name);
+        setTitleActivity(res.data.activity.activity_name);
       }
       setFetching(false);
     });

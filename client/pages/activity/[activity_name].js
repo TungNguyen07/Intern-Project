@@ -15,22 +15,23 @@ import ProfileNav from "../../components/User/ProfileNavComponent";
 import { userActions } from "../../actions/userActions";
 import { postData } from "../../libs/postData";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   loading: {
-    marginTop: "15%"
+    marginTop: "15%",
   },
-  div: { textAlign: "center" }
+  div: { textAlign: "center" },
 }));
 
 export const Activity = ({ user, setUserDetail }) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
+  const [titleActivity, setTitleActivity] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     let unmounted = false;
     postData("http://localhost:4000/check-token", { token })
-      .then(res => {
+      .then((res) => {
         if (!unmounted) {
           if (res.fullname) {
             setUserDetail(res);
@@ -38,7 +39,7 @@ export const Activity = ({ user, setUserDetail }) => {
           } else return;
         }
       })
-      .catch(err => {
+      .catch((err) => {
         return err;
       });
     setLoading(false);
@@ -53,7 +54,7 @@ export const Activity = ({ user, setUserDetail }) => {
     </div>
   ) : (
     <div>
-      <Header title="Home" />
+      <Header title={titleActivity} />
       <Banner />
       <Layout
         Left={
@@ -68,7 +69,7 @@ export const Activity = ({ user, setUserDetail }) => {
           )
         }
         Right={<Propaganda />}
-        Center={<ActivityPostComponent />}
+        Center={<ActivityPostComponent setTitleActivity={setTitleActivity} />}
       >
         {" "}
       </Layout>
@@ -77,15 +78,15 @@ export const Activity = ({ user, setUserDetail }) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    user: state.userReducer.user
+    user: state.userReducer.user,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    setUserDetail: bindActionCreators(userActions.setUserDetail, dispatch)
+    setUserDetail: bindActionCreators(userActions.setUserDetail, dispatch),
   };
 };
 

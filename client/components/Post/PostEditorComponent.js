@@ -117,7 +117,6 @@ export const PostEditor = ({ author }) => {
       arrError.push(
         "Make new post successfully. Waiting for admin approve your post!"
       );
-      !newPost.activity_id && (newPost.activity_id = activity[0].id);
       setNotify(arrError);
       return true;
     }

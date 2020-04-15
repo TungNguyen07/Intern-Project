@@ -4,18 +4,17 @@ import { makeStyles } from "@material-ui/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import Checkbox from "@material-ui/core/Checkbox";
 const { SERVER_URL } = process.env;
 
 import { fetchData } from "../../libs/fetchData";
 import { adminActions } from "../../actions/adminActions";
 import MessageDialog from "../Dialog/MessageDialogComponent";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   loading: {
-    marginTop: "15%"
+    marginTop: "15%",
   },
-  div: { textAlign: "center" }
+  div: { textAlign: "center" },
 }));
 
 const ActivityTableComponent = ({ isChange }) => {
@@ -23,7 +22,7 @@ const ActivityTableComponent = ({ isChange }) => {
   const columns = [
     { title: "Activity", field: "activity_name" },
     { title: "Description", field: "description" },
-    { title: "Id", field: "_id", hidden: true }
+    { title: "Id", field: "_id", hidden: true },
   ];
 
   const [activity, setActivity] = useState([]);
@@ -32,14 +31,14 @@ const ActivityTableComponent = ({ isChange }) => {
 
   useEffect(() => {
     let unmouted = false;
-    fetchData(`${SERVER_URL}/activity/get-activity`).then(res => {
+    fetchData(`${SERVER_URL}/activity/get-activity`).then((res) => {
       if (!unmouted) {
         setActivity(
-          res.data.map(item => {
+          res.data.map((item) => {
             return {
               activity_name: item.activity_name,
               description: item.description,
-              _id: item._id
+              _id: item._id,
             };
           })
         );
@@ -51,7 +50,7 @@ const ActivityTableComponent = ({ isChange }) => {
     };
   }, []);
 
-  const checkValid = newActivity => {
+  const checkValid = (newActivity) => {
     let valid = true;
     for (let item of activity) {
       if (
@@ -65,18 +64,18 @@ const ActivityTableComponent = ({ isChange }) => {
     return valid;
   };
 
-  const handleAdd = newActivity => {
+  const handleAdd = (newActivity) => {
     isChange(false);
     adminActions.addActivity(newActivity);
     setActivity([...activity, newActivity]);
     isChange(true);
   };
 
-  const handleUpdate = activity => {
+  const handleUpdate = (activity) => {
     adminActions.updateActivity(activity);
   };
 
-  const handleDelete = activity => {
+  const handleDelete = (activity) => {
     isChange(false);
     adminActions.deleteActivity(activity);
     isChange(true);
@@ -94,31 +93,30 @@ const ActivityTableComponent = ({ isChange }) => {
         data={activity}
         options={{
           actionsColumnIndex: -1,
-          tableLayout: "fixed"
+          tableLayout: "fixed",
         }}
         localization={{
           body: {
             editRow: {
               deleteText:
-                "Delete Activity will also delete all Post of this Activity!"
-            }
-          }
+                "Delete Activity will also delete all Post of this Activity!",
+            },
+          },
         }}
         editable={{
-          onRowAdd: newData => {
+          onRowAdd: (newData) => {
             new Promise((resolve, reject) => {
               setTimeout(() => {
                 {
-                  checkValid(newData)
-                    ? handleAdd(newData)
-                    : reject(setError(true));
+                  if (!checkValid(newData)) reject(setError(true));
+                  else handleAdd(newData);
                 }
                 resolve();
               }, 600);
             });
           },
           onRowUpdate: (newData, oldData) =>
-            new Promise(resolve => {
+            new Promise((resolve) => {
               setTimeout(() => {
                 {
                   const oldActivity = activity;
@@ -129,8 +127,8 @@ const ActivityTableComponent = ({ isChange }) => {
                 resolve();
               }, 600);
             }),
-          onRowDelete: oldData =>
-            new Promise(resolve => {
+          onRowDelete: (oldData) =>
+            new Promise((resolve) => {
               setTimeout(() => {
                 {
                   const oldActivity = activity;
@@ -140,7 +138,7 @@ const ActivityTableComponent = ({ isChange }) => {
                 }
                 resolve();
               }, 600);
-            })
+            }),
         }}
       />
       {isError && (
@@ -153,9 +151,9 @@ const ActivityTableComponent = ({ isChange }) => {
   );
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    isChange: bindActionCreators(adminActions.isChange, dispatch)
+    isChange: bindActionCreators(adminActions.isChange, dispatch),
   };
 };
 

@@ -10,13 +10,12 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import { userActions } from "../../actions/userActions";
-import Router from "next/router";
 
 const AvatarComponent = ({ avatar, Signout }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
 
-  const handleClick = (event) => {
+  const handleClick = event => {
     setAnchorEl(event.currentTarget);
     setOpen(!open);
   };
@@ -53,7 +52,7 @@ const AvatarComponent = ({ avatar, Signout }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return { Signout: bindActionCreators(userActions.Signout, dispatch) };
 };
 

@@ -14,15 +14,15 @@ import MessageDialog from "../Dialog/MessageDialogComponent";
 import { fetchData } from "../../libs/fetchData";
 import { postData } from "../../libs/postData";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   loading: {
-    marginTop: "15%"
+    marginTop: "15%",
   },
   div: { textAlign: "center" },
   button: {
     position: "absolute",
-    opacity: 0
-  }
+    opacity: 0,
+  },
 }));
 
 const UserTableComponent = ({ isChange }) => {
@@ -30,7 +30,7 @@ const UserTableComponent = ({ isChange }) => {
   const columns = [
     { title: "Staff ID", field: "staffId" },
     { title: "Fullname", field: "fullname" },
-    { title: "Username", field: "username" }
+    { title: "Username", field: "username" },
   ];
 
   const [data, setData] = useState([]);
@@ -42,14 +42,14 @@ const UserTableComponent = ({ isChange }) => {
 
   useEffect(() => {
     let unmounted = false;
-    fetchData(`${SERVER_URL}/get-user`).then(res => {
+    fetchData(`${SERVER_URL}/get-user`).then((res) => {
       if (!unmounted) {
         setData(
-          res.data.map(item => {
+          res.data.map((item) => {
             return {
               staffId: item.staffId,
               fullname: item.fullname,
-              username: item.username
+              username: item.username,
             };
           })
         );
@@ -61,21 +61,22 @@ const UserTableComponent = ({ isChange }) => {
     };
   }, []);
 
-  const handleOpen = rowData => {
+  const handleOpen = (rowData) => {
     setOpen(true), setRowdata(rowData);
   };
 
-  const handleClose = isClose => {
+  const handleClose = (isClose) => {
     setOpen(isClose);
+    setRowdata({});
   };
 
-  const handleDelete = user => {
+  const handleDelete = (user) => {
     isChange(false);
     adminActions.deleteUser({ staffId: user.staffId });
     isChange(true);
   };
 
-  const checkValid = newUser => {
+  const checkValid = (newUser) => {
     let arrError = [];
     if (newUser.staffId == "" || newUser.staffId == undefined)
       arrError.push("Staff Id is required!");
@@ -106,7 +107,7 @@ const UserTableComponent = ({ isChange }) => {
     } else return true;
   };
 
-  const handleAdd = newUser => {
+  const handleAdd = (newUser) => {
     isChange(false);
     adminActions.addUser(newUser);
     setData([...data, newUser]);
@@ -118,10 +119,10 @@ const UserTableComponent = ({ isChange }) => {
     setIsError(true);
   };
 
-  const handleReset = user => {
+  const handleReset = (user) => {
     postData("http://localhost:4000/profile/reset-password", {
-      staffId: user.staffId
-    }).then(res => {
+      staffId: user.staffId,
+    }).then((res) => {
       if (res.success) {
         setError(["Reset password successfully!"]), setIsError(true);
       }
@@ -141,24 +142,24 @@ const UserTableComponent = ({ isChange }) => {
         localization={{
           body: {
             editRow: {
-              deleteText: "Are you sure want to delete this user?"
-            }
-          }
+              deleteText: "Are you sure want to delete this user?",
+            },
+          },
         }}
         actions={[
-          rowData => ({
+          (rowData) => ({
             icon: () => <AccountBoxIcon />,
             tooltip: "Profile",
-            onClick: (event, rowData) => handleOpen(rowData)
+            onClick: (event, rowData) => handleOpen(rowData),
           }),
-          rowData => ({
+          (rowData) => ({
             icon: () => <CachedIcon />,
             tooltip: "Reset password",
-            onClick: (event, rowData) => handleReset(rowData)
-          })
+            onClick: (event, rowData) => handleReset(rowData),
+          }),
         ]}
         editable={{
-          onRowAdd: newData =>
+          onRowAdd: (newData) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
                 {
@@ -168,7 +169,7 @@ const UserTableComponent = ({ isChange }) => {
                 resolve();
               }, 600);
             }),
-          onRowDelete: oldData =>
+          onRowDelete: (oldData) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
                 {
@@ -185,10 +186,10 @@ const UserTableComponent = ({ isChange }) => {
 
                 resolve();
               }, 600);
-            })
+            }),
         }}
         options={{
-          actionsColumnIndex: -1
+          actionsColumnIndex: -1,
         }}
       />
       <ViewProfileComponent
@@ -201,9 +202,9 @@ const UserTableComponent = ({ isChange }) => {
   );
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    isChange: bindActionCreators(adminActions.isChange, dispatch)
+    isChange: bindActionCreators(adminActions.isChange, dispatch),
   };
 };
 
