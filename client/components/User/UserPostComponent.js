@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import { fetchData } from "../../libs/fetchData";
-const { SERVER_URL } = process.env;
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 import { titleToURL } from "../../libs/changeTitleToURL";
 import { getPost } from "../../actions/postActions";
 
@@ -152,7 +152,7 @@ export const UserPostComponent = ({ user, getPost }) => {
                 >
                   <CardActionArea
                     className={classes.cardItem}
-                    onClick={getPost(item._id, item.title)}
+                    onClick={getPost(item._id)}
                   >
                     <img className={classes.cardImage} src={item.cover_img} />
                     <CardContent>

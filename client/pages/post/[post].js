@@ -11,12 +11,13 @@ import { postData } from "../../libs/postData";
 
 const ReadPost = ({ user, setUserDetail }) => {
   const [loginUser, setUser] = useState({});
+  const [title, setTitle] = useState("");
 
   useEffect(() => {
     const token = window.localStorage.getItem("access_token");
     let unmounted = false;
     if (!user) {
-      postData("http://localhost:4000/check-token", { token }).then(res => {
+      postData("http://localhost:4000/check-token", { token }).then((res) => {
         if (!unmounted) {
           if (res.fullname) {
             setUserDetail(res);
@@ -32,23 +33,26 @@ const ReadPost = ({ user, setUserDetail }) => {
 
   return (
     <div>
-      <Header title={localStorage.getItem("post_title")} />
+      <Header title={title} />
       <Banner />
-      <PostLayout user={loginUser} Right={<ReadPostComponent />} />
+      <PostLayout
+        user={loginUser}
+        Right={<ReadPostComponent setTitle={setTitle} />}
+      />
       <Footer />
     </div>
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    user: state.userReducer.user
+    user: state.userReducer.user,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    setUserDetail: bindActionCreators(userActions.setUserDetail, dispatch)
+    setUserDetail: bindActionCreators(userActions.setUserDetail, dispatch),
   };
 };
 

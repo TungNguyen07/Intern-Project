@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
 
 import { fetchData } from "../../libs/fetchData";
 
-const { SERVER_URL } = process.env;
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 const useStyles = makeStyles({
   content: {
@@ -42,9 +44,13 @@ const useStyles = makeStyles({
   title: {
     fontSize: "1.5rem",
   },
+  icon: {
+    fontSize: "1rem",
+    margin: "0 0.2rem -0.2rem 1rem",
+  },
 });
 
-const ReadPostComponent = () => {
+const ReadPostComponent = ({ setTitle }) => {
   const classes = useStyles();
   const [post, setPost] = useState({});
   const [fetching, setFetching] = useState(true);
@@ -56,6 +62,7 @@ const ReadPostComponent = () => {
       if (!unmounted) {
         setPost(res.data);
         setFetching(false);
+        setTitle(res.data.title);
       }
     });
     return () => {
@@ -71,7 +78,11 @@ const ReadPostComponent = () => {
     <div className={classes.post}>
       <h1 className={classes.title}>{post.title}</h1>
       <p className={classes.created_at}>
-        Created at: {new Date(post.created_at).toLocaleDateString()}
+        <QueryBuilderIcon className={classes.icon} />
+        {new Date(post.created_at).toLocaleString()}
+        {""}
+        <VisibilityIcon className={classes.icon} />
+        {post.view}
       </p>
       <p className={classes.description}>{post.description}</p>
       <div

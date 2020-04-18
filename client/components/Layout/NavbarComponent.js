@@ -11,6 +11,7 @@ import ListItem from "@material-ui/core/ListItem";
 import Link from "next/link";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 import { fetchData } from "../../libs/fetchData";
 import { activityActions } from "../../actions/activityActions";
@@ -59,7 +60,7 @@ const Nav = ({ activeActivity }) => {
 
   useEffect(() => {
     let unmouted = false;
-    fetchData("http://localhost:4000/activity/get-activity").then((res) => {
+    fetchData(`${SERVER_URL}/activity/get-activity`).then((res) => {
       if (!unmouted) {
         setActivity(
           res.data.map((item) => {

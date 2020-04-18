@@ -10,7 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { fetchData } from "../../libs/fetchData";
-const { SERVER_URL } = process.env;
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 const useStyles = makeStyles((theme) => ({
   otherInfo: {

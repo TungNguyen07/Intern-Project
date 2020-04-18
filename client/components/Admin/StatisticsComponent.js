@@ -11,7 +11,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import CardItems from "./CardItemComponent";
 import { fetchData } from "../../libs/fetchData";
 import { connect } from "react-redux";
-const { SERVER_URL } = process.env;
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 const cardBorder = {
   width: "100%",

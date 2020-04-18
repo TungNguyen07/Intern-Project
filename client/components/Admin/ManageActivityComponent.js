@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-const { SERVER_URL } = process.env;
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 import { fetchData } from "../../libs/fetchData";
 import { adminActions } from "../../actions/adminActions";
@@ -52,15 +52,17 @@ const ActivityTableComponent = ({ isChange }) => {
 
   const checkValid = (newActivity) => {
     let valid = true;
-    for (let item of activity) {
-      if (
-        newActivity.activity_name.toLowerCase() ==
-        item.activity_name.toLowerCase()
-      ) {
-        valid = false;
-        break;
+    if (newActivity.activity_name) {
+      for (let item of activity) {
+        if (
+          newActivity.activity_name.toLowerCase() ==
+          item.activity_name.toLowerCase()
+        ) {
+          valid = false;
+          break;
+        }
       }
-    }
+    } else valid = false;
     return valid;
   };
 
@@ -88,7 +90,7 @@ const ActivityTableComponent = ({ isChange }) => {
   ) : (
     <div>
       <MaterialTable
-        title="Editable Example"
+        title="Manage Activity"
         columns={columns}
         data={activity}
         options={{
@@ -104,7 +106,7 @@ const ActivityTableComponent = ({ isChange }) => {
           },
         }}
         editable={{
-          onRowAdd: (newData) => {
+          onRowAdd: (newData) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
                 {
@@ -113,8 +115,7 @@ const ActivityTableComponent = ({ isChange }) => {
                 }
                 resolve();
               }, 600);
-            });
-          },
+            }),
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve) => {
               setTimeout(() => {
@@ -144,7 +145,7 @@ const ActivityTableComponent = ({ isChange }) => {
       {isError && (
         <MessageDialog
           setError={setError}
-          message={["Duplicate Activity name"]}
+          message={["Invalid Activity name"]}
         />
       )}
     </div>

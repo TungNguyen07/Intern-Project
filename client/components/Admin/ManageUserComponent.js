@@ -6,7 +6,7 @@ import { bindActionCreators } from "redux";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import CachedIcon from "@material-ui/icons/Cached";
 import MaterialTable from "material-table";
-const { SERVER_URL } = process.env;
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 import { adminActions } from "../../actions/adminActions";
 import ViewProfileComponent from "../Dialog/ViewProfileComponent";
@@ -136,7 +136,7 @@ const UserTableComponent = ({ isChange }) => {
   ) : (
     <div>
       <MaterialTable
-        title="MANAGE USER"
+        title="Manage User"
         columns={columns}
         data={data}
         localization={{

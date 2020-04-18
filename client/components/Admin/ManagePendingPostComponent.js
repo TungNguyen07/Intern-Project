@@ -11,14 +11,14 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import { fetchData } from "../../libs/fetchData";
 import { adminActions } from "../../actions/adminActions";
 import { approvePost, refusePost } from "../../actions/postActions";
-const { SERVER_URL } = process.env;
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 import PreviewPostConponent from "../Dialog/PreviewPostComponent";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   loading: {
-    marginTop: "15%"
+    marginTop: "15%",
   },
-  div: { textAlign: "center" }
+  div: { textAlign: "center" },
 }));
 
 const PendingPostTableComponent = ({ isChange }) => {
@@ -26,7 +26,7 @@ const PendingPostTableComponent = ({ isChange }) => {
   const columns = [
     { title: "Title", field: "title", width: "50%" },
     { title: "Author", field: "author" },
-    { title: "id", field: "_id", hidden: true }
+    { title: "id", field: "_id", hidden: true },
   ];
 
   const [pendingPost, setPendingPost] = useState([]);
@@ -36,14 +36,14 @@ const PendingPostTableComponent = ({ isChange }) => {
 
   useEffect(() => {
     let unmounted = false;
-    fetchData(`${SERVER_URL}/post/get-pending-post`).then(res => {
+    fetchData(`${SERVER_URL}/post/get-pending-post`).then((res) => {
       if (!unmounted) {
         setPendingPost(
-          res.data.map(item => {
+          res.data.map((item) => {
             return {
               title: item.title,
               author: item.fullname,
-              _id: item._id
+              _id: item._id,
             };
           })
         );
@@ -55,24 +55,24 @@ const PendingPostTableComponent = ({ isChange }) => {
     };
   }, []);
 
-  const handleApprove = postId => {
+  const handleApprove = (postId) => {
     isChange(false);
     approvePost({ id: postId });
     isChange(true);
   };
 
-  const handleRefuse = postId => {
+  const handleRefuse = (postId) => {
     isChange(false);
     refusePost({ id: postId });
     isChange(true);
   };
 
-  const handleOpen = rowData => {
+  const handleOpen = (rowData) => {
     setData(rowData);
     setOpen(true);
   };
 
-  const handleClose = isClose => {
+  const handleClose = (isClose) => {
     setOpen(isClose);
   };
 
@@ -87,12 +87,12 @@ const PendingPostTableComponent = ({ isChange }) => {
         columns={columns}
         data={pendingPost}
         actions={[
-          rowData => ({
+          (rowData) => ({
             icon: () => <VisibilityIcon />,
             tooltip: "Preview",
-            onClick: (event, rowData) => handleOpen(rowData)
+            onClick: (event, rowData) => handleOpen(rowData),
           }),
-          rowData => ({
+          (rowData) => ({
             icon: () => <CheckCircleIcon />,
             tooltip: "Approve",
             onClick: (event, rowData) => {
@@ -109,9 +109,9 @@ const PendingPostTableComponent = ({ isChange }) => {
                   resolve();
                 }, 600);
               });
-            }
+            },
           }),
-          rowData => ({
+          (rowData) => ({
             icon: () => <BlockIcon />,
             tooltip: "Refuse",
             onClick: (event, rowData) => {
@@ -128,13 +128,13 @@ const PendingPostTableComponent = ({ isChange }) => {
                   resolve();
                 }, 600);
               });
-            }
-          })
+            },
+          }),
         ]}
         options={{
           actionsColumnIndex: -1,
           tableLayout: "fixed",
-          loadingType: "overlay"
+          loadingType: "overlay",
         }}
       />
       <PreviewPostConponent
@@ -146,9 +146,9 @@ const PendingPostTableComponent = ({ isChange }) => {
   );
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    isChange: bindActionCreators(adminActions.isChange, dispatch)
+    isChange: bindActionCreators(adminActions.isChange, dispatch),
   };
 };
 

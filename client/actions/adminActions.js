@@ -1,6 +1,6 @@
 import { postData } from "../libs/postData";
 import { IS_CHANGE } from "./adminActionType";
-const { SERVER_URL } = process.env;
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 export const adminActions = {
   addUser,

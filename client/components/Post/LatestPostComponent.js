@@ -9,11 +9,11 @@ import CardPostItem from "./CardPostItemComponent";
 import { fetchData } from "../../libs/fetchData";
 import HomeActivityPostComponent from "./HomeActivityPostComponent";
 
-const { SERVER_URL } = process.env;
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   loading: {
-    marginTop: "15%"
+    marginTop: "15%",
   },
   div: { textAlign: "center" },
   card: { marginTop: theme.spacing(1) },
@@ -21,23 +21,23 @@ const useStyles = makeStyles(theme => ({
     color: "black",
     textAlign: "start",
     cursor: "pointer",
-    width: "fit-content"
+    width: "fit-content",
   },
   pagination: {
     width: "fit-content",
-    margin: "auto"
+    margin: "auto",
   },
   span: {
     margin: "0px 8px 8px 8px",
     background: "linear-gradient(#a3f1ff,#03c8ff)",
     padding: "3px 0px 0px 8px",
     borderRadius: "4px",
-    display: "block"
+    display: "block",
   },
   pagination: {
     width: "fit-content",
-    margin: "auto"
-  }
+    margin: "auto",
+  },
 }));
 
 const LatestPostComponent = () => {
@@ -49,26 +49,28 @@ const LatestPostComponent = () => {
 
   useEffect(() => {
     let unmounted = false;
-    fetchData(`${SERVER_URL}/post/get-newest-post/${currentPage}`).then(res => {
-      if (!unmounted) {
-        setPost(
-          res.data.post.map(item => {
-            return {
-              cover_img: item.cover_img,
-              title: item.title,
-              description:
-                item.description.length > 100
-                  ? item.description.slice(0, 100) + "..."
-                  : item.description,
-              _id: item._id
-            };
-          })
-        );
+    fetchData(`${SERVER_URL}/post/get-newest-post/${currentPage}`).then(
+      (res) => {
+        if (!unmounted) {
+          setPost(
+            res.data.post.map((item) => {
+              return {
+                cover_img: item.cover_img,
+                title: item.title,
+                description:
+                  item.description.length > 100
+                    ? item.description.slice(0, 100) + "..."
+                    : item.description,
+                _id: item._id,
+              };
+            })
+          );
 
-        setLength(res.data.length);
+          setLength(res.data.length);
+        }
+        setFetching(false);
       }
-      setFetching(false);
-    });
+    );
 
     return () => {
       unmounted = true;
@@ -92,7 +94,7 @@ const LatestPostComponent = () => {
         </Typography>
       </span>
 
-      {post.map(item => (
+      {post.map((item) => (
         <CardPostItem className={classes.card} key={item._id} post={item} />
       ))}
       <div className={classes.pagination}>

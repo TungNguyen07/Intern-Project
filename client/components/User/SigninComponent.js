@@ -18,9 +18,9 @@ import { connect } from "react-redux";
 
 import { userActions } from "../../actions/userActions";
 import { postData } from "../../libs/postData";
-const { SERVER_URL } = process.env;
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
@@ -29,23 +29,23 @@ const useStyles = makeStyles(theme => ({
     width: "fit-content",
     margin: "auto",
     marginBottom: theme.spacing(4),
-    paddingBottom: theme.spacing(2)
+    paddingBottom: theme.spacing(2),
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%",
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(1, 0, 1)
+    margin: theme.spacing(1, 0, 1),
   },
   alert: {
     width: "100%",
-    margin: theme.spacing(1)
-  }
+    margin: theme.spacing(1),
+  },
 }));
 
 export const LoginComponent = ({ user, setUserDetail }) => {
@@ -54,16 +54,16 @@ export const LoginComponent = ({ user, setUserDetail }) => {
   const [correct, setCorrect] = useState([]);
   const [info, setInfo] = useState({
     username: "",
-    password: ""
+    password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleChange = prop => event => {
+  const handleChange = (prop) => (event) => {
     setInfo({ ...info, [prop]: event.target.value });
   };
 
-  const checkPassword = signInfo => {
-    const check = postData(`${SERVER_URL}/signin`, signInfo).then(res => {
+  const checkPassword = (signInfo) => {
+    const check = postData(`${SERVER_URL}/signin`, signInfo).then((res) => {
       return res;
     });
     return check;
@@ -117,7 +117,7 @@ export const LoginComponent = ({ user, setUserDetail }) => {
   useEffect(() => {
     if (localStorage.length) {
       const token = { token: localStorage.getItem("access_token") };
-      postData("http://localhost:4000/check-token", token).then(res => {
+      postData("http://localhost:4000/check-token", token).then((res) => {
         if (res._id) {
           console.log(res);
           Router.push("/");
@@ -145,7 +145,7 @@ export const LoginComponent = ({ user, setUserDetail }) => {
             Sign in
           </Typography>
           {valid &&
-            valid.map(item => {
+            valid.map((item) => {
               return (
                 <Alert
                   className={classes.alert}
@@ -158,7 +158,7 @@ export const LoginComponent = ({ user, setUserDetail }) => {
             })}
 
           {correct &&
-            correct.map(item => {
+            correct.map((item) => {
               return (
                 <Alert
                   className={classes.alert}
@@ -227,7 +227,7 @@ export const LoginComponent = ({ user, setUserDetail }) => {
 
 function mapDispatchToProps(dispatch) {
   return {
-    setUserDetail: bindActionCreators(userActions.setUserDetail, dispatch)
+    setUserDetail: bindActionCreators(userActions.setUserDetail, dispatch),
   };
 }
 

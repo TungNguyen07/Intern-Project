@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import MaterialTable from "material-table";
 import { makeStyles } from "@material-ui/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
-const { SERVER_URL } = process.env;
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import VisibilityIcon from "@material-ui/icons/Visibility";

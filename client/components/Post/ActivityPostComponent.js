@@ -7,7 +7,7 @@ import Pagination from "@material-ui/lab/Pagination";
 
 import CardPostItem from "./CardPostItemComponent";
 import { fetchData } from "../../libs/fetchData";
-const { SERVER_URL } = process.env;
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 const useStyles = makeStyles((theme) => ({
   loading: {

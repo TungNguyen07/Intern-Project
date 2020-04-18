@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import MessageDialog from "../Dialog/MessageDialogComponent";
 import { postData } from "../../libs/postData";
 import { changePassword } from "../../actions/userActions";
-const { SERVER_URL } = process.env;
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 const useStyles = makeStyles((theme) => ({
   textField: {

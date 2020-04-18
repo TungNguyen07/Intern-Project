@@ -4,10 +4,10 @@ import {
   SIGN_IN_FAIL,
   SIGN_OUT_SUCCESS,
   SET_USER_DETAIL,
-  SEARCH
+  SEARCH,
 } from "./userActionsType";
 import Router from "next/router";
-const { SERVER_URL } = process.env;
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 import { checkToken } from "../auth/auth";
 import { titleToURL } from "../libs/changeTitleToURL";
 
@@ -16,12 +16,12 @@ export const userActions = {
   Signout,
   setUserDetail,
   updateInfo,
-  setQuery
+  setQuery,
 };
 
 function Signin(signinInfo) {
-  return dispatch => {
-    postData(`${SERVER_URL}/signin`, signinInfo).then(res => {
+  return (dispatch) => {
+    postData(`${SERVER_URL}/signin`, signinInfo).then((res) => {
       if (res.token) {
         localStorage.setItem("access_token", res.token);
         dispatch(SigninSuccess(res));
@@ -31,32 +31,38 @@ function Signin(signinInfo) {
   };
 }
 
-const SigninSuccess = data => {
+const SigninSuccess = (data) => {
   return {
     type: SIGN_IN_SUCCESS,
     payload: {
       user: data.user,
       token: data.token,
-      error: []
-    }
+      error: [],
+    },
   };
 };
 
-const SigninFail = data => {
+const SigninFail = (data) => {
   return {
     type: SIGN_IN_FAIL,
     payload: {
       user: {},
       token: [],
-      error: [data.message]
-    }
+      error: [data.message],
+    },
   };
 };
 
 function Signout() {
-  return dispatch => {
+  return (dispatch) => {
     localStorage.removeItem("access_token");
-    if (Router.pathname != "/") Router.push("/signin");
+    if (
+      Router.pathname == "/profile" ||
+      Router.pathname == "/create-post" ||
+      Router.pathname == "/change-password" ||
+      Router.pathname == "/admin"
+    )
+      Router.push("/signin");
     dispatch(SignoutSuccess());
   };
 }
@@ -66,8 +72,8 @@ function SignoutSuccess() {
     type: SIGN_OUT_SUCCESS,
     payload: {
       user: {},
-      token: ""
-    }
+      token: "",
+    },
   };
 }
 
@@ -75,26 +81,28 @@ export function setUserDetail(userDetail) {
   return {
     type: SET_USER_DETAIL,
     payload: {
-      user: userDetail
-    }
+      user: userDetail,
+    },
   };
 }
 
 function updateInfo(info) {
-  return dispatch => {
+  return (dispatch) => {
     postData(`${SERVER_URL}/profile/update`, info)
-      .then(res => {
+      .then((res) => {
         if (res.success) dispatch(setUserDetail(info));
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   };
 }
 
 export function changePassword(passwordInfo) {
   console.log(passwordInfo);
-  postData(`${SERVER_URL}/profile/change-password`, passwordInfo).then(res => {
-    console.log(res);
-  });
+  postData(`${SERVER_URL}/profile/change-password`, passwordInfo).then(
+    (res) => {
+      console.log(res);
+    }
+  );
 }
 
 export function setQuery(text) {
@@ -102,7 +110,7 @@ export function setQuery(text) {
   return {
     type: SEARCH,
     payload: {
-      search: text
-    }
+      search: text,
+    },
   };
 }

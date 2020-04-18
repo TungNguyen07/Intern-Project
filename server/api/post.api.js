@@ -125,6 +125,7 @@ module.exports.getPostFollowUser = async function (req, res) {
 module.exports.getPost = async function (req, res) {
   if (req.params.id) {
     const id = mongoose.Types.ObjectId(req.params.id);
+    await postModel.updateOne({ _id: id }, { $inc: { view: 1 } });
     const post = await postModel.aggregate([
       {
         $match: { _id: id },

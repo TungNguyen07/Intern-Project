@@ -29,14 +29,22 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     borderRadius: "50%",
-    width: theme.spacing(21),
-    height: theme.spacing(21),
+    width: "12rem",
+    height: "12rem",
     marginTop: "2%",
     marginLeft: "15%",
+    "@media (min-width:600px)": {
+      width: "9rem",
+      height: "9rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      width: "12rem",
+      height: "12rem",
+    },
   },
   reviewAvatar: {
-    width: theme.spacing(21),
-    height: theme.spacing(21),
+    width: "12rem",
+    height: "12rem",
     margin: "auto",
   },
   button: {

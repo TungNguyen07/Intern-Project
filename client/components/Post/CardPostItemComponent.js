@@ -65,7 +65,7 @@ const CardPost = ({ post, getPost }) => {
   //const [post, setPost] = useState();
 
   const handleClick = () => {
-    getPost(post._id, post.title);
+    getPost(post._id);
   };
 
   return (

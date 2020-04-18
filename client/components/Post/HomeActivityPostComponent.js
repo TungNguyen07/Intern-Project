@@ -8,7 +8,7 @@ import Link from "next/link";
 import CardPostItemHome from "./CardPostItemHomeComponent";
 import { fetchData } from "../../libs/fetchData";
 
-const { SERVER_URL } = process.env;
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 const useStyles = makeStyles((theme) => ({
   loading: {
