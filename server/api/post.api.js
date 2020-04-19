@@ -90,12 +90,12 @@ module.exports.approvePost = function (req, res) {
   res.json({ success: true });
 };
 
-module.exports.refusePost = function (req, res) {
+module.exports.rejectPost = function (req, res) {
   const id = req.body.id;
   const condition = { _id: id };
   postModel.remove(condition, function (err, res) {
     if (err) throw err;
-    console.log("Refused!");
+    console.log("Rejected!");
   });
   res.json({ success: true });
 };

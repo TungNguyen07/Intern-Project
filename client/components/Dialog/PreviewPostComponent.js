@@ -69,14 +69,14 @@ const PreviewPostComponent = ({ rowData, isOpen, isClose }) => {
     setOpen(isOpen);
   }, [isOpen]);
 
-  return fetching ? (
-    <div className={classes.div}>
-      <CircularProgress className={classes.loading} />
-    </div>
-  ) : (
-    <div>
-      <Dialog maxWidth="md" open={open} onClose={handleClose} scroll="paper">
-        <DialogTitle>Preview</DialogTitle>
+  return (
+    <Dialog maxWidth="md" open={open} onClose={handleClose} scroll="paper">
+      <DialogTitle>Preview</DialogTitle>
+      {fetching ? (
+        <div className={classes.div}>
+          <CircularProgress className={classes.loading} />
+        </div>
+      ) : (
         <DialogContent dividers={true}>
           <Typography variant="h5">{post.title}</Typography>
           <p className={classes.description}>{post.description}</p>
@@ -85,16 +85,8 @@ const PreviewPostComponent = ({ rowData, isOpen, isClose }) => {
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
         </DialogContent>
-        {/* <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Approve
-          </Button>
-          <Button onClick={handleClose} color="primary">
-            Refuse
-          </Button>
-        </DialogActions> */}
-      </Dialog>
-    </div>
+      )}
+    </Dialog>
   );
 };
 

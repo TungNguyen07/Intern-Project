@@ -7,6 +7,7 @@ import Pagination from "@material-ui/lab/Pagination";
 import CardPostItem from "./CardPostItemComponent";
 import { fetchData } from "../../libs/fetchData";
 import { connect } from "react-redux";
+import Router from "next/router";
 const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 const useStyles = makeStyles((theme) => ({

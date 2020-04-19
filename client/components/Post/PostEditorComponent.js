@@ -22,11 +22,14 @@ const useStyle = makeStyles((theme) => ({
   buttonSave: {
     marginTop: theme.spacing(1),
     marginRight: theme.spacing(1),
-    backgroundColor: "#4fd9ff",
+    backgroundColor: "#1976d2",
   },
   buttonDelete: {
     marginTop: theme.spacing(1),
-    backgroundColor: "#ed4242",
+    backgroundColor: "#e53935",
+    "&:hover": {
+      backgroundColor: "#c62828",
+    },
   },
   formButton: {
     paddingTop: "2.5rem",
@@ -218,11 +221,23 @@ export const PostEditor = ({ author }) => {
         <TextEditorComponent isReload={reload} getContent={getContent} />
 
         <div className={classes.formButton}>
-          <Button className={classes.buttonSave} onClick={handleSave}>
+          <Button
+            className={classes.buttonSave}
+            onClick={handleSave}
+            variant="contained"
+            type="button"
+            color="primary"
+          >
             <SaveIcon className={classes.icon} />
             Save
           </Button>
-          <Button className={classes.buttonDelete} onClick={handleDelete}>
+          <Button
+            className={classes.buttonDelete}
+            onClick={handleDelete}
+            variant="contained"
+            type="button"
+            color="secondary"
+          >
             <DeleteIcon className={classes.icon} />
             Cannel
           </Button>

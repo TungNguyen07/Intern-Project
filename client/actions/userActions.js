@@ -106,7 +106,6 @@ export function changePassword(passwordInfo) {
 }
 
 export function setQuery(text) {
-  localStorage.setItem("query", text);
   return {
     type: SEARCH,
     payload: {

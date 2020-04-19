@@ -17,8 +17,8 @@ export const approvePost = (postId) => {
   });
 };
 
-export const refusePost = (postId) => {
-  postData(`${SERVER_URL}/post/refuse-post`, postId).then((res) => {
+export const rejectPost = (postId) => {
+  postData(`${SERVER_URL}/post/reject-post`, postId).then((res) => {
     if (res.error) console.log(res.error);
     else console.log(res);
   });

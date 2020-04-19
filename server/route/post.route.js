@@ -10,7 +10,7 @@ router.get("/get-active-post", postApi.getActivePost);
 
 router.post("/approve-post", postApi.approvePost);
 
-router.post("/refuse-post", postApi.refusePost);
+router.post("/reject-post", postApi.rejectPost);
 
 router.get("/get-some-post/", postApi.getSomePost);
 

@@ -10,7 +10,7 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 
 import { fetchData } from "../../libs/fetchData";
 import { adminActions } from "../../actions/adminActions";
-import { approvePost, refusePost } from "../../actions/postActions";
+import { approvePost, rejectPost } from "../../actions/postActions";
 const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 import PreviewPostConponent from "../Dialog/PreviewPostComponent";
 
@@ -61,9 +61,9 @@ const PendingPostTableComponent = ({ isChange }) => {
     isChange(true);
   };
 
-  const handleRefuse = (postId) => {
+  const handleReject = (postId) => {
     isChange(false);
-    refusePost({ id: postId });
+    rejectPost({ id: postId });
     isChange(true);
   };
 
@@ -113,7 +113,7 @@ const PendingPostTableComponent = ({ isChange }) => {
           }),
           (rowData) => ({
             icon: () => <BlockIcon />,
-            tooltip: "Refuse",
+            tooltip: "Reject",
             onClick: (event, rowData) => {
               new Promise((resolve, reject) => {
                 setTimeout(() => {
@@ -122,7 +122,7 @@ const PendingPostTableComponent = ({ isChange }) => {
                     const index = initdata.indexOf(rowData);
                     const deletePost = initdata[index];
                     initdata.splice(index, 1);
-                    handleRefuse(deletePost);
+                    handleReject(deletePost);
                     setPendingPost([...initdata]);
                   }
                   resolve();

@@ -49,7 +49,9 @@ const SearchComponent = ({ setQuery }) => {
   const handleClick = () => {
     if (search) {
       setQuery(search);
+      localStorage.setItem("query", search);
       Router.push(`/search?query=${titleToURL(search.toLowerCase())}`);
+      setSearch("");
     }
   };
 
@@ -63,6 +65,14 @@ const SearchComponent = ({ setQuery }) => {
       <IconButton onClick={handleClick}>
         <SearchIcon className={classes.icon} />
       </IconButton>
+      {/* <Link
+        href={`/search?q=${search}`}
+        as={`/search?query=${titleToURL(search.toLowerCase())}`}
+      >
+        <IconButton onClick={}>
+          <SearchIcon className={classes.icon} />
+        </IconButton>
+      </Link> */}
     </Paper>
   );
 };
