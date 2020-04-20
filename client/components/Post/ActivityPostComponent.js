@@ -7,6 +7,7 @@ import Pagination from "@material-ui/lab/Pagination";
 
 import CardPostItem from "./CardPostItemComponent";
 import { fetchData } from "../../libs/fetchData";
+import Router from "next/router";
 const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 const useStyles = makeStyles((theme) => ({
@@ -42,9 +43,10 @@ const ActivityPostComponent = ({ setTitleActivity, activity_id }) => {
   const [initPage, setPage] = useState(1);
 
   useEffect(() => {
-    const id = activity_id || localStorage.getItem("activity_id");
+    // const id = activity_id || localStorage.getItem("activity_id");
     let unmounted = false;
-    fetchData(`${SERVER_URL}/activity/${id}/${initPage}`).then((res) => {
+    const name = window.location.pathname.split("/").slice(-1).pop();
+    fetchData(`${SERVER_URL}/activity/${name}/${initPage}`).then((res) => {
       if (!unmounted) {
         setPost(
           res.data.activity_post.map((item) => {
@@ -60,8 +62,8 @@ const ActivityPostComponent = ({ setTitleActivity, activity_id }) => {
           })
         );
         setLength(res.data.count);
-        setTitle(res.data.activity.activity_name);
-        setTitleActivity(res.data.activity.activity_name);
+        setTitle(res.data.activity);
+        setTitleActivity(res.data.activity);
       }
       setFetching(false);
     });

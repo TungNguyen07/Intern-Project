@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,7 +24,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   card: {
-    padding: theme.spacing(1.5),
+    padding: "1rem 1rem 0rem 1rem",
+    textAlign: "center",
     background: "linear-gradient(#a3f1ff,#03c8ff)",
     "& p": {
       "@media (min-width:600px)": {
@@ -47,8 +49,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Footer = () => {
+const Footer = ({ action }) => {
   const classes = useStyles();
+  const [display, setDisplay] = useState(true);
+
+  useEffect(() => {
+    if (action == "signin") setDisplay(false);
+    else setDisplay(true);
+  }, [action]);
 
   return (
     <div className={classes.root}>
@@ -56,22 +64,27 @@ const Footer = () => {
         <Card className={classes.card}>
           <Link href="/">
             <h2 className={classes.title}>
-              CENTER FOR CULTURAL AND SPORTS IN LONG XUYEN CITY
+              Long Xuyen City Cultural and Sports Center
             </h2>
           </Link>
           <p>
             Address: 268 Nguyen Truong To, Binh Khanh Ward, Long Xuyen City, An
             Giang
           </p>
-          <p>Fax: 0123456789</p>
+          <p>Phone: 02963841732</p>
           <p>
             Email:{" "}
             <a href="mailto:ttvhtt.longxuyen@angiang.gov.vn">
               ttvhtt.longxuyen@angiang.gov.vn
             </a>
-            <Link href="/signin">
-              <a className={classes.link}>Signin</a>
-            </Link>
+          </p>
+          <p>
+            &copy; 2020, Copyright by Long Xuyen City Cultural and Sports Center
+            {display && (
+              <Link href="/signin">
+                <a className={classes.link}>Signin</a>
+              </Link>
+            )}
           </p>
         </Card>
       </Grid>
@@ -79,4 +92,10 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+const mapStateToProps = (state) => {
+  return {
+    action: state.userReducer.action,
+  };
+};
+
+export default connect(mapStateToProps, null)(Footer);

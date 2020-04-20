@@ -25,7 +25,6 @@ export const rejectPost = (postId) => {
 };
 
 export const getPost = (postId) => {
-  localStorage.setItem("post_id", postId);
   return {
     type: GET_POST,
     payload: {

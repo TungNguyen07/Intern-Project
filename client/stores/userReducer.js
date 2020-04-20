@@ -3,14 +3,15 @@ import {
   SIGN_IN_SUCCESS,
   SIGN_IN_FAIL,
   SET_USER_DETAIL,
-  SEARCH
+  SEARCH,
 } from "../actions/userActionsType";
 
 const initUser = {
   user: {},
   token: "",
   error: [],
-  search: ""
+  search: "",
+  action: "",
 };
 
 export default function userReducer(state = initUser, action) {
@@ -20,7 +21,7 @@ export default function userReducer(state = initUser, action) {
         ...state,
         user: action.payload.user,
         token: action.payload.token,
-        error: action.payload.error
+        error: action.payload.error,
       };
 
     case SIGN_IN_FAIL:
@@ -28,7 +29,7 @@ export default function userReducer(state = initUser, action) {
         ...state,
         user: action.payload.user,
         token: action.payload.token,
-        error: action.payload.error
+        error: action.payload.error,
       };
 
     case SIGN_OUT_SUCCESS:
@@ -36,19 +37,21 @@ export default function userReducer(state = initUser, action) {
         ...state,
         user: action.payload.user,
         token: action.payload.token,
-        error: action.payload.error
+        error: action.payload.error,
+        action: "signout",
       };
 
     case SET_USER_DETAIL:
       return {
         ...state,
-        user: action.payload.user
+        user: action.payload.user,
+        action: "signin",
       };
 
     case SEARCH:
       return {
         ...state,
-        search: action.payload.search
+        search: action.payload.search,
       };
 
     default:

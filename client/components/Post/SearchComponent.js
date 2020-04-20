@@ -49,8 +49,8 @@ const SearchComponent = ({ setQuery }) => {
   const handleClick = () => {
     if (search) {
       setQuery(search);
-      localStorage.setItem("query", search);
-      Router.push(`/search?query=${titleToURL(search.toLowerCase())}`);
+      // Router.push(`/search?query=${titleToURL(search.toLowerCase())}`);
+      Router.push(`/search?query=${search}`);
       setSearch("");
     }
   };

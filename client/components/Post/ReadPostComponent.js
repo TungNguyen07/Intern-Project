@@ -5,6 +5,7 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
 
 import { fetchData } from "../../libs/fetchData";
+import Router from "next/router";
 
 const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
@@ -39,7 +40,7 @@ const useStyles = makeStyles({
   },
   post: {
     color: "black",
-    paddingRight: "1rem",
+    padding: "0rem 1rem",
   },
   title: {
     fontSize: "1.5rem",
@@ -56,7 +57,7 @@ const ReadPostComponent = ({ setTitle }) => {
   const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
-    const post_id = localStorage.getItem("post_id");
+    const post_id = Router.query.post.split("-").slice(-1).pop();
     let unmounted = false;
     fetchData(`${SERVER_URL}/post/get-post/${post_id}`).then((res) => {
       if (!unmounted) {

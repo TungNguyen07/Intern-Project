@@ -70,7 +70,10 @@ const CardPost = ({ post, getPost }) => {
 
   return (
     <Card className={classes.root}>
-      <Link href="/post/[post]" as={`/post/${titleToURL(post.title)}`}>
+      <Link
+        href={`/post/[post]`}
+        as={`/post/${titleToURL(post.title)}-${post._id}`}
+      >
         <CardActionArea
           className={classes.cardActionArea}
           onClick={handleClick}

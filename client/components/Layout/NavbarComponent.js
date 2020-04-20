@@ -113,6 +113,11 @@ const Nav = ({ activeActivity }) => {
               </MenuItem>
             );
           })}
+          <MenuItem className={classes.item}>
+            <Link href="/about">
+              <span>About</span>
+            </Link>
+          </MenuItem>
         </MenuList>
       </Collapse>
     </Card>

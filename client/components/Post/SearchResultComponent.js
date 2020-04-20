@@ -44,7 +44,8 @@ const SearchResultComponent = ({ query }) => {
 
   useEffect(() => {
     let unmounted = false;
-    const q = query || localStorage.getItem("query");
+    // const q = query || localStorage.getItem("query");
+    const q = Router.query.query;
     fetchData(`${SERVER_URL}/search/${q}/${initPage}`).then((res) => {
       if (!unmounted) {
         setPost(
