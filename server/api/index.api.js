@@ -4,6 +4,7 @@ import activityModel from "../model/activity.model";
 import mongoose from "mongoose";
 import jwt, { verify } from "jsonwebtoken";
 const { SECRET_KEY } = process.env;
+import nodemailer from "nodemailer";
 
 module.exports.checkToken = async function (req, res) {
   const token = req.body.token;
@@ -56,5 +57,36 @@ module.exports.search = async function (req, res) {
   res.json({
     result: data,
     count: Math.ceil(length / 10),
+  });
+};
+
+module.exports.sendFeedback = function (req, res) {
+  const info = req.body;
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "nstung_17th@agu.edu.vn",
+      pass: "DTH166368",
+    },
+  });
+
+  const mailOptions = {
+    from: "nstung_17th@agu.edu.vn",
+    to: "feedback.ttvhtt.longxuyen@gmail.com",
+    subject: info.title,
+    text: `Hi, I'm ${info.fullname}.
+    I want feedback to you about ${info.title}. ${info.content}.
+    Here is my contact info:
+    Name: ${info.fullname}.
+    Email: ${info.email}.
+    Phone: ${info.phone}.
+    Address: ${info.address}.
+    I look forward to hearing response from you as soon as posible.
+    Best regards!`,
+  };
+
+  transporter.sendMail(mailOptions, function (error, result) {
+    if (error) res.json({ error: true });
+    else res.json({ success: true });
   });
 };

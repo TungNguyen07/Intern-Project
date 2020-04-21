@@ -9,10 +9,14 @@ import PhoneIcon from "@material-ui/icons/Phone";
 import HomeIcon from "@material-ui/icons/Home";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import DescriptionIcon from "@material-ui/icons/Description";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Backdrop from "@material-ui/core/Backdrop";
 
 import MessageDialog from "../Dialog/MessageDialogComponent";
+import { postData } from "../../libs/postData";
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   input: {
     width: "100%",
     maxWidth: "100%",
@@ -53,7 +57,11 @@ const useStyles = makeStyles({
   contactUs: {
     marginTop: "0.5rem",
   },
-});
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
+}));
 
 const ContactComponent = () => {
   const classes = useStyles();
@@ -67,19 +75,43 @@ const ContactComponent = () => {
   };
   const [contactInfo, setContactInfo] = useState(initInfo);
   const [display, setDisplay] = useState(false);
-  const [notify, setNotify] = useState([]);
+  const [message, setMessage] = useState([]);
+  const [open, setOpen] = useState(false);
 
   const handleChange = (prop) => (event) => {
     setContactInfo({ ...contactInfo, [prop]: event.target.value });
   };
 
-  const handleSend = () => {
-    setNotify(["Send feedback successfully!"]);
-    setDisplay(true);
+  const handleCheck = () => {
+    checkValid(contactInfo) ? handleSend() : setDisplay(true);
   };
 
   const handleCancel = () => {
     setContactInfo(initInfo);
+    setMessage([]);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleToggle = () => {
+    setOpen(!open);
+  };
+
+  const handleSend = () => {
+    handleToggle();
+    postData(`${SERVER_URL}/send-feedback`, contactInfo).then((res) => {
+      if (res.success) {
+        setMessage(["Send feedback successfully!"]);
+        handleClose();
+        setDisplay(true);
+        setContactInfo(initInfo);
+      } else {
+        setMessage(["Send feedback failed!"]);
+        handleClose();
+        setDisplay(true);
+      }
+    });
   };
 
   useEffect(() => {
@@ -87,6 +119,38 @@ const ContactComponent = () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [display]);
+
+  const validateEmail = (email) => {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const checkValid = (data) => {
+    let error = [];
+    if (data.title.trim() == "" || data.title.length == 0)
+      error.push("Title is required!");
+    if (data.fullname.trim() == "" || data.fullname.length == 0)
+      error.push("Fullname is required!");
+    if (data.email.trim() == "" || data.email.length == 0)
+      error.push("Email is required!");
+    else if (!validateEmail(data.email)) error.push("Invalid Email!");
+    if (data.phone.trim() == "" || data.phone.length == 0)
+      error.push("Phone is required!");
+    else if (isNaN(data.phone) || data.phone.length < 10)
+      error.push("Invalid phone number!");
+    if (data.address.trim() == "" || data.address.length == 0)
+      error.push("Address is required!");
+    if (data.content.trim() == "" || data.content.lengt == 0)
+      error.push("Content is required!");
+
+    if (error.length) {
+      setMessage(error);
+      return false;
+    } else {
+      setMessage([]);
+      return true;
+    }
+  };
 
   return (
     <div>
@@ -202,6 +266,7 @@ const ContactComponent = () => {
                   className={classes.input}
                   rowsMin={3}
                   placeholder="Content"
+                  required
                   onChange={handleChange("content")}
                 />
               </Grid>
@@ -213,7 +278,7 @@ const ContactComponent = () => {
               variant="contained"
               type="button"
               color="primary"
-              onClick={handleSend}
+              onClick={handleCheck}
             >
               Send
             </Button>
@@ -229,7 +294,10 @@ const ContactComponent = () => {
           </div>
         </Grid>
       </div>
-      {display && <MessageDialog setError={setDisplay} message={notify} />}
+      <Backdrop className={classes.backdrop} open={open}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      ;{display && <MessageDialog setError={setDisplay} message={message} />}
     </div>
   );
 };

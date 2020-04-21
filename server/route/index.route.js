@@ -9,12 +9,12 @@ import { checkStaffId } from "../middlewares/checkStaffId";
 import { checkUsername } from "../middlewares/checkUsername";
 
 const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
+  destination: function (req, file, cb) {
     cb(null, "./public/images");
   },
-  filename: function(req, file, cb) {
+  filename: function (req, file, cb) {
     cb(null, "top-banner.jpg");
-  }
+  },
 });
 
 const upload = multer({ storage: storage });
@@ -44,5 +44,7 @@ router.post(
 );
 
 router.get("/search/:query/:page", indexApi.search);
+
+router.post("/send-feedback", indexApi.sendFeedback);
 
 module.exports = router;

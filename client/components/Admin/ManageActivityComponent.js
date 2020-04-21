@@ -28,6 +28,7 @@ const ActivityTableComponent = ({ isChange }) => {
   const [activity, setActivity] = useState([]);
   const [isFetching, setFetching] = useState(true);
   const [isError, setError] = useState(false);
+  const [message, setMessage] = useState([]);
 
   useEffect(() => {
     let unmouted = false;
@@ -51,19 +52,36 @@ const ActivityTableComponent = ({ isChange }) => {
   }, []);
 
   const checkValid = (newActivity) => {
-    let valid = true;
-    if (newActivity.activity_name) {
+    let error = [];
+    if (
+      newActivity.activity_name == "" ||
+      newActivity.activity_name == undefined ||
+      newActivity.activity_name.trim().length == 0
+    )
+      error.push("Activity name is required!");
+    else {
       for (let item of activity) {
         if (
           newActivity.activity_name.toLowerCase() ==
           item.activity_name.toLowerCase()
-        ) {
-          valid = false;
-          break;
-        }
+        )
+          error.push("Duplicate activity name!");
       }
-    } else valid = false;
-    return valid;
+    }
+    if (
+      newActivity.description == "" ||
+      newActivity.description == undefined ||
+      newActivity.description.trim().length == 0
+    )
+      error.push("Description is required!");
+
+    if (error.length) {
+      setMessage(error);
+      return false;
+    } else {
+      setMessage([]);
+      return true;
+    }
   };
 
   const handleAdd = (newActivity) => {
@@ -117,13 +135,16 @@ const ActivityTableComponent = ({ isChange }) => {
               }, 600);
             }),
           onRowUpdate: (newData, oldData) =>
-            new Promise((resolve) => {
+            new Promise((resolve, reject) => {
               setTimeout(() => {
                 {
-                  const oldActivity = activity;
-                  oldActivity[oldActivity.indexOf(oldData)] = newData;
-                  handleUpdate(newData);
-                  setActivity([...oldActivity]);
+                  if (!checkValid(newData)) reject(setError(true));
+                  else {
+                    const oldActivity = activity;
+                    oldActivity[oldActivity.indexOf(oldData)] = newData;
+                    handleUpdate(newData);
+                    setActivity([...oldActivity]);
+                  }
                 }
                 resolve();
               }, 600);
@@ -142,12 +163,7 @@ const ActivityTableComponent = ({ isChange }) => {
             }),
         }}
       />
-      {isError && (
-        <MessageDialog
-          setError={setError}
-          message={["Invalid Activity name"]}
-        />
-      )}
+      {isError && <MessageDialog setError={setError} message={message} />}
     </div>
   );
 };
