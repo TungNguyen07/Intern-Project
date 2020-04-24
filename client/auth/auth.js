@@ -1,7 +1,8 @@
 import { postData } from "../libs/postData";
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 export const checkTokenNGetUser = async (token) => {
-  return postData("http://localhost:4000/check-token", { token })
+  return postData(`${SERVER_URL}/check-token`, { token })
     .then((res) => {
       if (res.error) return null;
       else return res;

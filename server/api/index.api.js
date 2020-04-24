@@ -3,8 +3,9 @@ import postModel from "../model/post.model";
 import activityModel from "../model/activity.model";
 import mongoose from "mongoose";
 import jwt, { verify } from "jsonwebtoken";
-const { SECRET_KEY } = process.env;
+const SECRET_KEY = process.env.SECRET_KEY || "wNnwkOXE7HWShgBN";
 import nodemailer from "nodemailer";
+const { NovelCovid } = require("novelcovid");
 
 module.exports.checkToken = async function (req, res) {
   const token = req.body.token;
@@ -88,5 +89,23 @@ module.exports.sendFeedback = function (req, res) {
   transporter.sendMail(mailOptions, function (error, result) {
     if (error) res.json({ error: true });
     else res.json({ success: true });
+  });
+};
+
+module.exports.getApiVirus = async function (req, res) {
+  const track = new NovelCovid();
+  const global = await track.all();
+  const vietnam = await track.countries("Vietnam");
+  res.json({
+    global: {
+      cases: global.cases,
+      deaths: global.deaths,
+      recovered: global.recovered,
+    },
+    vietnam: {
+      cases: vietnam.cases,
+      deaths: vietnam.deaths,
+      recovered: vietnam.recovered,
+    },
   });
 };

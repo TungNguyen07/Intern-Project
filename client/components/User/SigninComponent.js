@@ -117,7 +117,7 @@ export const LoginComponent = ({ user, setUserDetail }) => {
   useEffect(() => {
     if (localStorage.length) {
       const token = { token: localStorage.getItem("access_token") };
-      postData("http://localhost:4000/check-token", token).then((res) => {
+      postData(`${SERVER_URL}/check-token`, token).then((res) => {
         if (res._id) {
           console.log(res);
           Router.push("/");

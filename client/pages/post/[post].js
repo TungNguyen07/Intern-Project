@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { userActions } from "../../actions/userActions";
 import { postData } from "../../libs/postData";
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 const ReadPost = ({ user, setUserDetail }) => {
   const [loginUser, setUser] = useState({});
@@ -17,7 +18,7 @@ const ReadPost = ({ user, setUserDetail }) => {
     const token = window.localStorage.getItem("access_token");
     let unmounted = false;
     if (!user) {
-      postData("http://localhost:4000/check-token", { token }).then((res) => {
+      postData(`${SERVER_URL}/check-token`, { token }).then((res) => {
         if (!unmounted) {
           if (res.fullname) {
             setUserDetail(res);

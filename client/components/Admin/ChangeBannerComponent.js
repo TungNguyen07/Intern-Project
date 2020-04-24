@@ -8,52 +8,53 @@ import { Button, Typography } from "@material-ui/core";
 import axios from "axios";
 
 import MessageDialog from "../Dialog/MessageDialogComponent";
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   card: {
     border: "dotted 1.5px",
     height: 200,
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
   },
   cardAction: {
     padding: 0,
     height: "100%",
-    display: "flex"
+    display: "flex",
   },
   cardMedia: {
     position: "absolute",
     height: "100%",
-    width: "100%"
+    width: "100%",
   },
   uploadIcon: {
     fontSize: "5rem",
-    marginTop: "0rem"
+    marginTop: "0rem",
   },
   upload: {
     height: "100%",
     width: "100%",
     opacity: 0,
     position: "inherit",
-    position: "absolute"
+    position: "absolute",
   },
   div: {
-    textAlign: "end"
+    textAlign: "end",
   },
   saveButton: {
     marginRight: "1rem",
-    backgroundColor: "#1976d2"
+    backgroundColor: "#1976d2",
   },
   cancelButton: {
     backgroundColor: "#e53935",
     "&:hover": {
-      backgroundColor: "#c62828"
-    }
-  }
+      backgroundColor: "#c62828",
+    },
+  },
 }));
 
 const ChangeBannerComponent = () => {
   const classes = useStyles();
-  const bannerUrl = "http://localhost:4000/images/top-banner.jpg";
+  const bannerUrl = `${SERVER_URL}/images/top-banner.jpg`;
   const [displayBanner, setDisplayBanner] = useState(bannerUrl);
   const [banner, setBanner] = useState();
   const [display, setDisplay] = useState(false);
@@ -72,8 +73,8 @@ const ChangeBannerComponent = () => {
     }
   }
 
-  const onDrop = event => {
-    base64(event.target.files, function(data) {
+  const onDrop = (event) => {
+    base64(event.target.files, function (data) {
       setDisplayBanner(data);
     });
   };
@@ -83,17 +84,15 @@ const ChangeBannerComponent = () => {
     formData.append("banner", banner);
     const config = {
       headers: {
-        "content-type": "multipart/form-data"
-      }
+        "content-type": "multipart/form-data",
+      },
     };
-    axios
-      .post("http://localhost:4000/upload-banner", formData, config)
-      .then(res => {
-        if (res.data.success) {
-          setDisplay(true);
-          setMessage(["Change banner successfully!"]);
-        }
-      });
+    axios.post(`${SERVER_URL}/upload-banner`, formData, config).then((res) => {
+      if (res.data.success) {
+        setDisplay(true);
+        setMessage(["Change banner successfully!"]);
+      }
+    });
   };
 
   const handleCancel = () => {

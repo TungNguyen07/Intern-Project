@@ -120,7 +120,7 @@ const UserTableComponent = ({ isChange }) => {
   };
 
   const handleReset = (user) => {
-    postData("http://localhost:4000/profile/reset-password", {
+    postData(`${SERVER_URL}/profile/reset-password`, {
       staffId: user.staffId,
     }).then((res) => {
       if (res.success) {

@@ -14,12 +14,13 @@ import ProfileNav from "../components/User/ProfileNavComponent";
 import { userActions } from "../actions/userActions";
 import { postData } from "../libs/postData";
 import SearchComponent from "../components/Post/SearchResultComponent";
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   loading: {
-    marginTop: "15%"
+    marginTop: "15%",
   },
-  div: { textAlign: "center" }
+  div: { textAlign: "center" },
 }));
 
 export const Search = ({ user, setUserDetail }) => {
@@ -30,8 +31,8 @@ export const Search = ({ user, setUserDetail }) => {
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     let unmounted = false;
-    postData("http://localhost:4000/check-token", { token })
-      .then(res => {
+    postData(`${SERVER_URL}/check-token`, { token })
+      .then((res) => {
         if (!unmounted) {
           if (res.fullname) {
             setUserDetail(res);
@@ -39,7 +40,7 @@ export const Search = ({ user, setUserDetail }) => {
           } else return;
         }
       })
-      .catch(err => {
+      .catch((err) => {
         return err;
       });
     setLoading(false);
@@ -48,7 +49,7 @@ export const Search = ({ user, setUserDetail }) => {
     };
   }, []);
 
-  const handleGetText = text => {
+  const handleGetText = (text) => {
     setKeyword(text);
   };
 
@@ -82,15 +83,15 @@ export const Search = ({ user, setUserDetail }) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    user: state.userReducer.user
+    user: state.userReducer.user,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    setUserDetail: bindActionCreators(userActions.setUserDetail, dispatch)
+    setUserDetail: bindActionCreators(userActions.setUserDetail, dispatch),
   };
 };
 

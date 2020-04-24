@@ -1,5 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/styles";
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -21,7 +22,7 @@ const Banner = () => {
       <img
         id="banner"
         className={classes.image}
-        src="http://localhost:4000/images/top-banner.jpg"
+        src={`${SERVER_URL}/images/top-banner.jpg`}
       />
     </React.Fragment>
   );

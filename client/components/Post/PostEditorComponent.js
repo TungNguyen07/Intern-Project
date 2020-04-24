@@ -17,6 +17,7 @@ import { TextEditorComponent } from "./TextEditorComponent";
 import MessageDialog from "../Dialog/MessageDialogComponent";
 import { fetchData } from "../../libs/fetchData";
 import { newPost } from "../../actions/postActions";
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 const useStyle = makeStyles((theme) => ({
   buttonSave: {
@@ -154,7 +155,7 @@ export const PostEditor = ({ author }) => {
 
   useEffect(() => {
     let unmounted = false;
-    fetchData("http://localhost:4000/activity/get-activity").then((res) => {
+    fetchData(`${SERVER_URL}/activity/get-activity`).then((res) => {
       if (!unmounted) {
         setActivity(
           res.data.map((item) => {

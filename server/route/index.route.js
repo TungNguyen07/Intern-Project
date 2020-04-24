@@ -47,4 +47,6 @@ router.get("/search/:query/:page", indexApi.search);
 
 router.post("/send-feedback", indexApi.sendFeedback);
 
+router.get("/info-virus", indexApi.getApiVirus);
+
 module.exports = router;

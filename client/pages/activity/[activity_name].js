@@ -14,6 +14,7 @@ import ActivityPostComponent from "../../components/Post/ActivityPostComponent";
 import ProfileNav from "../../components/User/ProfileNavComponent";
 import { userActions } from "../../actions/userActions";
 import { postData } from "../../libs/postData";
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 const useStyles = makeStyles((theme) => ({
   loading: {
@@ -30,7 +31,7 @@ export const Activity = ({ user, setUserDetail }) => {
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     let unmounted = false;
-    postData("http://localhost:4000/check-token", { token })
+    postData(`${SERVER_URL}/check-token`, { token })
       .then((res) => {
         if (!unmounted) {
           if (res.fullname) {

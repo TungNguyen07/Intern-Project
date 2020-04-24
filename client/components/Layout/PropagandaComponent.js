@@ -4,6 +4,7 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 
 import SearchComponent from "../Post/SearchComponent";
+import VirusInfoComponent from "../Covid-19/VirusInfoComponent";
 
 const useStyles = makeStyles({
   root: {
@@ -82,6 +83,7 @@ const Propaganda = () => {
         className={classes.media}
         src="https://b.f4.photo.talk.zdn.vn/5819871661116310597/f7677f89d03e2b60722f.jpg"
       />
+      <VirusInfoComponent />
     </div>
   );
 };
