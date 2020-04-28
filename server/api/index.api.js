@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import jwt, { verify } from "jsonwebtoken";
 const SECRET_KEY = process.env.SECRET_KEY || "wNnwkOXE7HWShgBN";
 import nodemailer from "nodemailer";
-const { NovelCovid } = require("novelcovid");
+import axios from "axios";
 
 module.exports.checkToken = async function (req, res) {
   const token = req.body.token;
@@ -93,19 +93,27 @@ module.exports.sendFeedback = function (req, res) {
 };
 
 module.exports.getApiVirus = async function (req, res) {
-  const track = new NovelCovid();
-  const global = await track.all();
-  const vietnam = await track.countries("Vietnam");
+  let data;
+  await getData().then((res) => {
+    data = res.data.data;
+  });
+  const global = data.global;
+  const vietnam = data.vietnam;
   res.json({
-    global: {
-      cases: global.cases,
-      deaths: global.deaths,
-      recovered: global.recovered,
-    },
-    vietnam: {
-      cases: vietnam.cases,
-      deaths: vietnam.deaths,
-      recovered: vietnam.recovered,
-    },
+    global,
+    vietnam,
   });
 };
+
+function getData() {
+  return new Promise((resolve, reject) => {
+    axios({
+      url: "https://code.junookyo.xyz/api/ncov-moh/data.json",
+      method: "get",
+    })
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => reject(err));
+  });
+}
