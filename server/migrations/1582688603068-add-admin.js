@@ -3,7 +3,7 @@ import { ADMIN } from "../enums/userRoles";
 import userModel, { deleteOne } from "../model/user.model";
 import { MALE } from "../enums/userGender";
 const { MONGO_URL, MONGO_OPTIONS } = process.env;
-import { DEFAULT_AVATAR } from "../defaultAvatar";
+const DEFAULT_AVATAR = process.env.DEFAULT_AVATAR || "";
 
 const Admin = {
   fullname: "Son Tung Nguyen",
@@ -16,7 +16,7 @@ const Admin = {
   username: "admin",
   password: "123456",
   address: "Long Xuyen",
-  avatar: DEFAULT_AVATAR
+  avatar: DEFAULT_AVATAR,
 };
 
 const insertAdminAccount = () => new userModel(Admin).save();
@@ -24,12 +24,12 @@ const insertAdminAccount = () => new userModel(Admin).save();
 const url = MONGO_URL || "mongodb://localhost/cultural-and-sports-center";
 const options = (MONGO_OPTIONS && JSON.parse(MONGO_OPTIONS)) || {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 };
 
 const connect = () => {
   return new Promise((resolve, reject) => {
-    mongoose.connect(url, options, err => {
+    mongoose.connect(url, options, (err) => {
       if (err) {
         reject(err);
       }

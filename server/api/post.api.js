@@ -1,15 +1,36 @@
 import mongoose from "mongoose";
 import postModel from "../model/post.model";
 import activityModel from "../model/activity.model";
-import { defaultCoverImg } from "../defaultCoverImg";
+const DEFAULT_COVER_IMG =
+  process.env.DEFAULT_COVER_IMG ||
+  "https://res.cloudinary.com/djy0l9bwl/image/upload/v1588745533/default-image_g2unmc.jpg";
+import cloudinary from "cloudinary";
+import fs from "fs";
 
-module.exports.newPost = async function (req, res) {
-  if (!req.body.cover_img) req.body.cover_img = defaultCoverImg;
-  await postModel.create(req.body, function (err, res) {
-    if (err) throw err;
-    console.log("Create successfully");
-  });
-  res.json({ success: true });
+cloudinary.config({
+  cloud_name: "djy0l9bwl",
+  api_key: "826977265699649",
+  api_secret: "RLo0uDO7vMMYvTc_GPt661Xgf6I",
+});
+
+module.exports.newPost = function (req, res) {
+  if (!req.body.cover_img) req.body.cover_img = DEFAULT_COVER_IMG;
+  else {
+    const cover_img = req.body.cover_img;
+    var matches = cover_img.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+    let img = new Buffer.from(matches[2], "base64");
+    fs.writeFileSync("public/images/cover_img.png", img);
+  }
+
+  cloudinary.v2.uploader
+    .upload("public/images/cover_img.png")
+    .then(async (data) => {
+      req.body.cover_img = data.url;
+      await postModel.create(req.body, function (err, html) {
+        if (err) throw err;
+        else res.json({ success: true });
+      });
+    });
 };
 
 module.exports.getPendingPost = async function (req, res) {
@@ -193,4 +214,16 @@ module.exports.deletePost = async function (req, res) {
     console.log("Delete post successfully!");
   });
   res.json({ success: true });
+};
+
+module.exports.relativePost = async function (req, res) {
+  const id = req.params.id;
+  const data = await postModel
+    .find(
+      { active: true, _id: { $ne: id } },
+      { title: 1, description: 1, cover_img: 1 }
+    )
+    .sort({ created: 1 })
+    .limit(2);
+  res.json({ relativePost: data });
 };

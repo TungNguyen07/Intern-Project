@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { userActions } from "../../actions/userActions";
 import { postData } from "../../libs/postData";
+import RelativePost from "../../components/Post/RelativePostComponent";
 const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 const ReadPost = ({ user, setUserDetail }) => {
@@ -40,6 +41,7 @@ const ReadPost = ({ user, setUserDetail }) => {
         user={loginUser}
         Right={<ReadPostComponent setTitle={setTitle} />}
       />
+      <RelativePost />
       <Footer />
     </div>
   );

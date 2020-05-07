@@ -59,11 +59,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const AvatarComponent = ({ user, update }) => {
+export const AvatarComponent = ({ user, updateAvatar }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [avatar, setAvatar] = useState(user.avatar);
   const [display, setDisplay] = useState(false);
+  const [mainAvatar, setMainAvatar] = useState(user.avatar);
 
   const handleOpen = () => {
     setOpen(true);
@@ -92,7 +93,8 @@ export const AvatarComponent = ({ user, update }) => {
 
   const handleSave = () => {
     const info = { ...user, avatar: avatar };
-    update(info);
+    setMainAvatar(avatar);
+    updateAvatar(info);
     handleClose();
     setDisplay(true);
   };
@@ -104,7 +106,7 @@ export const AvatarComponent = ({ user, update }) => {
   return (
     <React.Fragment>
       <CardActionArea className={classes.card} onClick={handleOpen}>
-        <Avatar alt="image" src={user.avatar} className={classes.large} />
+        <Avatar alt="image" src={mainAvatar} className={classes.large} />
       </CardActionArea>
 
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth={true}>
@@ -148,7 +150,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return { update: bindActionCreators(userActions.updateInfo, dispatch) };
+  return {
+    updateAvatar: bindActionCreators(userActions.updateAvatar, dispatch),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AvatarComponent);

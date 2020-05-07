@@ -24,4 +24,6 @@ router.get("/get-newest-post/:page", postApi.getNewestPost);
 
 router.post("/delete-post/:id", postApi.deletePost);
 
+router.get("/get-relative-post/:id", postApi.relativePost);
+
 module.exports = router;

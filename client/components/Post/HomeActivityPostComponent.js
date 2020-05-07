@@ -93,9 +93,14 @@ const HomeActivityPostComponent = ({ name, id }) => {
           </Typography>
         </span>
       </Link>
-      {post.map((item) => (
-        <CardPostItemHome className={classes.card} key={item._id} post={item} />
-      ))}
+      {post &&
+        post.map((item) => (
+          <CardPostItemHome
+            className={classes.card}
+            key={item._id}
+            post={item}
+          />
+        ))}
     </div>
   ) : (
     <div />

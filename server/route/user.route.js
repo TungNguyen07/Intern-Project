@@ -8,6 +8,8 @@ router.post("/", userApi.getUserFollowId);
 
 router.post("/update", userApi.updateInfo);
 
+router.post("/update-avatar", userApi.updateAvatar);
+
 router.get("/:id", userApi.getProfile);
 
 router.post("/delete", userApi.deleteUser);

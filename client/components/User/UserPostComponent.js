@@ -147,7 +147,7 @@ export const UserPostComponent = ({ user, getPost }) => {
               return (
                 <Link
                   href="/post/[post]"
-                  as={`/post/${titleToURL(item.title)}`}
+                  as={`/post/${titleToURL(item.title)}-${item._id}`}
                   key={item._id}
                 >
                   <CardActionArea

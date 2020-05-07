@@ -16,6 +16,7 @@ export const userActions = {
   Signout,
   setUserDetail,
   updateInfo,
+  updateAvatar,
   setQuery,
 };
 
@@ -91,6 +92,20 @@ function updateInfo(info) {
     postData(`${SERVER_URL}/profile/update`, info)
       .then((res) => {
         if (res.success) dispatch(setUserDetail(info));
+      })
+      .catch((err) => console.log(err));
+  };
+}
+
+function updateAvatar(info) {
+  return (dispatch) => {
+    postData(`${SERVER_URL}/profile/update-avatar`, {
+      id: info.id,
+      avatar: info.avatar,
+    })
+      .then((res) => {
+        if (res.success)
+          dispatch(setUserDetail({ ...info, avatar: res.avatar }));
       })
       .catch((err) => console.log(err));
   };
