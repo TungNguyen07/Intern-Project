@@ -20,6 +20,7 @@ const useStyles = makeStyles({
       display: "flex",
       maxWidth: "100%",
     },
+    fontSize: "1rem",
   },
   loading: {
     marginTop: "15%",
@@ -37,10 +38,11 @@ const useStyles = makeStyles({
     textAlign: "start",
     fontWeight: "bold",
     padding: "0px 16px 0px 16px",
+    fontSize: "1rem",
   },
   post: {
     color: "black",
-    padding: "0rem 1rem",
+    padding: "0rem 4rem",
   },
   title: {
     fontSize: "1.5rem",

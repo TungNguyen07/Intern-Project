@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { makeStyles } from "@material-ui/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Typography } from "@material-ui/core";
@@ -41,11 +41,16 @@ const ActivityPostComponent = ({ setTitleActivity, activity_id }) => {
   const [title, setTitle] = useState("");
   const [length, setLength] = useState(1);
   const [initPage, setPage] = useState(1);
+  const [current, setCurrent] = useState("");
 
   useEffect(() => {
-    // const id = activity_id || localStorage.getItem("activity_id");
     let unmounted = false;
-    const name = window.location.pathname.split("/").slice(-1).pop();
+    const name = Router.asPath.split("/").slice(-1).pop();
+    if (name != current) {
+      setCurrent(name);
+      setPage(1);
+    }
+
     fetchData(`${SERVER_URL}/activity/${name}/${initPage}`).then((res) => {
       if (!unmounted) {
         setPost(
@@ -54,8 +59,8 @@ const ActivityPostComponent = ({ setTitleActivity, activity_id }) => {
               cover_img: item.cover_img,
               title: item.title,
               description:
-                item.description.length > 200
-                  ? item.description.slice(0, 200) + "..."
+                item.description.length > 150
+                  ? item.description.slice(0, 150) + "..."
                   : item.description,
               _id: item._id,
             };
@@ -100,6 +105,7 @@ const ActivityPostComponent = ({ setTitleActivity, activity_id }) => {
         showFirstButton
         showLastButton
         onChange={handleChange}
+        page={initPage}
       />
     </div>
   );

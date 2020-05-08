@@ -88,7 +88,9 @@ const CardPost = ({ post, getPost }) => {
               color="textSecondary"
               component="p"
             >
-              {post.description}
+              {post.description.length > 150
+                ? post.description.slice(0, 150) + "..."
+                : post.description}
             </Typography>
           </CardContent>
         </CardActionArea>

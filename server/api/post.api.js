@@ -218,9 +218,13 @@ module.exports.deletePost = async function (req, res) {
 
 module.exports.relativePost = async function (req, res) {
   const id = req.params.id;
+  const activity = await postModel.findOne(
+    { _id: id },
+    { _id: 0, activity_id: 1 }
+  );
   const data = await postModel
     .find(
-      { active: true, _id: { $ne: id } },
+      { active: true, activity_id: activity.activity_id, _id: { $ne: id } },
       { title: 1, description: 1, cover_img: 1 }
     )
     .sort({ created: 1 })

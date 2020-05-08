@@ -13,6 +13,7 @@ import {
   Card,
   CardActionArea,
   CardContent,
+  CardMedia,
 } from "@material-ui/core";
 
 const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
@@ -22,8 +23,14 @@ const useStyles = makeStyles({
     marginTop: "15%",
   },
   div: { textAlign: "center" },
-  paper: {
-    marginTop: "0.5rem",
+  root: {
+    marginTop: "1rem",
+  },
+  title: {
+    marginBottom: "0.5rem",
+    padding: "0.3rem 1rem",
+    backgroundColor: "#4fd9ff",
+    borderRadius: "4px 4px 0 0",
   },
 });
 
@@ -46,36 +53,27 @@ const RelativePostComponent = () => {
     };
   }, []);
 
-  useEffect(() => {
-    console.log(relative);
-  }, [relative]);
-
   return fetching ? (
     <div className={classes.div}>
       <CircularProgress className={classes.loading} />
     </div>
   ) : (
-    <div>
-      <Container maxWidth="lg">
-        <Grid container>
-          <Grid item xs={3}></Grid>
-          <Grid item xs={9}>
-            <Paper className={classes.paper}>
-              {relative.length &&
-                relative.map((item) => {
-                  <CardActionArea>
-                    <img src={item.cover_img} />
-                    <CardContent>
-                      <Typography>{item.title}</Typography>
-                      <p>{item.discription}</p>
-                    </CardContent>
-                  </CardActionArea>;
-                })}
-            </Paper>
-          </Grid>
+    <Container maxWidth="lg">
+      <Grid container>
+        <Grid item xs={3} />
+        <Grid item xs={9} className={classes.root}>
+          <Paper>
+            <Typography className={classes.title} variant="h5">
+              Relative post
+            </Typography>
+            <div>
+              <CardPostItemHome post={relative[0]} />
+              <CardPostItemHome post={relative[1]} />
+            </div>
+          </Paper>
         </Grid>
-      </Container>
-    </div>
+      </Grid>
+    </Container>
   );
 };
 

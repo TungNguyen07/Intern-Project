@@ -97,7 +97,6 @@ module.exports.updateAvatar = async function (req, res) {
       );
     });
   fs.unlinkSync(`public/images/${id}.png`);
-
   const public_id = oldAvatar.avatar.split("/").pop().split(".")[0];
   cloudinary.v2.uploader.destroy(public_id);
 };
