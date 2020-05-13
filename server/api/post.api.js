@@ -6,31 +6,48 @@ const DEFAULT_COVER_IMG =
   "https://res.cloudinary.com/djy0l9bwl/image/upload/v1588745533/default-image_g2unmc.jpg";
 import cloudinary from "cloudinary";
 import fs from "fs";
+const CLOUD_NAME = process.env.CLOUD_NAME || "djy0l9bwl";
+const API_KEY = process.env.API_KEY || "826977265699649";
+const API_SECRET = process.env.API_SECRET || "RLo0uDO7vMMYvTc_GPt661Xgf6I";
 
 cloudinary.config({
-  cloud_name: "djy0l9bwl",
-  api_key: "826977265699649",
-  api_secret: "RLo0uDO7vMMYvTc_GPt661Xgf6I",
+  cloud_name: CLOUD_NAME,
+  api_key: API_KEY,
+  api_secret: API_SECRET,
 });
 
-module.exports.newPost = function (req, res) {
-  if (!req.body.cover_img) req.body.cover_img = DEFAULT_COVER_IMG;
+module.exports.newPost = async function (req, res) {
+  let cover_img = "";
+  if (!req.body.cover_img) cover_img = DEFAULT_COVER_IMG;
   else {
-    const cover_img = req.body.cover_img;
-    var matches = cover_img.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-    let img = new Buffer.from(matches[2], "base64");
-    fs.writeFileSync("public/images/cover_img.png", img);
+    await cloudinary.v2.uploader.upload(req.body.cover_img).then((data) => {
+      cover_img = data.url;
+    });
+  }
+  let content = req.body.content;
+  const imgArr = content.match(/<img.*?src="(.*?)"/gm);
+  let arrSrc = [];
+  if (imgArr)
+    arrSrc = imgArr.map((element) => {
+      return element.match(/<img.*?src="(.*?)"/)[1];
+    });
+  if (arrSrc.length) {
+    for (let index = 0; index < arrSrc.length; index++) {
+      await cloudinary.v2.uploader.upload(arrSrc[index]).then((data) => {
+        content = content.replace(/src="([^"]+)"/, `src='${data.url}'`);
+      });
+    }
   }
 
-  cloudinary.v2.uploader
-    .upload("public/images/cover_img.png")
-    .then(async (data) => {
-      req.body.cover_img = data.url;
-      await postModel.create(req.body, function (err, html) {
-        if (err) throw err;
-        else res.json({ success: true });
+  await postModel.create(
+    { ...req.body, cover_img: cover_img, content: content },
+    (err, html) => {
+      if (err) throw err;
+      res.json({
+        success: true,
       });
-    });
+    }
+  );
 };
 
 module.exports.getPendingPost = async function (req, res) {

@@ -34,9 +34,6 @@ export const getPost = (postId) => {
 };
 
 export const deletePost = (postId) => {
-  if (postId == localStorage.getItem("post_id")) {
-    localStorage.removeItem("post_id");
-  }
   postData(`${SERVER_URL}/post/delete-post/${postId}`, { id: postId }).then(
     (res) => {
       if (res.error) console.log(error);

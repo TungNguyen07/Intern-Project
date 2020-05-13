@@ -30,7 +30,7 @@ const Propaganda = () => {
           <CardActionArea>
             <img
               className={classes.media}
-              src="https://f12.photo.talk.zdn.vn/2048302144937371919/44fe8041ddf626a87fe7.jpg"
+              src="http://res.cloudinary.com/djy0l9bwl/image/upload/v1589164331/unnamed_cpigdj.png"
             />
           </CardActionArea>
         </Card>
@@ -43,7 +43,7 @@ const Propaganda = () => {
           <CardActionArea>
             <img
               className={classes.media}
-              src="https://f14.photo.talk.zdn.vn/836643282698433221/19cf9670cbc7309969d6.jpg"
+              src="http://res.cloudinary.com/djy0l9bwl/image/upload/v1589164332/congdvcongquocgia_g3f8yz.jpg"
             />
           </CardActionArea>
         </Card>
@@ -53,7 +53,7 @@ const Propaganda = () => {
           <CardActionArea>
             <img
               className={classes.media}
-              src="https://f11.photo.talk.zdn.vn/3666640873223991712/305049e51452ef0cb643.jpg"
+              src="http://res.cloudinary.com/djy0l9bwl/image/upload/v1589164331/unnamed_poixch.jpg"
             />
           </CardActionArea>
         </Card>
@@ -66,22 +66,22 @@ const Propaganda = () => {
           <CardActionArea>
             <img
               className={classes.media}
-              src="https://f11.photo.talk.zdn.vn/5302077411369275592/f76e90ddcd6a36346f7b.jpg"
+              src="http://res.cloudinary.com/djy0l9bwl/image/upload/v1589164332/VB_CHI_DAO_DIEU_HANH_a5zzee.png"
             />
           </CardActionArea>
         </Card>
       </a>
       <img
         className={classes.media}
-        src="https://f8.photo.talk.zdn.vn/5720011895907003075/283450870d30f66eaf21.jpg"
+        src="https://res.cloudinary.com/djy0l9bwl/image/upload/v1589164332/virus_corona-hotline-S_i6efxg.jpg"
       />
       <img
         className={classes.media}
-        src="https://b.f3.photo.talk.zdn.vn/3371653541661994894/b793d47d7bca8094d9db.jpg"
+        src="https://res.cloudinary.com/djy0l9bwl/image/upload/v1589164331/Hotline_tplx_gf6lt4.gif"
       />
       <img
         className={classes.media}
-        src="https://b.f4.photo.talk.zdn.vn/5819871661116310597/f7677f89d03e2b60722f.jpg"
+        src="https://res.cloudinary.com/djy0l9bwl/image/upload/v1589164331/Hotline_tinh_uwzehj.gif"
       />
       <VirusInfoComponent />
     </div>

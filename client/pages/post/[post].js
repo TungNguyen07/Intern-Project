@@ -16,7 +16,7 @@ const ReadPost = ({ user, setUserDetail }) => {
   const [title, setTitle] = useState("");
 
   useEffect(() => {
-    const token = window.localStorage.getItem("access_token");
+    const token = localStorage.getItem("access_token");
     let unmounted = false;
     if (!user) {
       postData(`${SERVER_URL}/check-token`, { token }).then((res) => {

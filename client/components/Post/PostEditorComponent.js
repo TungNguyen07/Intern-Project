@@ -173,6 +173,10 @@ export const PostEditor = ({ author }) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (activity.length) post.activity_id = activity[0].id;
+  }, [activity]);
+
   return isFetching ? (
     <div className={classes.div}>
       <CircularProgress className={classes.loading} />

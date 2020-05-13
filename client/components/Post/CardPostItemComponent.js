@@ -24,16 +24,16 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "start",
   },
   media: {
-    maxHeight: "8rem",
-    maxWidth: "13rem",
+    height: "8rem",
+    width: "13rem",
     marginLeft: "1rem",
     "@media (min-width:600px)": {
-      maxHeight: "5rem",
-      maxWidth: "8rem",
+      height: "5rem",
+      width: "8rem",
     },
     [theme.breakpoints.up("lg")]: {
-      maxHeight: "8rem",
-      maxWidth: "13rem",
+      height: "8rem",
+      width: "13rem",
     },
   },
   content: {

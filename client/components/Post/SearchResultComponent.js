@@ -44,7 +44,6 @@ const SearchResultComponent = ({ query }) => {
 
   useEffect(() => {
     let unmounted = false;
-    // const q = query || localStorage.getItem("query");
     const q = Router.query.query;
     fetchData(`${SERVER_URL}/search/${q}/${initPage}`).then((res) => {
       if (!unmounted) {
@@ -70,7 +69,7 @@ const SearchResultComponent = ({ query }) => {
     return () => {
       unmounted = true;
     };
-  }, [query]);
+  }, [query, initPage]);
 
   const handleChange = (event, page) => {
     window.scrollTo({ top: 0, behavior: "smooth" });

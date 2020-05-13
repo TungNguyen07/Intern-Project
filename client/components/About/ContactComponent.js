@@ -297,7 +297,7 @@ const ContactComponent = () => {
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      ;{display && <MessageDialog setError={setDisplay} message={message} />}
+      {display && <MessageDialog setError={setDisplay} message={message} />}
     </div>
   );
 };

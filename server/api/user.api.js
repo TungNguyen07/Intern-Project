@@ -3,12 +3,14 @@ import mongoose from "mongoose";
 import jwt, { verify } from "jsonwebtoken";
 const SECRET_KEY = process.env.SECRET_KEY || "wNnwkOXE7HWShgBN";
 import cloudinary from "cloudinary";
-import fs from "fs";
+const CLOUD_NAME = process.env.CLOUD_NAME || "djy0l9bwl";
+const API_KEY = process.env.API_KEY || "826977265699649";
+const API_SECRET = process.env.API_SECRET || "RLo0uDO7vMMYvTc_GPt661Xgf6I";
 
 cloudinary.config({
-  cloud_name: "djy0l9bwl",
-  api_key: "826977265699649",
-  api_secret: "RLo0uDO7vMMYvTc_GPt661Xgf6I",
+  cloud_name: CLOUD_NAME,
+  api_key: API_KEY,
+  api_secret: API_SECRET,
 });
 
 module.exports.signin = async function (req, res) {
@@ -78,25 +80,19 @@ module.exports.updateInfo = function (req, res) {
 module.exports.updateAvatar = async function (req, res) {
   const id = { _id: mongoose.Types.ObjectId(req.body.id) };
   const imgData = req.body.avatar;
-  var matches = imgData.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-  let img = new Buffer.from(matches[2], "base64");
-  fs.writeFileSync(`public/images/${id}.png`, img);
 
   const oldAvatar = await userModel.findOne({ _id: id }, { avatar: 1, _id: 0 });
 
-  cloudinary.v2.uploader
-    .upload(`public/images/${id}.png`)
-    .then(async (data) => {
-      await userModel.updateOne(
-        { _id: id },
-        { $set: { avatar: data.url } },
-        (err, html) => {
-          if (err) throw err;
-          res.json({ success: true, avatar: data.url });
-        }
-      );
-    });
-  fs.unlinkSync(`public/images/${id}.png`);
+  cloudinary.v2.uploader.upload(imgData).then(async (data) => {
+    await userModel.updateOne(
+      { _id: id },
+      { $set: { avatar: data.url } },
+      (err, html) => {
+        if (err) throw err;
+        res.json({ success: true, avatar: data.url });
+      }
+    );
+  });
   const public_id = oldAvatar.avatar.split("/").pop().split(".")[0];
   cloudinary.v2.uploader.destroy(public_id);
 };

@@ -24,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
     height: "9rem",
   },
   media: {
-    maxWidth: "30%",
-    maxHeight: "50%",
+    width: "30%",
+    height: "50%",
     float: "left",
     margin: "0.5rem 0.5rem 0.1rem 1rem",
   },

@@ -32,6 +32,11 @@ const useStyles = makeStyles({
     backgroundColor: "#4fd9ff",
     borderRadius: "4px 4px 0 0",
   },
+  nothing: {
+    margin: "auto",
+    textAlign: "center",
+    paddingBottom: "0.5rem",
+  },
 });
 
 const RelativePostComponent = () => {
@@ -66,10 +71,14 @@ const RelativePostComponent = () => {
             <Typography className={classes.title} variant="h5">
               Relative post
             </Typography>
-            <div>
-              <CardPostItemHome post={relative[0]} />
-              <CardPostItemHome post={relative[1]} />
-            </div>
+            {relative.length ? (
+              <div>
+                <CardPostItemHome post={relative[0]} />
+                <CardPostItemHome post={relative[1]} />
+              </div>
+            ) : (
+              <h4 className={classes.nothing}>Nothing found!</h4>
+            )}
           </Paper>
         </Grid>
       </Grid>
