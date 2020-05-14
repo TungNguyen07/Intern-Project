@@ -9,6 +9,7 @@ import userRouter from "./route/user.route";
 import indexRouter from "./route/index.route";
 import postRouter from "./route/post.route";
 import activityRouter from "./route/activity.route";
+import commentRouter from "./route/comment.route";
 import db from "./db/connectDB";
 
 const app = express();
@@ -22,7 +23,7 @@ app.use(
     type: "application/json",
     extended: true,
     parameterLimit: 100000,
-    limit: "10mb"
+    limit: "10mb",
   })
 );
 app.use(helmet());
@@ -34,5 +35,6 @@ app.use("/profile", userRouter);
 app.use("/", indexRouter);
 app.use("/post", postRouter);
 app.use("/activity", activityRouter);
+app.use("/comment", commentRouter);
 
 app.listen(port, () => console.log(`Server is running on port ${port}!`));

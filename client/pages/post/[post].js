@@ -10,6 +10,7 @@ import { userActions } from "../../actions/userActions";
 import { postData } from "../../libs/postData";
 import RelativePost from "../../components/Post/RelativePostComponent";
 const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
+import CommentComponent from "../../components/Comment/CommentComponent";
 
 const ReadPost = ({ user, setUserDetail }) => {
   const [loginUser, setUser] = useState({});
@@ -41,7 +42,9 @@ const ReadPost = ({ user, setUserDetail }) => {
         user={loginUser}
         Right={<ReadPostComponent setTitle={setTitle} />}
       />
+      <CommentComponent />
       <RelativePost />
+
       <Footer />
     </div>
   );
