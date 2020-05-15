@@ -234,7 +234,7 @@ module.exports.deletePost = async function (req, res) {
 };
 
 module.exports.relativePost = async function (req, res) {
-  const id = req.params.id;
+  const id = mongoose.Types.ObjectId(req.params.id);
   const activity = await postModel.findOne(
     { _id: id },
     { _id: 0, activity_id: 1 }

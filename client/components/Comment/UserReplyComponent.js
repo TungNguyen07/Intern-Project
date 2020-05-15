@@ -2,6 +2,7 @@ import { Typography, Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import CommentForm from "./CommentFormComponent";
 import { useState, useEffect } from "react";
+import { titleToURL } from "../../libs/changeTitleToURL";
 
 const useStyles = makeStyles({
   replyBlock: {
@@ -33,7 +34,7 @@ const UserReply = ({ replyItem }) => {
         <div>
           <div className={classes.replyBlock}>
             <Avatar>
-              <p>{replyItem.owner.charAt(0).toUpperCase()}</p>
+              <p>{titleToURL(replyItem.owner.charAt(0)).toUpperCase()}</p>
             </Avatar>
             <Typography className={classes.name} variant="h6">
               {replyItem.owner}
@@ -43,7 +44,9 @@ const UserReply = ({ replyItem }) => {
             </Typography>
           </div>
           <div className={classes.infoBlock}>
-            <Typography>{replyItem.created_at}</Typography>
+            <Typography>
+              {new Date(replyItem.created_at).toLocaleString()}
+            </Typography>
           </div>
         </div>
       ) : (

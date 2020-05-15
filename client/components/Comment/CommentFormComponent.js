@@ -5,6 +5,7 @@ import {
   makeStyles,
   Button,
 } from "@material-ui/core";
+import Router from "next/router";
 
 import MessageDialog from "../Dialog/MessageDialogComponent";
 
@@ -47,6 +48,7 @@ const CommentForm = ({ action }) => {
   const [info, setInfo] = useState(initInfo);
   const [display, setDisplay] = useState(false);
   const [notify, setNotify] = useState([]);
+  const post_id = Router.query.post.split("-").slice(-1).pop();
 
   const handleCancel = () => {
     setInfo(initInfo);
@@ -58,7 +60,11 @@ const CommentForm = ({ action }) => {
 
   const handleSave = () => {
     validate(info)
-      ? (action({ ...info, created_at: new Date().toLocaleString() }),
+      ? (action({
+          ...info,
+          created_at: new Date().toISOString(),
+          post_id: post_id,
+        }),
         setInfo(initInfo))
       : setDisplay(true);
   };

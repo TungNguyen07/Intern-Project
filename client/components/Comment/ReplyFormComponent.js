@@ -60,7 +60,7 @@ const ReplyForm = ({ action, cmtId }) => {
     if (validate(info)) {
       action({
         ...info,
-        created_at: new Date().toLocaleString(),
+        created_at: new Date().toISOString(),
         cmtId: cmtId,
       });
       setInfo(initInfo);

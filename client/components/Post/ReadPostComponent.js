@@ -53,7 +53,7 @@ const useStyles = makeStyles({
   },
 });
 
-const ReadPostComponent = ({ setTitle }) => {
+const ReadPostComponent = ({ setTitle, setPost_id }) => {
   const classes = useStyles();
   const [post, setPost] = useState({});
   const [fetching, setFetching] = useState(true);
@@ -66,6 +66,7 @@ const ReadPostComponent = ({ setTitle }) => {
         setPost(res.data);
         setFetching(false);
         setTitle(res.data.title);
+        setPost_id(res.data._id);
       }
     });
     return () => {

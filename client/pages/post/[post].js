@@ -15,6 +15,7 @@ import CommentComponent from "../../components/Comment/CommentComponent";
 const ReadPost = ({ user, setUserDetail }) => {
   const [loginUser, setUser] = useState({});
   const [title, setTitle] = useState("");
+  const [post_id, setPost_id] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
@@ -40,9 +41,11 @@ const ReadPost = ({ user, setUserDetail }) => {
       <Banner />
       <PostLayout
         user={loginUser}
-        Right={<ReadPostComponent setTitle={setTitle} />}
+        Right={
+          <ReadPostComponent setTitle={setTitle} setPost_id={setPost_id} />
+        }
       />
-      <CommentComponent />
+      <CommentComponent post_id={post_id} />
       <RelativePost />
 
       <Footer />

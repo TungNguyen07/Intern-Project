@@ -3,6 +3,9 @@ import { makeStyles } from "@material-ui/styles";
 import ReplyForm from "./ReplyFormComponent";
 import UserReply from "./UserReplyComponent";
 import { useState, useEffect } from "react";
+import { postData } from "../../libs/postData";
+import { titleToURL } from "../../libs/changeTitleToURL";
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 const useStyles = makeStyles({
   root: {
@@ -26,9 +29,9 @@ const useStyles = makeStyles({
   reply: {
     marginRight: "1.5rem",
     marginLeft: "1.5rem",
+    color: "blue",
     "&:hover, &:focus": {
       cursor: "pointer",
-      color: "blue",
     },
   },
   displayForm: {
@@ -37,12 +40,32 @@ const useStyles = makeStyles({
   hideForm: {
     display: "none",
   },
+  moreReplies: {
+    paddingLeft: "15%",
+    paddingTop: "1rem",
+    textDecoration: "underline",
+    color: "blue",
+    "& a": {
+      "&:hover, &:focus": {
+        cursor: "pointer",
+      },
+    },
+  },
 });
 
 const UserCommment = ({ comment }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [reply, setReply] = useState(comment.reply);
+  const [reply, setReply] = useState(
+    comment.reply.sort((item1, item2) => {
+      return new Date(item2.created_at) - new Date(item1.created_at);
+    })
+  );
+  const [shorcut, setShortcut] = useState(reply.slice(0, 3));
+
+  useEffect(() => {
+    if (reply) setShortcut(reply.slice(0, 3));
+  }, [reply]);
 
   const handleOpen = () => {
     setOpen(!open);
@@ -50,31 +73,56 @@ const UserCommment = ({ comment }) => {
 
   const handleReply = (info) => {
     setOpen(false);
-    setReply([...reply, info]);
+    setReply(
+      [...reply, info].sort((item1, item2) => {
+        return new Date(item2.created_at) - new Date(item1.created_at);
+      })
+    );
+    postData(`${SERVER_URL}/comment/post-reply`, info).then((res) => {
+      console.log(res);
+    });
   };
+
+  const handleMoreReplies = () => {
+    const length = shorcut.length + 3;
+    setShortcut(reply.slice(0, length));
+  };
+
+  useEffect(() => {
+    if (comment) setReply(comment.reply);
+  }, [comment]);
 
   return (
     <div className={classes.root}>
       <div className={classes.commentBlock}>
         <Avatar>
-          <p>{comment.owner.charAt(0).toUpperCase()}</p>
+          <p>{titleToURL(comment.owner.charAt(0)).toUpperCase()}</p>
         </Avatar>
         <Typography className={classes.name} variant="h6">
           {comment.owner}
         </Typography>
-        <Typography className={classes.comment}>{comment.text}</Typography>
+        <Typography className={classes.comment}>{comment.comment}</Typography>
       </div>
       <div className={classes.infoBlock}>
         <a onClick={handleOpen} className={classes.reply}>
           Reply
         </a>
-        <Typography>{comment.created_at}</Typography>
+        <Typography>{new Date(comment.created_at).toLocaleString()}</Typography>
       </div>
 
-      {reply.length ? (
-        reply.map((item, index) => {
+      {shorcut.length ? (
+        shorcut.map((item, index) => {
           return <UserReply key={index} replyItem={item} />;
         })
+      ) : (
+        <div />
+      )}
+      {shorcut.length < reply.length ? (
+        <div className={classes.moreReplies}>
+          <a onClick={handleMoreReplies}>
+            Show {reply.length - shorcut.length} replies
+          </a>
+        </div>
       ) : (
         <div />
       )}
