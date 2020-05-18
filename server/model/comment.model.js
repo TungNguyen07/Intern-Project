@@ -4,6 +4,7 @@ const commentSchema = mongoose.Schema(
   {
     owner: String,
     comment: String,
+    email: String,
     created_at: Date,
     post_id: mongoose.Schema.Types.ObjectId,
     reply: [

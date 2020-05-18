@@ -5,6 +5,7 @@ import UserReply from "./UserReplyComponent";
 import { useState, useEffect } from "react";
 import { postData } from "../../libs/postData";
 import { titleToURL } from "../../libs/changeTitleToURL";
+import MessageDialog from "../Dialog/MessageDialogComponent";
 const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 const useStyles = makeStyles({
@@ -56,6 +57,8 @@ const useStyles = makeStyles({
 const UserCommment = ({ comment }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [display, setDisplay] = useState(false);
+  const [message, setMessage] = useState([]);
   const [reply, setReply] = useState(
     comment.reply.sort((item1, item2) => {
       return new Date(item2.created_at) - new Date(item1.created_at);
@@ -73,13 +76,17 @@ const UserCommment = ({ comment }) => {
 
   const handleReply = (info) => {
     setOpen(false);
-    setReply(
-      [...reply, info].sort((item1, item2) => {
-        return new Date(item2.created_at) - new Date(item1.created_at);
-      })
-    );
     postData(`${SERVER_URL}/comment/post-reply`, info).then((res) => {
-      console.log(res);
+      if (res.success) {
+        setReply(
+          [...reply, res.reply].sort((item1, item2) => {
+            return new Date(item2.created_at) - new Date(item1.created_at);
+          })
+        );
+      } else {
+        setDisplay(true);
+        setMessage(["Reply failed!"]);
+      }
     });
   };
 
@@ -126,6 +133,7 @@ const UserCommment = ({ comment }) => {
       ) : (
         <div />
       )}
+      {display && <MessageDialog setError={display} message={message} />}
 
       <div className={open ? classes.displayForm : classes.hideForm}>
         <ReplyForm action={handleReply} cmtId={comment._id} />

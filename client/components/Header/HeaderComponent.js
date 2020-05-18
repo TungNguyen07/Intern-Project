@@ -14,8 +14,6 @@ const Header = (props) => {
         href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
         rel="stylesheet"
       />
-      <link rel="icon" href={`${SERVER_URL}/images/logo.png`} />
-      <link rel="shortcut icon" href="favicon.ico"></link>
     </div>
   );
 };

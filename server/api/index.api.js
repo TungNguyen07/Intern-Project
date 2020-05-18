@@ -89,6 +89,7 @@ module.exports.sendFeedback = function (req, res) {
   transporter.sendMail(mailOptions, function (error, result) {
     if (error) res.json({ error: true });
     else res.json({ success: true });
+    console.log(result);
   });
 };
 

@@ -12,10 +12,12 @@ import CommentForm from "./CommentFormComponent";
 import UserCommment from "./UserCommentComponent";
 import { postData } from "../../libs/postData";
 import { fetchData } from "../../libs/fetchData";
+import MessageDialog from "../Dialog/MessageDialogComponent";
 
 const useStyles = makeStyles({
   loading: {
-    marginTop: "15%",
+    marginTop: "1rem",
+    marginBottom: "2rem",
   },
   div: { textAlign: "center" },
   root: {
@@ -34,31 +36,31 @@ const useStyles = makeStyles({
   },
 });
 
-const CommentComponent = ({ post_id }) => {
+const CommentComponent = () => {
   const classes = useStyles();
   const [fetching, setFetching] = useState(true);
   const [comment, setComment] = useState([]);
   const [length, setLength] = useState(1);
   const [page, setPage] = useState(1);
+  const [display, setDisplay] = useState(false);
+  const [message, setMessage] = useState([]);
 
   useEffect(() => {
-    if (post_id) {
-      let unmouted = false;
-
-      fetchData(
-        `${SERVER_URL}/comment/get-comment-by-post-id/${post_id}/${page}`
-      ).then((res) => {
-        if (!unmouted) {
-          setComment(res.data.comment);
-          setLength(res.data.count);
-          setFetching(false);
-        }
-      });
-      return () => {
-        unmouted = true;
-      };
-    }
-  }, [page, post_id]);
+    let unmouted = false;
+    const id = Router.asPath.split("-").pop();
+    fetchData(
+      `${SERVER_URL}/comment/get-comment-by-post-id/${id}/${page}`
+    ).then((res) => {
+      if (!unmouted) {
+        setComment(res.data.comment);
+        setLength(res.data.count);
+        setFetching(false);
+      }
+    });
+    return () => {
+      unmouted = true;
+    };
+  }, [page]);
 
   const handleChange = (event, pageClick) => {
     const cmtBlock = document.getElementById("comment");
@@ -70,11 +72,16 @@ const CommentComponent = ({ post_id }) => {
     let unmouted = false;
     postData(`${SERVER_URL}/comment/post-comment`, info).then((res) => {
       if (!unmouted) {
-        setComment(
-          [...comment, res.cmt].sort((item1, item2) => {
-            return new Date(item2.created_at) - new Date(item1.created_at);
-          })
-        );
+        if (res.success)
+          setComment(
+            [...comment, res.cmt].sort((item1, item2) => {
+              return new Date(item2.created_at) - new Date(item1.created_at);
+            })
+          );
+        else {
+          setDisplay(true);
+          setMessage(["Comment failed!"]);
+        }
       }
     });
     return () => {
@@ -82,11 +89,7 @@ const CommentComponent = ({ post_id }) => {
     };
   };
 
-  return fetching ? (
-    <div className={classes.div}>
-      <CircularProgress className={classes.loading} />
-    </div>
-  ) : (
+  return (
     <Container maxWidth="lg">
       <Grid container>
         <Grid item xs={3} />
@@ -96,22 +99,35 @@ const CommentComponent = ({ post_id }) => {
               Comment
             </Typography>
             <CommentForm action={handleComment} />
-            {comment.length ? (
-              comment.map((item, index) => {
-                return <UserCommment key={index} comment={item} />;
-              })
+            {fetching ? (
+              <div className={classes.div}>
+                <CircularProgress className={classes.loading} />
+              </div>
             ) : (
-              <div />
+              <div>
+                {comment.length ? (
+                  comment.map((item, index) => {
+                    return <UserCommment key={index} comment={item} />;
+                  })
+                ) : (
+                  <div />
+                )}
+                {comment.length ? (
+                  <div className={classes.pagination}>
+                    <Pagination
+                      count={length}
+                      showFirstButton
+                      showLastButton
+                      onChange={handleChange}
+                      page={page}
+                    />
+                  </div>
+                ) : (
+                  <div />
+                )}
+              </div>
             )}
-            <div className={classes.pagination}>
-              <Pagination
-                count={length}
-                showFirstButton
-                showLastButton
-                onChange={handleChange}
-                page={page}
-              />
-            </div>
+            {display && <MessageDialog setError={display} message={message} />}
           </Paper>
         </Grid>
       </Grid>

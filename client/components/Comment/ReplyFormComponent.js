@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   TextField,
   TextareaAutosize,
@@ -18,6 +18,12 @@ const useStyles = makeStyles({
   },
   name: {
     marginBottom: "0.5rem",
+    width: "45%",
+  },
+  email: {
+    marginBottom: "0.5rem",
+    width: "53%",
+    marginLeft: "2%",
   },
   opinion: {
     resize: "none",
@@ -43,7 +49,13 @@ const useStyles = makeStyles({
 
 const ReplyForm = ({ action, cmtId }) => {
   const classes = useStyles();
-  const initInfo = { owner: "", repComment: "", created_at: "", cmtId: "" };
+  const initInfo = {
+    owner: "",
+    repComment: "",
+    email: "",
+    created_at: "",
+    cmtId: "",
+  };
   const [info, setInfo] = useState(initInfo);
   const [display, setDisplay] = useState(false);
   const [notify, setNotify] = useState([]);
@@ -62,15 +74,24 @@ const ReplyForm = ({ action, cmtId }) => {
         ...info,
         created_at: new Date().toISOString(),
         cmtId: cmtId,
+        url: window.location.href,
       });
       setInfo(initInfo);
     } else setDisplay(true);
+  };
+
+  const validateEmail = (email) => {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
   };
 
   const validate = (checkInfo) => {
     let error = [];
     if (checkInfo.owner.trim() == "" || checkInfo.owner.trim() == undefined)
       error.push("Name is required!");
+    if (checkInfo.email.trim() == "" || checkInfo.email.trim() == undefined)
+      error.push("Email is required!");
+    else if (!validateEmail(checkInfo.email)) error.push("Invalid Email!");
     if (
       checkInfo.repComment.trim() == "" ||
       checkInfo.repComment.trim() == undefined
@@ -87,13 +108,22 @@ const ReplyForm = ({ action, cmtId }) => {
 
   return (
     <div className={classes.root}>
-      <TextField
-        className={classes.name}
-        label="Name"
-        variant="outlined"
-        value={info.owner}
-        onChange={handleChange("owner")}
-      />
+      <div>
+        <TextField
+          className={classes.name}
+          label="Name"
+          variant="outlined"
+          value={info.owner}
+          onChange={handleChange("owner")}
+        />
+        <TextField
+          className={classes.email}
+          label="Email"
+          variant="outlined"
+          value={info.email}
+          onChange={handleChange("email")}
+        />
+      </div>
       <TextareaAutosize
         className={classes.opinion}
         rowsMin={3}

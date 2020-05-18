@@ -40,6 +40,7 @@ import React from "react";
 import Document, { Head, Main, NextScript } from "next/document";
 import { ServerStyleSheets } from "@material-ui/core/styles";
 import theme from "../theme";
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 export default class MyDocument extends Document {
   render() {
@@ -52,6 +53,11 @@ export default class MyDocument extends Document {
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           />
+          <link
+            type="image/png"
+            rel="shortcut icon"
+            href={`${SERVER_URL}/images/logo.png`}
+          />
         </Head>
         <body>
           <Main />
@@ -62,7 +68,7 @@ export default class MyDocument extends Document {
   }
 }
 
-MyDocument.getInitialProps = async ctx => {
+MyDocument.getInitialProps = async (ctx) => {
   // Resolution order
   //
   // On the server:
@@ -91,7 +97,7 @@ MyDocument.getInitialProps = async ctx => {
 
   ctx.renderPage = () =>
     originalRenderPage({
-      enhanceApp: App => props => sheets.collect(<App {...props} />)
+      enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
     });
 
   const initialProps = await Document.getInitialProps(ctx);
@@ -101,7 +107,7 @@ MyDocument.getInitialProps = async ctx => {
     // Styles fragment is rendered after the app and page rendering finish.
     styles: [
       ...React.Children.toArray(initialProps.styles),
-      sheets.getStyleElement()
-    ]
+      sheets.getStyleElement(),
+    ],
   };
 };

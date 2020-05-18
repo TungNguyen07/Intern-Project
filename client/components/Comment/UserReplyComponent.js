@@ -1,7 +1,5 @@
 import { Typography, Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import CommentForm from "./CommentFormComponent";
-import { useState, useEffect } from "react";
 import { titleToURL } from "../../libs/changeTitleToURL";
 
 const useStyles = makeStyles({
