@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 const UserTableComponent = ({ isChange }) => {
   const classes = useStyles();
   const columns = [
-    { title: "Staff ID", field: "staffId" },
+    { title: "Staff ID", field: "staff_id" },
     { title: "Fullname", field: "fullname" },
     { title: "Username", field: "username" },
   ];
@@ -47,7 +47,7 @@ const UserTableComponent = ({ isChange }) => {
         setData(
           res.data.map((item) => {
             return {
-              staffId: item.staffId,
+              staff_id: item.staff_id,
               fullname: item.fullname,
               username: item.username,
             };
@@ -72,20 +72,20 @@ const UserTableComponent = ({ isChange }) => {
 
   const handleDelete = (user) => {
     isChange(false);
-    adminActions.deleteUser({ staffId: user.staffId });
+    adminActions.deleteUser({ staff_id: user.staff_id });
     isChange(true);
   };
 
   const checkValid = (newUser) => {
     let arrError = [];
-    if (newUser.staffId == "" || newUser.staffId == undefined)
+    if (newUser.staff_id == "" || newUser.staff_id == undefined)
       arrError.push("Staff Id is required!");
     if (newUser.fullname == "" || newUser.fullname == undefined)
       arrError.push("Fullname Id is required!");
     if (newUser.username == "" || newUser.username == undefined)
       arrError.push("Username Id is required!");
-    if (newUser.staffId) {
-      if (newUser.staffId.length < 5)
+    if (newUser.staff_id) {
+      if (newUser.staff_id.length < 5)
         arrError.push("Staff Id must be at least 5 charaters!");
     }
     if (newUser.username) {
@@ -95,7 +95,7 @@ const UserTableComponent = ({ isChange }) => {
 
     for (let user of data) {
       if (
-        user.staffId.toLowerCase() == newUser.staffId.toLowerCase() ||
+        user.staff_id.toLowerCase() == newUser.staff_id.toLowerCase() ||
         user.username.toLowerCase() == newUser.username.toLowerCase()
       )
         arrError.push("Duplicate Staff Id or Username!");
@@ -121,7 +121,7 @@ const UserTableComponent = ({ isChange }) => {
 
   const handleReset = (user) => {
     postData(`${SERVER_URL}/profile/reset-password`, {
-      staffId: user.staffId,
+      staff_id: user.staff_id,
     }).then((res) => {
       if (res.success) {
         setError(["Reset password successfully!"]), setIsError(true);
@@ -173,7 +173,7 @@ const UserTableComponent = ({ isChange }) => {
             new Promise((resolve, reject) => {
               setTimeout(() => {
                 {
-                  if (oldData.staffId == "admin") reject(handleDeleteAdmin());
+                  if (oldData.staff_id == "admin") reject(handleDeleteAdmin());
                   else {
                     let initdata = data;
                     const index = initdata.indexOf(oldData);

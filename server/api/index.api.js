@@ -6,6 +6,7 @@ import jwt, { verify } from "jsonwebtoken";
 const SECRET_KEY = process.env.SECRET_KEY || "wNnwkOXE7HWShgBN";
 import nodemailer from "nodemailer";
 import axios from "axios";
+import { APPROVED, PENDING } from "../enums/postStatus";
 
 module.exports.checkToken = async function (req, res) {
   const token = req.body.token;
@@ -16,7 +17,7 @@ module.exports.checkToken = async function (req, res) {
     const data = await userModel.findOne({ _id: mongoose.Types.ObjectId(id) });
     const user = {
       id: data._id,
-      staffId: data.staffId,
+      staff_id: data.staff_id,
       fullname: data.fullname,
       gender: data.gender.toString(),
       birth_date: data.birth_date,
@@ -34,8 +35,8 @@ module.exports.checkToken = async function (req, res) {
 module.exports.getStatisticsData = async function (req, res) {
   const countUser = await userModel.countDocuments();
   const countActivity = await activityModel.countDocuments();
-  const countPost = await postModel.countDocuments({ active: true });
-  const countPendingPost = await postModel.countDocuments({ active: false });
+  const countPost = await postModel.countDocuments({ active: APPROVED });
+  const countPendingPost = await postModel.countDocuments({ active: PENDING });
   res.json({
     user: countUser,
     activity: countActivity,
@@ -49,10 +50,10 @@ module.exports.search = async function (req, res) {
   const page = parseInt(req.params.page);
   const length = await postModel.countDocuments({
     title: { $regex: new RegExp(query) },
-    active: true,
+    active: APPROVED,
   });
   const data = await postModel
-    .find({ $text: { $search: query }, active: true })
+    .find({ $text: { $search: query }, active: APPROVED })
     .limit(10)
     .skip((page - 1) * 10);
   res.json({

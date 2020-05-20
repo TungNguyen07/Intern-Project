@@ -27,6 +27,7 @@ const PendingPostTableComponent = ({ isChange }) => {
     { title: "Title", field: "title", width: "50%" },
     { title: "Author", field: "author" },
     { title: "id", field: "_id", hidden: true },
+    { title: "Author id", field: "author_id", hidden: true },
   ];
 
   const [pendingPost, setPendingPost] = useState([]);
@@ -44,6 +45,7 @@ const PendingPostTableComponent = ({ isChange }) => {
               title: item.title,
               author: item.fullname,
               _id: item._id,
+              author_id: item.author_id,
             };
           })
         );
@@ -55,15 +57,15 @@ const PendingPostTableComponent = ({ isChange }) => {
     };
   }, []);
 
-  const handleApprove = (postId) => {
+  const handleApprove = (post) => {
     isChange(false);
-    approvePost({ id: postId });
+    approvePost({ id: post.id, author_id: post.author_id });
     isChange(true);
   };
 
-  const handleReject = (postId) => {
+  const handleReject = (post) => {
     isChange(false);
-    rejectPost({ id: postId });
+    rejectPost({ id: post.id, author_id: post.author_id });
     isChange(true);
   };
 
@@ -103,7 +105,10 @@ const PendingPostTableComponent = ({ isChange }) => {
                     const index = initdata.indexOf(rowData);
                     const approveItem = initdata[index];
                     initdata.splice(index, 1);
-                    handleApprove(approveItem._id);
+                    handleApprove({
+                      id: approveItem._id,
+                      author_id: approveItem.author_id,
+                    });
                     setPendingPost([...initdata]);
                   }
                   resolve();
@@ -122,7 +127,10 @@ const PendingPostTableComponent = ({ isChange }) => {
                     const index = initdata.indexOf(rowData);
                     const deletePost = initdata[index];
                     initdata.splice(index, 1);
-                    handleReject(deletePost);
+                    handleReject({
+                      id: deletePost._id,
+                      author_id: deletePost.author_id,
+                    });
                     setPendingPost([...initdata]);
                   }
                   resolve();

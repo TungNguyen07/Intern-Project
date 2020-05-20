@@ -36,7 +36,7 @@ const AboutComponent = () => {
       <hr className={classes.hr} />
       <img
         className={classes.img}
-        src="https://f5.photo.talk.zdn.vn/6012041281084429359/7b89ad51a70e5d50041f.jpg"
+        src="http://res.cloudinary.com/djy0l9bwl/image/upload/v1589869374/dh-tdtt-lan-thu-iv_r7cdrt.jpg"
       />
       <div className={classes.info}>
         <Typography>

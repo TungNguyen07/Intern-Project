@@ -54,7 +54,7 @@ const ViewProfileComponent = ({ user, isOpen, isClose }) => {
   useEffect(() => {
     let unmounted = false;
     if (user) {
-      fetchData(`${SERVER_URL}/profile/${user.staffId}`).then((res) => {
+      fetchData(`${SERVER_URL}/profile/${user.staff_id}`).then((res) => {
         if (!unmounted) {
           setInfo(res.data);
           setFetching(false);
@@ -89,7 +89,7 @@ const ViewProfileComponent = ({ user, isOpen, isClose }) => {
                 <Typography variant="subtitle1">Address: </Typography>
               </div>
               <div className={classes.displayInfo}>
-                <Typography variant="subtitle1">{info.staffId}</Typography>
+                <Typography variant="subtitle1">{info.staff_id}</Typography>
                 <Typography variant="subtitle1">
                   {parseInt(info.gender) ? "Male" : "Female"}
                 </Typography>

@@ -9,11 +9,11 @@ import Banner from "../components/Header/BannerComponent";
 import Footer from "../components/Layout/FooterComponent";
 import withAuth from "../auth/AuthHOC";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   loading: {
-    marginTop: "15%"
+    marginTop: "15%",
   },
-  div: { textAlign: "center" }
+  div: { textAlign: "center" },
 }));
 
 const CreatePost = () => {
@@ -21,7 +21,7 @@ const CreatePost = () => {
 
   return (
     <div>
-      <Header title="Create post" />
+      <Header title="Write post" />
       <Banner />
       <Layout Right={<PostEditor />} />
       <Footer />

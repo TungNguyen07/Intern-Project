@@ -1,6 +1,7 @@
 import activityModel from "../model/activity.model";
 import postModel from "../model/post.model";
 import mongoose from "mongoose";
+import { PENDING, APPROVED, REJECTED } from "../enums/postStatus";
 
 module.exports.getAllActivity = async function (req, res) {
   const activity = await activityModel.find({});
@@ -53,7 +54,7 @@ module.exports.getSomePost = async function (req, res) {
   );
   const page = parseInt(req.params.page);
   const activity_post = await postModel
-    .find({ activity_id: activity_id, active: true })
+    .find({ activity_id: activity_id, active: APPROVED })
     .sort({ created_at: "desc" })
     .limit(10)
     .skip((page - 1) * 10);

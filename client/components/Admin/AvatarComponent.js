@@ -15,7 +15,7 @@ const AvatarComponent = ({ avatar, Signout }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
 
-  const handleClick = event => {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
     setOpen(!open);
   };
@@ -40,8 +40,8 @@ const AvatarComponent = ({ avatar, Signout }) => {
               <Link href="/change-password">
                 <MenuItem>Change password</MenuItem>
               </Link>
-              <Link href="/create-post">
-                <MenuItem>Create post</MenuItem>
+              <Link href="/write-post">
+                <MenuItem>Write post</MenuItem>
               </Link>
               <MenuItem onClick={Signout}>Logout</MenuItem>
             </Paper>
@@ -52,7 +52,7 @@ const AvatarComponent = ({ avatar, Signout }) => {
   );
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return { Signout: bindActionCreators(userActions.Signout, dispatch) };
 };
 

@@ -66,7 +66,7 @@ export const InfoComponent = ({ user }) => {
               <Typography variant="subtitle1">Address: </Typography>
             </div>
             <div className={classes.displayInfo}>
-              <Typography variant="subtitle1">{user.staffId}</Typography>
+              <Typography variant="subtitle1">{user.staff_id}</Typography>
               <Typography variant="subtitle1">
                 {parseInt(user.gender) ? "Male" : "Female"}
               </Typography>

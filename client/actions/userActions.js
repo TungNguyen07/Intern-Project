@@ -59,7 +59,7 @@ function Signout() {
     localStorage.removeItem("access_token");
     if (
       Router.pathname == "/profile" ||
-      Router.pathname == "/create-post" ||
+      Router.pathname == "/write-post" ||
       Router.pathname == "/change-password" ||
       Router.pathname == "/admin"
     )

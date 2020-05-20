@@ -18,8 +18,8 @@ function addUser(newUser) {
   });
 }
 
-function deleteUser(staffId) {
-  postData(`${SERVER_URL}/profile/delete`, staffId).then((res) => {
+function deleteUser(staff_id) {
+  postData(`${SERVER_URL}/profile/delete`, staff_id).then((res) => {
     if (res.error) console.log(res.error);
     else console.log(res);
   });

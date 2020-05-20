@@ -30,15 +30,24 @@ const useStyles = makeStyles((theme) => ({
     width: "55%",
     margin: "auto",
   },
-  button: {
-    marginBottom: theme.spacing(3),
-    marginLeft: theme.spacing(1),
-  },
   checkbox: {
     marginBottom: theme.spacing(1),
     width: "55%",
     textAlign: "start",
     margin: "auto",
+  },
+  saveButton: {
+    marginBottom: theme.spacing(3),
+    marginLeft: theme.spacing(1),
+    backgroundColor: "#1976d2",
+  },
+  cancelButton: {
+    marginBottom: theme.spacing(3),
+    marginLeft: theme.spacing(1),
+    backgroundColor: "#e53935",
+    "&:hover": {
+      backgroundColor: "#c62828",
+    },
   },
 }));
 
@@ -174,7 +183,7 @@ export const ChangePasswordComponent = ({ user }) => {
       <Button
         variant="contained"
         color="primary"
-        className={classes.button}
+        className={classes.saveButton}
         onClick={handleCheck}
       >
         Change password
@@ -182,7 +191,7 @@ export const ChangePasswordComponent = ({ user }) => {
       <Button
         variant="contained"
         color="primary"
-        className={classes.button}
+        className={classes.cancelButton}
         onClick={handleClear}
       >
         Clear

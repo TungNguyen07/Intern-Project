@@ -1,15 +1,16 @@
 import commentModel from "../model/comment.model";
 import nodemailer from "nodemailer";
 
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "nstung_17th@agu.edu.vn",
+    pass: "DTH166368",
+  },
+});
+
 module.exports.postComment = async (req, res) => {
   const comment = req.body;
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "nstung_17th@agu.edu.vn",
-      pass: "DTH166368",
-    },
-  });
 
   const mailOptions = {
     from: "nstung_17th@agu.edu.vn",
@@ -30,14 +31,6 @@ module.exports.postComment = async (req, res) => {
 
 module.exports.postReply = async (req, res) => {
   const repComment = req.body;
-
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "nstung_17th@agu.edu.vn",
-      pass: "DTH166368",
-    },
-  });
 
   const mailOptions = {
     from: "nstung_17th@agu.edu.vn",

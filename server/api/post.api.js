@@ -5,15 +5,25 @@ const DEFAULT_COVER_IMG =
   process.env.DEFAULT_COVER_IMG ||
   "https://res.cloudinary.com/djy0l9bwl/image/upload/v1588745533/default-image_g2unmc.jpg";
 import cloudinary from "cloudinary";
-import fs from "fs";
+import nodemailer from "nodemailer";
 const CLOUD_NAME = process.env.CLOUD_NAME || "djy0l9bwl";
 const API_KEY = process.env.API_KEY || "826977265699649";
 const API_SECRET = process.env.API_SECRET || "RLo0uDO7vMMYvTc_GPt661Xgf6I";
+import userModel from "../model/user.model";
+import { REJECTED, APPROVED, PENDING } from "../enums/postStatus";
 
 cloudinary.config({
   cloud_name: CLOUD_NAME,
   api_key: API_KEY,
   api_secret: API_SECRET,
+});
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "nstung_17th@agu.edu.vn",
+    pass: "DTH166368",
+  },
 });
 
 module.exports.newPost = async function (req, res) {
@@ -48,12 +58,26 @@ module.exports.newPost = async function (req, res) {
       });
     }
   );
+
+  const admin_email = await userModel.findOne(
+    { _id: mongoose.Types.ObjectId(req.body.author_id), staff_id: "admin" },
+    { email: 1, _id: 0 }
+  );
+
+  const mailOptions = {
+    from: "nstung_17th@agu.edu.vn",
+    to: admin_email,
+    subject: "New pending post",
+    html: `<p>You have a new pending post in the Long Xuyen City Cultural and Sports Center!</p>`,
+  };
+
+  transporter.sendMail(mailOptions);
 };
 
 module.exports.getPendingPost = async function (req, res) {
   const pendingPost = await postModel.aggregate([
     {
-      $match: { active: false },
+      $match: { active: PENDING },
     },
     {
       $lookup: {
@@ -71,6 +95,7 @@ module.exports.getPendingPost = async function (req, res) {
         _id: 1,
         title: 1,
         fullname: "$author.fullname",
+        author_id: "$author._id",
       },
     },
   ]);
@@ -80,7 +105,7 @@ module.exports.getPendingPost = async function (req, res) {
 module.exports.getActivePost = async function (req, res) {
   const activePost = await postModel.aggregate([
     {
-      $match: { active: true },
+      $match: { active: APPROVED },
     },
     {
       $lookup: {
@@ -117,25 +142,58 @@ module.exports.getActivePost = async function (req, res) {
   res.json(activePost);
 };
 
-module.exports.approvePost = function (req, res) {
-  const id = req.body.id;
-  const condition = { _id: id };
-  const query = { $set: { active: true } };
-  postModel.updateOne(condition, query, function (err, res) {
+module.exports.approvePost = async function (req, res) {
+  const post_id = req.body.id;
+  const author_id = req.body.author_id;
+  const condition = { _id: post_id };
+  const query = { $set: { active: APPROVED } };
+
+  const author_email = await userModel.findOne(
+    { _id: author_id },
+    { _id: 0, email: 1 }
+  );
+
+  const mailOptions = {
+    from: "nstung_17th@agu.edu.vn",
+    to: author_email,
+    subject: "Approved your post",
+    html: `<p>Your post has been approved!</p>`,
+  };
+
+  await postModel.updateOne(condition, query, function (err, html) {
     if (err) throw err;
-    console.log("Approved!");
+    else {
+      res.json({ success: true });
+      transporter.sendMail(mailOptions);
+    }
   });
-  res.json({ success: true });
 };
 
-module.exports.rejectPost = function (req, res) {
-  const id = req.body.id;
-  const condition = { _id: id };
-  postModel.remove(condition, function (err, res) {
+module.exports.rejectPost = async function (req, res) {
+  const post_id = req.body.id;
+  const author_id = req.body.author_id;
+  const condition = { _id: post_id };
+  const query = { $set: { active: REJECTED } };
+
+  const author_email = await userModel.findOne(
+    { _id: author_id },
+    { _id: 0, email: 1 }
+  );
+
+  const mailOptions = {
+    from: "nstung_17th@agu.edu.vn",
+    to: author_email,
+    subject: "Rejected your post",
+    html: `<p>Your post has been rejected! Let's edit it and submit again!</p>`,
+  };
+
+  postModel.updateOne(condition, query, function (err, html) {
     if (err) throw err;
-    console.log("Rejected!");
+    else {
+      res.json({ success: true });
+      transporter.sendMail(mailOptions);
+    }
   });
-  res.json({ success: true });
 };
 
 module.exports.getSomePost = async function (req, res) {
@@ -144,7 +202,10 @@ module.exports.getSomePost = async function (req, res) {
     { activity_name: 1, _id: 1 }
   );
   const somePost = await postModel
-    .find({ active: true }, { _id: 1, cover_img: 1, description: 1, title: 1 })
+    .find(
+      { active: APPROVED },
+      { _id: 1, cover_img: 1, description: 1, title: 1 }
+    )
     .sort({ created_at: "desc" })
     .limit(4);
 
@@ -154,7 +215,7 @@ module.exports.getSomePost = async function (req, res) {
 module.exports.getPostFollowUser = async function (req, res) {
   const id = mongoose.Types.ObjectId(req.params.id);
   const post = await postModel.find(
-    { author_id: id, active: true },
+    { author_id: id, active: APPROVED },
     { _id: 1, cover_img: 1, description: 1, title: 1 }
   );
   res.json(post);
@@ -199,7 +260,7 @@ module.exports.getPostByActivity = async function (req, res) {
   const id = req.params.id;
   const post = await postModel
     .find(
-      { activity_id: id, active: true },
+      { activity_id: id, active: APPROVED },
       { title: 1, cover_img: 1, description: 1 }
     )
     .limit(4)
@@ -210,9 +271,9 @@ module.exports.getPostByActivity = async function (req, res) {
 
 module.exports.getNewestPost = async function (req, res) {
   const page = parseInt(req.params.page);
-  let length = await postModel.countDocuments({ active: true });
+  let length = await postModel.countDocuments({ active: APPROVED });
   const post = await postModel
-    .find({ active: true })
+    .find({ active: APPROVED })
     .limit(10)
     .sort({ created_at: "desc" })
     .skip((page - 1) * 10);
@@ -226,11 +287,10 @@ module.exports.getNewestPost = async function (req, res) {
 module.exports.deletePost = async function (req, res) {
   const id = req.params.id;
   const condition = { _id: id };
-  await postModel.deleteOne(condition, function (err, res) {
+  await postModel.deleteOne(condition, function (err, html) {
     if (err) throw err;
-    console.log("Delete post successfully!");
+    res.json({ success: true });
   });
-  res.json({ success: true });
 };
 
 module.exports.relativePost = async function (req, res) {
@@ -241,7 +301,7 @@ module.exports.relativePost = async function (req, res) {
   );
   const data = await postModel
     .find(
-      { active: true, activity_id: activity.activity_id, _id: { $ne: id } },
+      { active: APPROVED, activity_id: activity.activity_id, _id: { $ne: id } },
       { title: 1, description: 1, cover_img: 1 }
     )
     .sort({ created: 1 })

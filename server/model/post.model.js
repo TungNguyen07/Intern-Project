@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 mongoose.set("useCreateIndex", true);
+import { PENDING } from "../enums/postStatus";
 
 const postSchema = mongoose.Schema(
   {
@@ -10,7 +11,7 @@ const postSchema = mongoose.Schema(
     author_id: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
     activity_id: { type: mongoose.Schema.Types.ObjectId, ref: "activity" },
     view: { type: Number, default: 0 },
-    active: { type: Boolean, default: false },
+    active: { type: String, default: PENDING },
     cover_img: { type: String, default: "" },
   },
   { versionKey: false }

@@ -7,7 +7,7 @@ const DEFAULT_AVATAR = process.env.DEFAULT_AVATAR || "";
 
 const Admin = {
   fullname: "Son Tung Nguyen",
-  staffId: "admin",
+  staff_id: "admin",
   gender: MALE,
   phone_number: "0707071869",
   birth_date: "07/07/1998",

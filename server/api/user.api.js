@@ -19,7 +19,7 @@ module.exports.signin = async function (req, res) {
     const payload = {
       fullname: data.fullname,
       role: data.role,
-      staffId: data.staffId,
+      staff_id: data.staff_id,
       id: data._id,
     };
 
@@ -107,7 +107,7 @@ module.exports.getAllUser = async function (req, res) {
   const allUser = await userModel.find(
     {},
     {
-      staffId: 1,
+      staff_id: 1,
       fullname: 1,
       username: 1,
     }
@@ -116,9 +116,9 @@ module.exports.getAllUser = async function (req, res) {
 };
 
 module.exports.getProfile = async function (req, res) {
-  const staffId = req.params.id;
+  const staff_id = req.params.id;
   const profile = await userModel.findOne(
-    { staffId: staffId },
+    { staff_id: staff_id },
     { _id: 0, username: 0, password: 0 }
   );
   if (profile) res.json(profile);
@@ -126,8 +126,8 @@ module.exports.getProfile = async function (req, res) {
 };
 
 module.exports.deleteUser = async function (req, res) {
-  const id = req.body.staffId;
-  const condition = { staffId: id };
+  const id = req.body.staff_id;
+  const condition = { staff_id: id };
   await userModel.deleteOne(condition, function (err, res) {
     if (err) throw err;
     console.log("Delete user sucessfully!");
@@ -151,8 +151,8 @@ module.exports.changePassword = function (req, res) {
 };
 
 module.exports.resetPassword = async function (req, res) {
-  const staffId = req.body.staffId;
-  userModel.findOne({ staffId: staffId }, (err, doc) => {
+  const staff_id = req.body.staff_id;
+  userModel.findOne({ staff_id: staff_id }, (err, doc) => {
     if (err) throw err;
     doc.password = "123456";
     doc.save();

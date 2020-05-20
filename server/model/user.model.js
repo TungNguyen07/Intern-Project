@@ -6,7 +6,7 @@ import { STAFF } from "../enums/userRoles";
 
 const userSchema = mongoose.Schema(
   {
-    staffId: String,
+    staff_id: String,
     fullname: String,
     gender: { type: Number, default: MALE },
     phone_number: { type: String, default: "" },

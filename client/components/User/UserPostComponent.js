@@ -135,7 +135,7 @@ export const UserPostComponent = ({ user, getPost }) => {
     <div>
       <Paper className={classes.root}>
         <h1 className={classes.title}>{user.fullname}'s Post</h1>
-        <Link href="/create-post">
+        <Link href="/write-post">
           <a className={classes.link}>
             <PostAddIcon className={classes.icon} />
           </a>

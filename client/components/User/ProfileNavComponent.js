@@ -92,13 +92,13 @@ export const ProfileNav = ({ user, Signout }) => {
           </MenuItem>
 
           <MenuItem className={classes.item}>
-            <Link href="/create-post">
+            <Link href="/write-post">
               <span>Write post</span>
             </Link>
           </MenuItem>
 
           {/* <MenuItem className={classes.item}>
-            <Link href="/create-post">Write post</Link>
+            <Link href="/write-post">Write post</Link>
           </MenuItem> */}
 
           {user.role == 1 && (

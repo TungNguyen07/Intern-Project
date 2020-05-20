@@ -145,26 +145,18 @@ export const LoginComponent = ({ user, setUserDetail }) => {
             Sign in
           </Typography>
           {valid &&
-            valid.map((item) => {
+            valid.map((item, index) => {
               return (
-                <Alert
-                  className={classes.alert}
-                  key={item.index}
-                  severity="warning"
-                >
+                <Alert className={classes.alert} key={index} severity="warning">
                   {item}
                 </Alert>
               );
             })}
 
           {correct &&
-            correct.map((item) => {
+            correct.map((item, index) => {
               return (
-                <Alert
-                  className={classes.alert}
-                  key={item.index}
-                  severity="error"
-                >
+                <Alert className={classes.alert} key={index} severity="error">
                   {item}
                 </Alert>
               );
