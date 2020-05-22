@@ -41,3 +41,10 @@ export const deletePost = (postId) => {
     }
   );
 };
+
+export const updatePost = (post) => {
+  postData(`${SERVER_URL}/post/update-post`, { post }).then((res) => {
+    if (res.success) console.log(res.success);
+    console.log(res.error);
+  });
+};

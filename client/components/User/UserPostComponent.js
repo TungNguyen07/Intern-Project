@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
 import PostAddIcon from "@material-ui/icons/PostAdd";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import Link from "next/link";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Box from "@material-ui/core/Box";
 
-import { fetchData } from "../../libs/fetchData";
-const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
-import { titleToURL } from "../../libs/changeTitleToURL";
-import { getPost } from "../../actions/postActions";
+import ListApprovedPost from "../Post/ListApprovedPostComponent";
+import ListPendingPost from "../Post/ListPendingPostComponent";
+import ListRejectedPost from "../Post/ListRejectedPostComponent";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -92,46 +88,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const UserPostComponent = ({ user, getPost }) => {
-  const classes = useStyles();
-  const [post, setPost] = useState([]);
-  const [isFetching, setFetching] = useState(true);
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
 
-  useEffect(() => {
-    let unmounted = false;
-    if (user.id) {
-      fetchData(`${SERVER_URL}/post/get-post-by-user/${user.id}`).then(
-        (res) => {
-          if (!unmounted) {
-            setPost(
-              res.data.map((item) => {
-                return {
-                  cover_img: item.cover_img,
-                  title: item.title,
-                  description:
-                    item.description.length > 100
-                      ? item.description.slice(0, 100) + "..."
-                      : item.description,
-                  _id: item._id,
-                };
-              })
-            );
-            setFetching(false);
-          }
-        }
-      );
-    }
-
-    return () => {
-      unmounted = true;
-    };
-  }, [user]);
-
-  return isFetching ? (
-    <div className={classes.div}>
-      <CircularProgress className={classes.loading} />
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`wrapped-tabpanel-${index}`}
+      aria-labelledby={`wrapped-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box p={3}>{children}</Box>}
     </div>
-  ) : (
+  );
+}
+
+export const UserPostComponent = ({ user }) => {
+  const classes = useStyles();
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+  const [value, setValue] = React.useState("approved");
+
+  return (
     <div>
       <Paper className={classes.root}>
         <h1 className={classes.title}>{user.fullname}'s Post</h1>
@@ -142,42 +123,26 @@ export const UserPostComponent = ({ user, getPost }) => {
         </Link>
         <hr className={classes.hr} />
         <div>
-          <Grid container spacing={0}>
-            {post.map((item) => {
-              return (
-                <Link
-                  href="/post/[post]"
-                  as={`/post/${titleToURL(item.title)}-${item._id}`}
-                  key={item._id}
-                >
-                  <CardActionArea
-                    className={classes.cardItem}
-                    onClick={getPost(item._id)}
-                  >
-                    <img className={classes.cardImage} src={item.cover_img} />
-                    <CardContent>
-                      <Typography
-                        className={classes.postTitle}
-                        gutterBottom
-                        variant="h5"
-                        component="h2"
-                      >
-                        {item.title}
-                      </Typography>
-                      <Typography
-                        className={classes.description}
-                        variant="body2"
-                        color="textSecondary"
-                        component="p"
-                      >
-                        {item.description}
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Link>
-              );
-            })}
-          </Grid>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            centered
+          >
+            <Tab value="approved" label="Approved Post" />
+            <Tab value="pending" label="Pending Post" />
+            <Tab value="rejected" label="Rejected Post" />
+          </Tabs>
+          <TabPanel value={value} index="approved">
+            <ListApprovedPost />
+          </TabPanel>
+          <TabPanel value={value} index="pending">
+            <ListPendingPost />
+          </TabPanel>
+          <TabPanel value={value} index="rejected">
+            <ListRejectedPost />
+          </TabPanel>
         </div>
       </Paper>
     </div>
@@ -188,10 +153,4 @@ const mapStateToProps = (state) => {
   return { user: state.userReducer.user };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getPost: bindActionCreators(getPost, dispatch),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserPostComponent);
+export default connect(mapStateToProps, null)(UserPostComponent);

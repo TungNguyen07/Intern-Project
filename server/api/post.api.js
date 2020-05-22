@@ -214,11 +214,21 @@ module.exports.getSomePost = async function (req, res) {
 
 module.exports.getPostFollowUser = async function (req, res) {
   const id = mongoose.Types.ObjectId(req.params.id);
-  const post = await postModel.find(
-    { author_id: id, active: APPROVED },
-    { _id: 1, cover_img: 1, description: 1, title: 1 }
+  const page = parseInt(req.params.page);
+  const post = await postModel
+    .find(
+      { author_id: id, active: APPROVED },
+      { _id: 1, cover_img: 1, description: 1, title: 1 }
+    )
+    .limit(10)
+    .skip((page - 1) * 10);
+  const length = Math.ceil(
+    (await postModel.countDocuments({
+      author_id: id,
+      active: APPROVED,
+    })) / 10
   );
-  res.json(post);
+  res.json({ post, length });
 };
 
 module.exports.getPost = async function (req, res) {
@@ -248,6 +258,8 @@ module.exports.getPost = async function (req, res) {
           description: 1,
           content: 1,
           created_at: 1,
+          cover_img: 1,
+          activity_id: 1,
           fullname: "$author.fullname",
         },
       },
@@ -308,3 +320,104 @@ module.exports.relativePost = async function (req, res) {
     .limit(2);
   res.json({ relativePost: data });
 };
+
+module.exports.getPendingPostFollowUser = async function (req, res) {
+  const id = mongoose.Types.ObjectId(req.params.id);
+  const page = parseInt(req.params.page);
+  const post = await postModel
+    .find(
+      { author_id: id, active: PENDING },
+      { _id: 1, cover_img: 1, description: 1, title: 1 }
+    )
+    .limit(10)
+    .skip((page - 1) * 10);
+  const length = Math.ceil(
+    (await postModel.countDocuments({
+      author_id: id,
+      active: PENDING,
+    })) / 10 || 1
+  );
+  res.json({ post, length });
+};
+
+module.exports.getRejectedPostFollowUser = async function (req, res) {
+  const id = mongoose.Types.ObjectId(req.params.id);
+  const page = parseInt(req.params.page);
+  const post = await postModel
+    .find(
+      { author_id: id, active: REJECTED },
+      { _id: 1, cover_img: 1, description: 1, title: 1 }
+    )
+    .limit(10)
+    .skip((page - 1) * 10);
+  const length = Math.ceil(
+    (await postModel.countDocuments({
+      author_id: id,
+      active: REJECTED,
+    })) / 10 || 1
+  );
+  res.json({ post, length });
+};
+
+module.exports.updatePost = async function (req, res) {
+  const post = req.body.post;
+  const condition = { _id: mongoose.Types.ObjectId(post._id) };
+
+  const regex = /src=\"data:image\/([a-zA-Z]*);base64,([^\"]*)\"/;
+  const result = post.cover_img.match(regex);
+  if (result) {
+    await cloudinary.v2.uploader.upload(result[1]).then((data) => {
+      post.cover_img = data.url;
+    });
+  }
+
+  let content = post.content;
+  const imgArr = content.match(
+    /src=\"data:image\/([a-zA-Z]*);base64,([^\"]*)\"/gm
+  );
+  let arrSrc = [];
+  if (imgArr)
+    arrSrc = imgArr.map((element) => {
+      return element.match(/<img.*?src="(.*?)"/)[1];
+    });
+  if (arrSrc.length) {
+    for (let index = 0; index < arrSrc.length; index++) {
+      await cloudinary.v2.uploader.upload(arrSrc[index]).then((data) => {
+        content = content.replace(/src="([^"]+)"/, `src='${data.url}'`);
+      });
+    }
+  }
+
+  const query = {
+    $set: {
+      content: content,
+      activity_id: post.activity_id,
+      created_at: post.created_at,
+      title: post.title,
+      description: post.description,
+      cover_img: post.cover_img,
+      active: PENDING,
+      view: 0,
+    },
+  };
+
+  postModel.updateOne(condition, query, (err, html) => {
+    if (err) res.json({ error: true });
+    else res.json({ success: true });
+  });
+};
+
+// let content = req.body.content;
+// const imgArr = content.match(/<img.*?src="(.*?)"/gm);
+// let arrSrc = [];
+// if (imgArr)
+//   arrSrc = imgArr.map((element) => {
+//     return element.match(/<img.*?src="(.*?)"/)[1];
+//   });
+// if (arrSrc.length) {
+//   for (let index = 0; index < arrSrc.length; index++) {
+//     await cloudinary.v2.uploader.upload(arrSrc[index]).then((data) => {
+//       content = content.replace(/src="([^"]+)"/, `src='${data.url}'`);
+//     });
+//   }
+// }

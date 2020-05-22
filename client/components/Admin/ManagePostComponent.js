@@ -10,7 +10,7 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import { fetchData } from "../../libs/fetchData";
 import { deletePost } from "../../actions/postActions";
 import { adminActions } from "../../actions/adminActions";
-import PreviewPostConponent from "../Dialog/PreviewPostComponent";
+import PreviewPostComponent from "../Dialog/PreviewPostComponent";
 
 const useStyles = makeStyles((theme) => ({
   loading: {
@@ -116,7 +116,7 @@ const PostTableComponent = ({ isChange }) => {
             }),
         }}
       />
-      <PreviewPostConponent
+      <PreviewPostComponent
         isOpen={open}
         isClose={handleClose}
         rowData={data}

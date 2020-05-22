@@ -5,16 +5,16 @@ import { makeStyles } from "@material-ui/styles";
 
 const ReactQuill = dynamic(import("react-quill"), {
   ssr: false,
-  loading: () => <p>Loading...</p>
+  loading: () => <p>Loading...</p>,
 });
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   editor: {
-    height: 600
-  }
+    height: 600,
+  },
 }));
 
-export const TextEditorComponent = ({ isReload, getContent }) => {
+export const TextEditorComponent = ({ isReload, getContent, initContent }) => {
   const classes = useStyles();
   const [content, setContent] = useState("");
 
@@ -24,7 +24,7 @@ export const TextEditorComponent = ({ isReload, getContent }) => {
       ["bold", "italic", "underline", "strike"],
       [
         { color: ["black", "red", "blue", "white", "yellow"] },
-        { background: [] }
+        { background: [] },
       ],
       [{ script: "super" }, { script: "sub" }],
       [{ header: "1" }, { header: "2" }, "blockquote", "code-block"],
@@ -32,21 +32,28 @@ export const TextEditorComponent = ({ isReload, getContent }) => {
         { list: "ordered" },
         { list: "bullet" },
         { indent: "-1" },
-        { indent: "+1" }
+        { indent: "+1" },
       ],
 
-      ["link", "image", "video", "formula"]
-    ]
+      ["link", "image", "video", "formula"],
+    ],
   };
 
-  const handleChangeContent = value => {
+  const handleChangeContent = (value) => {
     setContent(value);
     getContent(value);
   };
 
   useEffect(() => {
-    if (isReload == true) setContent("");
+    if (isReload == true) {
+      if (initContent) setContent(initContent);
+      else setContent("");
+    }
   }, [isReload]);
+
+  useEffect(() => {
+    if (initContent) setContent(initContent);
+  }, [initContent]);
 
   return (
     <ReactQuill

@@ -5,36 +5,36 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import { makeStyles } from "@material-ui/styles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   card: {
     border: "dotted 1.5px",
     height: 200,
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
   },
   cardAction: {
     padding: 0,
     height: "100%",
-    display: "flex"
+    display: "flex",
   },
   cardMedia: {
     position: "absolute",
     height: "100%",
-    width: "auto"
+    width: "auto",
   },
   uploadIcon: {
     fontSize: "5rem",
-    marginTop: "0rem"
+    marginTop: "0rem",
   },
   upload: {
     height: "100%",
     width: "100%",
     opacity: 0,
     position: "inherit",
-    position: "absolute"
-  }
+    position: "absolute",
+  },
 }));
 
-export const CoverImgComponent = ({ isReload, getImg }) => {
+export const CoverImgComponent = ({ isReload, getImg, cover_img }) => {
   const classes = useStyles();
   const [coverImg, setCoverImg] = useState("");
 
@@ -50,16 +50,23 @@ export const CoverImgComponent = ({ isReload, getImg }) => {
     }
   }
 
-  const onDrop = event => {
-    base64(event.target.files, function(data) {
+  const onDrop = (event) => {
+    base64(event.target.files, function (data) {
       setCoverImg(data);
       getImg(data);
     });
   };
 
   useEffect(() => {
-    if (isReload == true) setCoverImg("");
+    if (isReload == true) {
+      if (cover_img) setCoverImg(cover_img);
+      else setCoverImg("");
+    }
   }, [isReload]);
+
+  useEffect(() => {
+    if (cover_img) setCoverImg(cover_img);
+  }, [cover_img]);
 
   return (
     <Card className={classes.card}>

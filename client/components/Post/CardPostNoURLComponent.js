@@ -1,0 +1,123 @@
+import React, { useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import PreviewPostComponent from "../Dialog/PreviewPostComponent";
+
+import { getPost } from "../../actions/postActions";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+    marginBottom: "1rem",
+    color: "black",
+  },
+  cardActionArea: {
+    display: "flex",
+    height: "9rem",
+    justifyContent: "start",
+  },
+  media: {
+    height: "8rem",
+    width: "13rem",
+    marginLeft: "1rem",
+    "@media (min-width:600px)": {
+      height: "5rem",
+      width: "8rem",
+    },
+    [theme.breakpoints.up("lg")]: {
+      height: "8rem",
+      width: "13rem",
+    },
+  },
+  content: {
+    textAlign: "left",
+  },
+  title: {
+    lineHeight: "inherit",
+    fontSize: "1rem",
+    "@media (min-width:600px)": {
+      fontSize: "0.750rem",
+    },
+    [theme.breakpoints.up("lg")]: {
+      fontSize: "1rem",
+    },
+  },
+  description: {
+    fontSize: "0.875rem",
+    "@media (min-width:600px)": {
+      fontSize: "0.650rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "0.875rem",
+    },
+  },
+  div: {
+    width: "100%",
+  },
+}));
+
+const CardPostNoURL = ({ post, getPost }) => {
+  const classes = useStyles();
+  //const [post, setPost] = useState();
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState({});
+
+  const handleClick = () => {
+    getPost(post._id);
+    setData(post);
+    setOpen(true);
+  };
+
+  const handleClose = (isClose) => {
+    setOpen(isClose);
+  };
+
+  return (
+    <div className={classes.div}>
+      <Card className={classes.root}>
+        <CardActionArea
+          className={classes.cardActionArea}
+          onClick={handleClick}
+        >
+          <img className={classes.media} src={post.cover_img} />
+          <CardContent className={classes.content}>
+            <Typography
+              className={classes.title}
+              gutterBottom
+              variant="subtitle1"
+              component="h6"
+            >
+              {post.title}
+            </Typography>
+            <Typography
+              className={classes.description}
+              variant="body2"
+              color="textSecondary"
+              component="p"
+            >
+              {post.description}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      </Card>
+      <PreviewPostComponent
+        isOpen={open}
+        isClose={handleClose}
+        rowData={data}
+      />
+    </div>
+  );
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getPost: bindActionCreators(getPost, dispatch),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(CardPostNoURL);

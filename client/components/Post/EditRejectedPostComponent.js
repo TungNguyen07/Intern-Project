@@ -16,7 +16,7 @@ import { CoverImgComponent } from "./CoverImgComponent";
 import { TextEditorComponent } from "./TextEditorComponent";
 import MessageDialog from "../Dialog/MessageDialogComponent";
 import { fetchData } from "../../libs/fetchData";
-import { newPost } from "../../actions/postActions";
+import { updatePost } from "../../actions/postActions";
 const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 const useStyle = makeStyles((theme) => ({
@@ -70,17 +70,15 @@ const useStyle = makeStyles((theme) => ({
   div: { textAlign: "center" },
 }));
 
-export const PostEditor = ({ title, author, edit_post }) => {
+export const RejectedPostEditor = ({ title, author, edit_post }) => {
   const classes = useStyle();
-  const initPost = edit_post
-    ? edit_post
-    : {
-        title: "",
-        description: "",
-        content: "",
-        coverImg: "",
-        activity_id: "",
-      };
+  const initPost = {
+    title: "",
+    description: "",
+    content: "",
+    cover_img: "",
+    activity_id: "",
+  };
   const [post, setPost] = useState(initPost);
   const [notify, setNotify] = useState([]);
   const [isFetching, setFetching] = useState(true);
@@ -127,7 +125,7 @@ export const PostEditor = ({ title, author, edit_post }) => {
       return false;
     } else {
       arrError.push(
-        "Make new post successfully. Waiting for admin approve your post!"
+        "Edit your post successfully. Waiting for admin approve your post!"
       );
       setNotify(arrError);
       return true;
@@ -135,20 +133,20 @@ export const PostEditor = ({ title, author, edit_post }) => {
   };
 
   const handleSave = () => {
-    checkValid(post) ? handleAdd() : handleError();
+    checkValid(post) ? handleUpdate() : handleError();
   };
 
   const handleError = () => {
     setDisplay(true);
   };
 
-  const handleAdd = () => {
+  const handleUpdate = () => {
     const new_post = {
       ...post,
-      author_id: author.id,
       created_at: new Date().toISOString(),
+      view: 0,
     };
-    newPost(new_post);
+    updatePost(new_post);
     setPost(initPost);
     setReload(true);
     setDisplay(true);
@@ -156,7 +154,7 @@ export const PostEditor = ({ title, author, edit_post }) => {
   };
 
   const handleDelete = () => {
-    setPost(initPost);
+    setPost(edit_post);
     setReload(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -201,7 +199,7 @@ export const PostEditor = ({ title, author, edit_post }) => {
       <form>
         <TextField
           className={classes.textField}
-          value={post.title}
+          value={post.title || ""}
           id="title"
           label="Title"
           required
@@ -212,7 +210,11 @@ export const PostEditor = ({ title, author, edit_post }) => {
           <Select
             className={classes.select}
             id="activity"
-            defaultValue={post.activity_id ? post.activity_id : activity[0].id}
+            value={
+              post.activity_id ||
+              activity[activity.indexOf(post.activity_id)] ||
+              ""
+            }
             onChange={handleChange("activity_id")}
           >
             {activity.map((item) => {
@@ -226,7 +228,7 @@ export const PostEditor = ({ title, author, edit_post }) => {
         </FormControl>
         <TextField
           className={classes.textField}
-          value={post.description}
+          value={post.description || ""}
           id="description"
           label="Description"
           multiline
@@ -277,4 +279,4 @@ const mapStateToProps = (state) => {
   return { author: state.userReducer.user };
 };
 
-export default connect(mapStateToProps, null)(PostEditor);
+export default connect(mapStateToProps, null)(RejectedPostEditor);

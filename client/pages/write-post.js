@@ -23,7 +23,7 @@ const CreatePost = () => {
     <div>
       <Header title="Write post" />
       <Banner />
-      <Layout Right={<PostEditor />} />
+      <Layout Right={<PostEditor title="Write your new post" />} />
       <Footer />
     </div>
   );
