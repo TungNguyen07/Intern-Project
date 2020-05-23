@@ -3,6 +3,10 @@ import mongoose from "mongoose";
 import jwt, { verify } from "jsonwebtoken";
 const SECRET_KEY = process.env.SECRET_KEY || "wNnwkOXE7HWShgBN";
 import cloudinary from "cloudinary";
+import { v4 as uuidv4 } from "uuid";
+import nodemailer from "nodemailer";
+import resetPasswordModel from "../model/reset_password_token.model";
+
 const CLOUD_NAME = process.env.CLOUD_NAME || "djy0l9bwl";
 const API_KEY = process.env.API_KEY || "826977265699649";
 const API_SECRET = process.env.API_SECRET || "RLo0uDO7vMMYvTc_GPt661Xgf6I";
@@ -11,6 +15,14 @@ cloudinary.config({
   cloud_name: CLOUD_NAME,
   api_key: API_KEY,
   api_secret: API_SECRET,
+});
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "nstung_17th@agu.edu.vn",
+    pass: "DTH166368",
+  },
 });
 
 module.exports.signin = async function (req, res) {
@@ -158,4 +170,82 @@ module.exports.resetPassword = async function (req, res) {
     doc.save();
   });
   res.json({ success: true });
+};
+
+module.exports.checkUsername = async function (req, res) {
+  const username = req.body.username;
+  const user = await userModel.findOne({ username: username });
+
+  if (user) res.json({ success: true, email: user.email });
+  else res.json({ error: true });
+};
+
+module.exports.getResetPasswordToken = async function (req, res) {
+  const token = uuidv4();
+  const hostname = req.body.hostname;
+  const username = req.body.username;
+
+  const user = await userModel.findOne(
+    { username: username },
+    { _id: 1, email: 1, fullname: 1 }
+  );
+
+  await resetPasswordModel.findOneAndDelete({ user_id: user._id });
+
+  const reset_password_token = {
+    token: token,
+    time_expired: new Date().getTime() + 600000,
+    user_id: user._id,
+  };
+
+  await resetPasswordModel.create(reset_password_token);
+
+  const mailOptions = {
+    from: "nstung_17th@agu.edu.vn",
+    to: user.email,
+    subject: "Reset password",
+    html: `
+    <h4>Hi ${user.fullname},</h4>
+    <p>We received a request to reset your password for your Long Xuyen City Cultural and Sports Center. We are here to help!</p>
+    <br/>
+    <p>Simply click <a href='${hostname}/reset-password?token=${token}'>here </a>to set a new password</p>
+    <p>If you don't ask to change your password, don't worry! Your password is still safe and you can delete this email.</p>`,
+  };
+  transporter.sendMail(mailOptions, (err, info) => {
+    if (err) res.json({ erro: err });
+    res.json({ success: true });
+  });
+};
+
+module.exports.checkResetPasswordToken = async function (req, res) {
+  const token = req.body.token;
+  const user_token = await resetPasswordModel.findOne({ token: token });
+  if (user_token) {
+    if (user_token.time_expired >= new Date().getTime())
+      res.json({ success: true, user_id: user_token.user_id });
+    else {
+      res.json({ error: true });
+      await resetPasswordModel.findOneAndDelete({ token: token });
+    }
+  } else res.json({ error: true });
+};
+
+module.exports.resetPasswordByEmail = async function (req, res) {
+  const password_info = req.body;
+  if (password_info.new_password == password_info.confirm_password) {
+    await userModel.findOne(
+      { _id: password_info.user_id },
+      async (err, doc) => {
+        if (err) res.json({ error: true });
+        else {
+          doc.password = password_info.new_password;
+          doc.save();
+          res.json({ success: true });
+          await resetPasswordModel.findOneAndDelete({
+            user_id: password_info.user_id,
+          });
+        }
+      }
+    );
+  }
 };

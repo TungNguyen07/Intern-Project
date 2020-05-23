@@ -3,10 +3,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -22,22 +19,23 @@ const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: "6rem",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    width: "fit-content",
-    margin: "auto",
-    marginBottom: theme.spacing(4),
+    marginBottom: "2rem",
     paddingBottom: theme.spacing(2),
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
+    marginTop: "4.5rem",
   },
   form: {
     width: "100%",
-    marginTop: theme.spacing(1),
+    marginTop: "1rem",
+    paddingBottom: "1rem",
+    marginBottom: "2rem",
   },
   submit: {
     margin: theme.spacing(1, 0, 1),
@@ -46,42 +44,47 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     margin: theme.spacing(1),
   },
+  root: {
+    width: "28%",
+    margin: "auto",
+  },
+  note: {
+    marginBottom: "0.5rem",
+  },
 }));
 
-export const LoginComponent = ({ user, setUserDetail }) => {
+export const ForgotPasswordComponent = ({ user, setUserDetail }) => {
   const classes = useStyles();
   const [valid, setValid] = useState([]);
+  const [error, setError] = useState([]);
   const [correct, setCorrect] = useState([]);
-  const [info, setInfo] = useState({
-    username: "",
-    password: "",
-  });
-  const [showPassword, setShowPassword] = useState(false);
+  const [username, setUsername] = useState("");
 
-  const handleChange = (prop) => (event) => {
-    setInfo({ ...info, [prop]: event.target.value });
+  const handleChange = (event) => {
+    setUsername(event.target.value);
   };
 
-  const checkPassword = (signInfo) => {
-    const check = postData(`${SERVER_URL}/signin`, signInfo).then((res) => {
-      return res;
+  const checkUsername = () => {
+    postData(`${SERVER_URL}/profile/check-username`, {
+      username: username,
+    }).then((res) => {
+      if (res.success) {
+        if (res.email) handleSendMail();
+        else
+          setValid([
+            "You have not provided a personal email, please contact the admin to reset the password!",
+          ]);
+      } else handleWrong();
     });
-    return check;
   };
 
-  const checkSigninInfo = () => {
+  const checkValidUsername = () => {
     let arrError = [];
-    if (info.username == "" || info.username == undefined)
+    if (username == "" || username == undefined)
       arrError.push("Username is required!");
-    if (info.username.length > 0) {
-      if (info.username.length < 5)
+    if (username.length > 0) {
+      if (username.length < 5)
         arrError.push("Username must be at least 5 characters!");
-    }
-    if (info.password == "" || info.password == undefined)
-      arrError.push("Password is required!");
-    if (info.password.length > 0) {
-      if (info.password.length < 6)
-        arrError.push("Password must be at least 6 characters!");
     }
 
     if (!arrError.length) {
@@ -93,25 +96,31 @@ export const LoginComponent = ({ user, setUserDetail }) => {
     }
   };
 
-  const handleCheck = () => {
+  const handleCheck = async () => {
     setValid([]);
+    setError([]);
     setCorrect([]);
-    checkSigninInfo() ? handleSignin() : console.log("false");
-  };
-
-  const handleSignin = async () => {
-    const result = await checkPassword(info);
-    if (result.user && result.token) {
-      localStorage.setItem("access_token", result.token);
-      setUserDetail(result.user);
-      Router.push("/");
-    } else {
-      handleWrong();
-    }
+    checkValidUsername() ? checkUsername() : setError([]);
+    // checkValidUsername()
+    //   ? (await checkUsername(username))
+    //     ? handleSendMail()
+    //     : handleWrong()
+    //   : setError([]);
   };
 
   const handleWrong = () => {
-    setCorrect(["Incorrect Username or Password!"]);
+    setError(["Usename does not exist!"]);
+  };
+
+  const handleSendMail = () => {
+    setCorrect(["We have e-mailed your password reset link!"]);
+    const hostname = window.location.href.split("/forgot-password")[0];
+    postData(`${SERVER_URL}/profile/get-reset-password-token`, {
+      username,
+      hostname,
+    }).then((res) => {
+      if (res.error) setError(res.error);
+    });
   };
 
   useEffect(() => {
@@ -119,7 +128,6 @@ export const LoginComponent = ({ user, setUserDetail }) => {
       const token = { token: localStorage.getItem("access_token") };
       postData(`${SERVER_URL}/check-token`, token).then((res) => {
         if (res._id) {
-          console.log(res);
           Router.push("/");
         }
       });
@@ -128,21 +136,21 @@ export const LoginComponent = ({ user, setUserDetail }) => {
 
   useEffect(() => {
     if (user.fullname) {
-      setCorrect([]);
+      setError([]);
       Router.push("/");
     }
   }, [user]);
 
   return (
-    <Paper className={classes.paper}>
-      <Container component="main" maxWidth="xs">
+    <Paper className={classes.root}>
+      <Container component="main" maxWidth="md">
         <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Reset Password
           </Typography>
           {valid &&
             valid.map((item, index) => {
@@ -153,15 +161,26 @@ export const LoginComponent = ({ user, setUserDetail }) => {
               );
             })}
 
-          {correct &&
-            correct.map((item, index) => {
+          {error &&
+            error.map((item, index) => {
               return (
                 <Alert className={classes.alert} key={index} severity="error">
                   {item}
                 </Alert>
               );
             })}
+          {correct &&
+            correct.map((item, index) => {
+              return (
+                <Alert className={classes.alert} key={index} severity="success">
+                  {item}
+                </Alert>
+              );
+            })}
           <form className={classes.form} noValidate>
+            <Typography className={classes.note}>
+              Enter your username to reset your password!
+            </Typography>
             <TextField
               variant="outlined"
               required
@@ -170,29 +189,10 @@ export const LoginComponent = ({ user, setUserDetail }) => {
               label="Username"
               name="username"
               autoFocus
-              onChange={handleChange("username")}
-              value={info.username}
+              onChange={handleChange}
+              value={username}
             />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type={showPassword ? "text" : "password"}
-              id="password"
-              onChange={handleChange("password")}
-              value={info.password}
-            />
-            <Checkbox
-              checked={showPassword}
-              onChange={() => {
-                setShowPassword(!showPassword);
-              }}
-              color="primary"
-            />{" "}
-            Show password
+
             <Button
               type="button"
               fullWidth
@@ -201,15 +201,8 @@ export const LoginComponent = ({ user, setUserDetail }) => {
               className={classes.submit}
               onClick={handleCheck}
             >
-              Sign In
+              Verify
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="/forgot-password" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-            </Grid>
           </form>
         </div>
       </Container>
@@ -227,4 +220,7 @@ function mapStateToProps(state) {
   return { user: state.userReducer.user };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ForgotPasswordComponent);

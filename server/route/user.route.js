@@ -20,4 +20,12 @@ router.post("/change-password", userApi.changePassword);
 
 router.post("/reset-password", userApi.resetPassword);
 
+router.post("/check-username", userApi.checkUsername);
+
+router.post("/get-reset-password-token", userApi.getResetPasswordToken);
+
+router.post("/check-reset-password-token", userApi.checkResetPasswordToken);
+
+router.post("/reset-password-by-email", userApi.resetPasswordByEmail);
+
 module.exports = router;
