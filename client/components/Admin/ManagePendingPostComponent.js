@@ -13,6 +13,7 @@ import { adminActions } from "../../actions/adminActions";
 import { approvePost, rejectPost } from "../../actions/postActions";
 const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 import PreviewPostConponent from "../Dialog/PreviewPostComponent";
+import AlertDialog from "../Dialog/AlertDialogComponent";
 
 const useStyles = makeStyles((theme) => ({
   loading: {
@@ -34,6 +35,11 @@ const PendingPostTableComponent = ({ isChange }) => {
   const [isFetching, setFetching] = useState(true);
   const [open, setOpen] = useState(false);
   const [data, setData] = useState({});
+  const [alert, setAlert] = useState(false);
+  const [alertResult, setAlertResult] = useState("");
+  const [expectedResult, setExpectedResult] = useState("");
+  const [target, setTarget] = useState({});
+  const [title, setTitle] = useState("");
 
   useEffect(() => {
     let unmounted = false;
@@ -58,15 +64,23 @@ const PendingPostTableComponent = ({ isChange }) => {
   }, []);
 
   const handleApprove = (post) => {
-    isChange(false);
-    approvePost({ id: post.id, author_id: post.author_id });
-    isChange(true);
+    setTitle(
+      '<div>Are you sure want to</div><div style="background-color: #e7e7e7; margin-right: 4px; margin-left: 4px; font-weight: bold">APPROVE</div><div>this post</div>'
+    );
+    setTarget(post);
+    setExpectedResult("APPROVE");
+    setAlertResult("");
+    setAlert(true);
   };
 
   const handleReject = (post) => {
-    isChange(false);
-    rejectPost({ id: post.id, author_id: post.author_id });
-    isChange(true);
+    setTitle(
+      '<div>Are you sure want to</div><div style="background-color: #e7e7e7; margin-right: 4px; margin-left: 4px; font-weight: bold">REJECT</div><div>this post</div>'
+    );
+    setTarget(post);
+    setExpectedResult("REJECT");
+    setAlertResult("");
+    setAlert(true);
   };
 
   const handleOpen = (rowData) => {
@@ -77,6 +91,48 @@ const PendingPostTableComponent = ({ isChange }) => {
   const handleClose = (isClose) => {
     setOpen(isClose);
   };
+
+  useEffect(() => {
+    if (alertResult == "APPROVE") {
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          {
+            let initdata = pendingPost;
+            const index = initdata.indexOf(target);
+            const approveItem = initdata[index];
+            initdata.splice(index, 1);
+            isChange(false);
+            approvePost({ id: target._id, author_id: target.author_id });
+            isChange(true);
+            setPendingPost([...initdata]);
+          }
+          resolve();
+        }, 600);
+      });
+    }
+    if (alertResult == "REJECT") {
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          {
+            let initdata = pendingPost;
+            const index = initdata.indexOf(target);
+            const deletePost = initdata[index];
+            initdata.splice(index, 1);
+            isChange(false);
+            rejectPost({ id: target._id, author_id: target.author_id });
+            isChange(true);
+            setPendingPost([...initdata]);
+          }
+          resolve();
+        }, 600);
+      });
+    }
+    setTarget({});
+    setTitle("");
+    setExpectedResult("");
+    setAlertResult("");
+    setAlert(false);
+  }, [alertResult]);
 
   return isFetching ? (
     <div className={classes.div}>
@@ -98,44 +154,14 @@ const PendingPostTableComponent = ({ isChange }) => {
             icon: () => <CheckCircleIcon />,
             tooltip: "Approve",
             onClick: (event, rowData) => {
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  {
-                    let initdata = pendingPost;
-                    const index = initdata.indexOf(rowData);
-                    const approveItem = initdata[index];
-                    initdata.splice(index, 1);
-                    handleApprove({
-                      id: approveItem._id,
-                      author_id: approveItem.author_id,
-                    });
-                    setPendingPost([...initdata]);
-                  }
-                  resolve();
-                }, 600);
-              });
+              handleApprove(rowData);
             },
           }),
           (rowData) => ({
             icon: () => <BlockIcon />,
             tooltip: "Reject",
             onClick: (event, rowData) => {
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  {
-                    let initdata = pendingPost;
-                    const index = initdata.indexOf(rowData);
-                    const deletePost = initdata[index];
-                    initdata.splice(index, 1);
-                    handleReject({
-                      id: deletePost._id,
-                      author_id: deletePost.author_id,
-                    });
-                    setPendingPost([...initdata]);
-                  }
-                  resolve();
-                }, 600);
-              });
+              handleReject(rowData);
             },
           }),
         ]}
@@ -145,6 +171,14 @@ const PendingPostTableComponent = ({ isChange }) => {
           loadingType: "overlay",
         }}
       />
+      {alert && (
+        <AlertDialog
+          message={title}
+          setDisplay={setAlert}
+          btnOK={setAlertResult}
+          expectedResult={expectedResult}
+        />
+      )}
       <PreviewPostConponent
         isOpen={open}
         isClose={handleClose}

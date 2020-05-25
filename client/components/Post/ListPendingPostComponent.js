@@ -12,6 +12,7 @@ import { fetchData } from "../../libs/fetchData";
 const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 import CardPostNoURL from "./CardPostNoURLComponent";
 import { deletePost } from "../../actions/postActions";
+import AlertDialog from "../Dialog/AlertDialogComponent";
 
 const useStyles = makeStyles({
   postBox: {
@@ -38,6 +39,11 @@ export const ListPendingPost = ({ user }) => {
   const [isFetching, setFetching] = useState(true);
   const [page, setPage] = useState(1);
   const [length, setLength] = useState(1);
+  const [alert, setAlert] = useState(false);
+  const [alertResult, setAlertResult] = useState("");
+  const [expectedResult, setExpectedResult] = useState("");
+  const [target, setTarget] = useState({});
+  const [title, setTitle] = useState("");
 
   useEffect(() => {
     let unmounted = false;
@@ -78,11 +84,28 @@ export const ListPendingPost = ({ user }) => {
   };
 
   const handleDelete = (item) => (event) => {
-    deletePost(item._id);
-    const oldData = post;
-    oldData.splice(oldData.indexOf(item), 1);
-    setPost([...oldData]);
+    setTitle(
+      '<div>Are you sure want to</div><div style="background-color: #e7e7e7; margin-right: 4px; margin-left: 4px;font-weight: bold">DELETE</div><div>this post</div>'
+    );
+    setTarget(item);
+    setExpectedResult("DELETE_POST");
+    setAlertResult("");
+    setAlert(true);
   };
+
+  useEffect(() => {
+    if (alertResult == "DELETE_POST") {
+      deletePost(target._id);
+      const oldData = post;
+      oldData.splice(oldData.indexOf(target), 1);
+      setPost([...oldData]);
+    }
+    setTarget({});
+    setTitle("");
+    setExpectedResult("");
+    setAlertResult("");
+    setAlert(false);
+  }, [alertResult]);
 
   return isFetching ? (
     <div className={classes.div}>
@@ -120,6 +143,14 @@ export const ListPendingPost = ({ user }) => {
           page={page}
         />
       </div>
+      {alert && (
+        <AlertDialog
+          message={title}
+          setDisplay={setAlert}
+          btnOK={setAlertResult}
+          expectedResult={expectedResult}
+        />
+      )}
     </div>
   );
 };

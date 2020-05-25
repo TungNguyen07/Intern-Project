@@ -101,11 +101,6 @@ export const ForgotPasswordComponent = ({ user, setUserDetail }) => {
     setError([]);
     setCorrect([]);
     checkValidUsername() ? checkUsername() : setError([]);
-    // checkValidUsername()
-    //   ? (await checkUsername(username))
-    //     ? handleSendMail()
-    //     : handleWrong()
-    //   : setError([]);
   };
 
   const handleWrong = () => {
@@ -127,7 +122,7 @@ export const ForgotPasswordComponent = ({ user, setUserDetail }) => {
     if (localStorage.length) {
       const token = { token: localStorage.getItem("access_token") };
       postData(`${SERVER_URL}/check-token`, token).then((res) => {
-        if (res._id) {
+        if (res.id) {
           Router.push("/");
         }
       });

@@ -7,6 +7,16 @@ const SECRET_KEY = process.env.SECRET_KEY || "wNnwkOXE7HWShgBN";
 import nodemailer from "nodemailer";
 import axios from "axios";
 import { APPROVED, PENDING } from "../enums/postStatus";
+const USERNAME_EMAIL = process.env.USERNAME_EMAIL || "nstung_17th@agu.edu.vn";
+const PASSWORD_EMAIL = process.env.PASSWORD_EMAIL || "DTH166368";
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: USERNAME_EMAIL,
+    pass: PASSWORD_EMAIL,
+  },
+});
 
 module.exports.checkToken = async function (req, res) {
   const token = req.body.token;
@@ -64,13 +74,6 @@ module.exports.search = async function (req, res) {
 
 module.exports.sendFeedback = function (req, res) {
   const info = req.body;
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "nstung_17th@agu.edu.vn",
-      pass: "DTH166368",
-    },
-  });
 
   const mailOptions = {
     from: "nstung_17th@agu.edu.vn",

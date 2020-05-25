@@ -42,8 +42,6 @@ const AboutComponent = () => {
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1841.1247571422055!2d105.41922958258006!3d10.394341319031966!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x310a73b551bd0a4d%3A0x1400eb82d482ff11!2zVHJ1bmcgdMOibSBWxINuIGjDs2EgLSBUaOG7gyB0aGFvIHRow6BuaCBwaOG7kSBMb25nIFh1ecOqbg!5e0!3m2!1svi!2s!4v1590037974003!5m2!1svi!2s"
         width="600"
         height="450"
-        aria-hidden="false"
-        tabindex="0"
       ></iframe>
       <div className={classes.info}>
         <Typography>

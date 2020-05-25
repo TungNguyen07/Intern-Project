@@ -10,6 +10,7 @@ const commentSchema = mongoose.Schema(
     reply: [
       {
         owner: String,
+        email: String,
         repComment: String,
         created_at: Date,
       },

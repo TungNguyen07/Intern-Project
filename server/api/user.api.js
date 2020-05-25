@@ -10,6 +10,8 @@ import resetPasswordModel from "../model/reset_password_token.model";
 const CLOUD_NAME = process.env.CLOUD_NAME || "djy0l9bwl";
 const API_KEY = process.env.API_KEY || "826977265699649";
 const API_SECRET = process.env.API_SECRET || "RLo0uDO7vMMYvTc_GPt661Xgf6I";
+const USERNAME_EMAIL = process.env.USERNAME_EMAIL || "nstung_17th@agu.edu.vn";
+const PASSWORD_EMAIL = process.env.PASSWORD_EMAIL || "DTH166368";
 
 cloudinary.config({
   cloud_name: CLOUD_NAME,
@@ -20,8 +22,8 @@ cloudinary.config({
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "nstung_17th@agu.edu.vn",
-    pass: "DTH166368",
+    user: USERNAME_EMAIL,
+    pass: PASSWORD_EMAIL,
   },
 });
 
@@ -201,15 +203,37 @@ module.exports.getResetPasswordToken = async function (req, res) {
   await resetPasswordModel.create(reset_password_token);
 
   const mailOptions = {
-    from: "nstung_17th@agu.edu.vn",
+    from: USERNAME_EMAIL || "nstung_17th@agu.edu.vn",
     to: user.email,
     subject: "Reset password",
     html: `
-    <h4>Hi ${user.fullname},</h4>
-    <p>We received a request to reset your password for your Long Xuyen City Cultural and Sports Center. We are here to help!</p>
-    <br/>
-    <p>Simply click <a href='${hostname}/reset-password?token=${token}'>here </a>to set a new password</p>
-    <p>If you don't ask to change your password, don't worry! Your password is still safe and you can delete this email.</p>`,
+    <div style="width: 100%; font-family: sans-serif;">
+      <div style="width: 60%; margin: auto;">
+        <div style="height: 3rem;  background-color: #4fd2ef">
+        <h2 style=" width: fit-content; margin: auto; padding-top: 0.5rem; font-size: 1.7rem">Long Xuyen City Cultural and Sports Center</h2>
+        </div>
+        <div style="padding-left: 1rem">
+          <h2 style="font-size: 1.4rem">Reset Password</h2>
+          <div style="font-size: medium;">
+            <p>Hi ${user.fullname},</p>
+            <p>We received a request to reset your password for your Long Xuyen City Cultural and Sports Center. We are here to help!</p>
+            <p>Simply click the button below to set a new password</p>
+            <div style="text-align: center;">
+              <a href="${hostname}/reset-password?token=${token}">
+              <button style="height: 2rem;border-radius: 4px;border: none;color: white;
+              background-color: #028ef1;width: 35%;font-size: 1rem;cursor: pointer;">Reset your password</button></a>
+            </div>
+            <p>If you don't ask to change your password, don't worry! Your password is still safe and you can delete this email.</p>
+          </div>
+        </div>
+      </div>
+	  </div>`,
+    // html: `
+    // <h4>Hi ${user.fullname},</h4>
+    // <p>We received a request to reset your password for your Long Xuyen City Cultural and Sports Center. We are here to help!</p>
+    // <br/>
+    // <p>Simply click <a href='${hostname}/reset-password?token=${token}'>here </a>to set a new password</p>
+    // <p>If you don't ask to change your password, don't worry! Your password is still safe and you can delete this email.</p>`,
   };
   transporter.sendMail(mailOptions, (err, info) => {
     if (err) res.json({ erro: err });

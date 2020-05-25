@@ -1,11 +1,13 @@
 import commentModel from "../model/comment.model";
 import nodemailer from "nodemailer";
+const USERNAME_EMAIL = process.env.USERNAME_EMAIL || "nstung_17th@agu.edu.vn";
+const PASSWORD_EMAIL = process.env.PASSWORD_EMAIL || "DTH166368";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "nstung_17th@agu.edu.vn",
-    pass: "DTH166368",
+    user: USERNAME_EMAIL,
+    pass: PASSWORD_EMAIL,
   },
 });
 

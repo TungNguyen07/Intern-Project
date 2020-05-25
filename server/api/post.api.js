@@ -11,6 +11,8 @@ const API_KEY = process.env.API_KEY || "826977265699649";
 const API_SECRET = process.env.API_SECRET || "RLo0uDO7vMMYvTc_GPt661Xgf6I";
 import userModel from "../model/user.model";
 import { REJECTED, APPROVED, PENDING } from "../enums/postStatus";
+const USERNAME_EMAIL = process.env.USERNAME_EMAIL || "nstung_17th@agu.edu.vn";
+const PASSWORD_EMAIL = process.env.PASSWORD_EMAIL || "DTH166368";
 
 cloudinary.config({
   cloud_name: CLOUD_NAME,
@@ -21,8 +23,8 @@ cloudinary.config({
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "nstung_17th@agu.edu.vn",
-    pass: "DTH166368",
+    user: USERNAME_EMAIL,
+    pass: PASSWORD_EMAIL,
   },
 });
 
@@ -143,8 +145,8 @@ module.exports.getActivePost = async function (req, res) {
 };
 
 module.exports.approvePost = async function (req, res) {
-  const post_id = req.body.id;
-  const author_id = req.body.author_id;
+  const post_id = mongoose.Types.ObjectId(req.body.id);
+  const author_id = mongoose.Types.ObjectId(req.body.author_id);
   const condition = { _id: post_id };
   const query = { $set: { active: APPROVED } };
 
@@ -154,26 +156,39 @@ module.exports.approvePost = async function (req, res) {
   );
 
   const mailOptions = {
-    from: "nstung_17th@agu.edu.vn",
+    from: USERNAME_EMAIL || "nstung_17th@agu.edu.vn",
     to: author_email,
     subject: "Approved your post",
-    html: `<p>Your post has been approved!</p>`,
+    html: `
+    <div style="width: 100%; font-family: sans-serif;">
+      <div style="width: 60%; margin: auto;">
+        <div style="height: 3rem;  background-color: #4fd2ef">
+        <h2 style=" width: fit-content; margin: auto; padding-top: 0.5rem; font-size: 1.7rem">Long Xuyen City Cultural and Sports Center</h2>
+        </div>
+        <div style="padding-left: 1rem">
+          <h2 style="font-size: 1.4rem">Post Approved</h2>
+          <div style="font-size: medium;">
+            <p>Hi ${user.fullname},</p>
+            <p>Your post in Long Xuyen City Cultural and Sports Center has been approved!</p>
+          </div>
+        </div>
+      </div>
+	  </div>
+    `,
   };
 
   await postModel.updateOne(condition, query, function (err, html) {
     if (err) throw err;
     else {
       res.json({ success: true });
-      transporter.sendMail(mailOptions);
+      if (author_email) transporter.sendMail(mailOptions);
     }
   });
 };
 
 module.exports.rejectPost = async function (req, res) {
   const post_id = req.body.id;
-  const author_id = req.body.author_id;
-  const condition = { _id: post_id };
-  const query = { $set: { active: REJECTED } };
+  const author_id = mongoose.Types.ObjectId(req.body.author_id);
 
   const author_email = await userModel.findOne(
     { _id: author_id },
@@ -184,16 +199,35 @@ module.exports.rejectPost = async function (req, res) {
     from: "nstung_17th@agu.edu.vn",
     to: author_email,
     subject: "Rejected your post",
-    html: `<p>Your post has been rejected! Let's edit it and submit again!</p>`,
+    html: `
+    <div style="width: 100%; font-family: sans-serif;">
+      <div style="width: 60%; margin: auto;">
+        <div style="height: 3rem;  background-color: #4fd2ef">
+        <h2 style=" width: fit-content; margin: auto; padding-top: 0.5rem; font-size: 1.7rem">Long Xuyen City Cultural and Sports Center</h2>
+        </div>
+        <div style="padding-left: 1rem">
+          <h2 style="font-size: 1.4rem">Post Rejected</h2>
+          <div style="font-size: medium;">
+            <p>Hi ${user.fullname},</p>
+            <p>Your post in Long Xuyen City Cultural and Sports Center has been rejected! Please edit it and submit again!</p>
+          </div>
+        </div>
+      </div>
+	  </div>
+    `,
   };
 
-  postModel.updateOne(condition, query, function (err, html) {
-    if (err) throw err;
-    else {
-      res.json({ success: true });
-      transporter.sendMail(mailOptions);
+  await postModel.updateOne(
+    { _id: req.body.id },
+    { $set: { active: REJECTED } },
+    function (err, html) {
+      if (err) throw err;
+      else {
+        res.json({ success: true });
+        if (author_email) transporter.sendMail(mailOptions);
+      }
     }
-  });
+  );
 };
 
 module.exports.getSomePost = async function (req, res) {
@@ -406,18 +440,3 @@ module.exports.updatePost = async function (req, res) {
     else res.json({ success: true });
   });
 };
-
-// let content = req.body.content;
-// const imgArr = content.match(/<img.*?src="(.*?)"/gm);
-// let arrSrc = [];
-// if (imgArr)
-//   arrSrc = imgArr.map((element) => {
-//     return element.match(/<img.*?src="(.*?)"/)[1];
-//   });
-// if (arrSrc.length) {
-//   for (let index = 0; index < arrSrc.length; index++) {
-//     await cloudinary.v2.uploader.upload(arrSrc[index]).then((data) => {
-//       content = content.replace(/src="([^"]+)"/, `src='${data.url}'`);
-//     });
-//   }
-// }

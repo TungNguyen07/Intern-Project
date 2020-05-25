@@ -13,6 +13,7 @@ import ViewProfileComponent from "../Dialog/ViewProfileComponent";
 import MessageDialog from "../Dialog/MessageDialogComponent";
 import { fetchData } from "../../libs/fetchData";
 import { postData } from "../../libs/postData";
+import AlertDialog from "../Dialog/AlertDialogComponent";
 
 const useStyles = makeStyles((theme) => ({
   loading: {
@@ -39,6 +40,10 @@ const UserTableComponent = ({ isChange }) => {
   const [rowData, setRowdata] = useState({});
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState([]);
+  const [alert, setAlert] = useState(false);
+  const [alertResult, setAlertResult] = useState("");
+  const [expectedResult, setExpectedResult] = useState("");
+  const [target, setTarget] = useState({});
 
   useEffect(() => {
     let unmounted = false;
@@ -120,14 +125,24 @@ const UserTableComponent = ({ isChange }) => {
   };
 
   const handleReset = (user) => {
-    postData(`${SERVER_URL}/profile/reset-password`, {
-      staff_id: user.staff_id,
-    }).then((res) => {
-      if (res.success) {
-        setError(["Reset password successfully!"]), setIsError(true);
-      }
-    });
+    setExpectedResult("RESET_PASSWORD");
+    setTarget(user);
+    setAlertResult("");
+    setAlert(true);
   };
+
+  useEffect(() => {
+    if (alertResult == "RESET_PASSWORD") {
+      postData(`${SERVER_URL}/profile/reset-password`, {
+        staff_id: target.staff_id,
+      }).then((res) => {
+        if (res.success) {
+          setError(["Reset password successfully!"]), setIsError(true);
+        }
+      });
+    }
+    setExpectedResult("");
+  }, [alertResult]);
 
   return isFetching ? (
     <div className={classes.div}>
@@ -197,6 +212,14 @@ const UserTableComponent = ({ isChange }) => {
         isOpen={isOpen}
         isClose={handleClose}
       />
+      {alert && (
+        <AlertDialog
+          message="Are you sure want to reset password this account?"
+          setDisplay={setAlert}
+          btnOK={setAlertResult}
+          expectedResult={expectedResult}
+        />
+      )}
       {isError && <MessageDialog setError={setIsError} message={error} />}
     </div>
   );

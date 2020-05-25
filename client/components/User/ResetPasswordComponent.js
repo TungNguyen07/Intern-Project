@@ -132,7 +132,7 @@ export const ResetPasswordComponent = () => {
           {expired ? (
             <div>
               <Alert className={classes.alert} severity="warning">
-                Your reset password token has been expired!
+                Your reset password token is invalid or has expired!
               </Alert>
               <Link href="/forgot-password">
                 <Button
