@@ -76,7 +76,7 @@ module.exports.sendFeedback = function (req, res) {
   const info = req.body;
 
   const mailOptions = {
-    from: "nstung_17th@agu.edu.vn",
+    from: USERNAME_EMAIL,
     to: "feedback.ttvhtt.longxuyen@gmail.com",
     subject: info.title,
     text: `Hi, I'm ${info.fullname}.

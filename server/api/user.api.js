@@ -66,7 +66,6 @@ module.exports.getUserFollowId = async function (req, res) {
 
   const data = await userModel.findOne({ _id: id });
   if (data) {
-    console.log(data);
     res.json(data);
   }
 };
@@ -85,8 +84,12 @@ module.exports.updateInfo = function (req, res) {
       avatar: newInfo.avatar,
     },
   };
-  userModel.updateOne(condition, query, function (err, html) {
-    if (err) throw err;
+  // userModel.updateOne(condition, query, function (err, html) {
+  //   if (err) throw err;
+  //   res.json({ success: true });
+  // });
+  userModel.findOneAndUpdate(condition, query, { new: true }, (err, data) => {
+    if (err) res.json({ error: true });
     res.json({ success: true });
   });
 };
@@ -203,7 +206,7 @@ module.exports.getResetPasswordToken = async function (req, res) {
   await resetPasswordModel.create(reset_password_token);
 
   const mailOptions = {
-    from: USERNAME_EMAIL || "nstung_17th@agu.edu.vn",
+    from: USERNAME_EMAIL,
     to: user.email,
     subject: "Reset password",
     html: `

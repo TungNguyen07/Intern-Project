@@ -6,7 +6,8 @@ const options = MONGO_OPTIONS
   ? JSON.parse(MONGO_OPTIONS)
   : {
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
+      useFindAndModify: false,
     };
 
 module.exports = mongoose
@@ -15,6 +16,6 @@ module.exports = mongoose
     console.log("Connect database successfully!");
     return mongoose;
   })
-  .catch(error => {
+  .catch((error) => {
     console.log(error);
   });

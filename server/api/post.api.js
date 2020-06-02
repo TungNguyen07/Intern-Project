@@ -29,37 +29,44 @@ const transporter = nodemailer.createTransport({
 });
 
 module.exports.newPost = async function (req, res) {
-  let cover_img = "";
-  if (!req.body.cover_img) cover_img = DEFAULT_COVER_IMG;
-  else {
-    await cloudinary.v2.uploader.upload(req.body.cover_img).then((data) => {
-      cover_img = data.url;
-    });
-  }
-  let content = req.body.content;
-  const imgArr = content.match(/<img.*?src="(.*?)"/gm);
-  let arrSrc = [];
-  if (imgArr)
-    arrSrc = imgArr.map((element) => {
-      return element.match(/<img.*?src="(.*?)"/)[1];
-    });
-  if (arrSrc.length) {
-    for (let index = 0; index < arrSrc.length; index++) {
-      await cloudinary.v2.uploader.upload(arrSrc[index]).then((data) => {
-        content = content.replace(/src="([^"]+)"/, `src='${data.url}'`);
-      });
-    }
-  }
+  // let cover_img = "";
+  // if (!req.body.cover_img) cover_img = DEFAULT_COVER_IMG;
+  // else {
+  //   await cloudinary.v2.uploader.upload(req.body.cover_img).then((data) => {
+  //     cover_img = data.url;
+  //   });
+  // }
 
-  await postModel.create(
-    { ...req.body, cover_img: cover_img, content: content },
-    (err, html) => {
-      if (err) throw err;
-      res.json({
-        success: true,
+  await postModel.create({ ...req.body }, async (err, html) => {
+    if (err) throw err;
+    res.json({ success: true });
+
+    if (!html.cover_img) html.cover_img = DEFAULT_COVER_IMG;
+    else {
+      await cloudinary.v2.uploader.upload(req.body.cover_img).then((data) => {
+        html.cover_img = data.url;
       });
     }
-  );
+
+    const imgArr = html.content.match(/<img.*?src="(.*?)"/gm);
+    let arrSrc = [];
+    if (imgArr)
+      arrSrc = imgArr.map((element) => {
+        return element.match(/<img.*?src="(.*?)"/)[1];
+      });
+    if (arrSrc.length) {
+      for (let index = 0; index < arrSrc.length; index++) {
+        await cloudinary.v2.uploader.upload(arrSrc[index]).then((data) => {
+          html.content = html.content.replace(
+            /src="([^"]+)"/,
+            `src='${data.url}'`
+          );
+        });
+      }
+    }
+
+    html.save();
+  });
 
   const admin_email = await userModel.findOne(
     { _id: mongoose.Types.ObjectId(req.body.author_id), staff_id: "admin" },
@@ -67,7 +74,7 @@ module.exports.newPost = async function (req, res) {
   );
 
   const mailOptions = {
-    from: "nstung_17th@agu.edu.vn",
+    from: USERNAME_EMAIL,
     to: admin_email,
     subject: "New pending post",
     html: `<p>You have a new pending post in the Long Xuyen City Cultural and Sports Center!</p>`,
@@ -156,7 +163,7 @@ module.exports.approvePost = async function (req, res) {
   );
 
   const mailOptions = {
-    from: USERNAME_EMAIL || "nstung_17th@agu.edu.vn",
+    from: USERNAME_EMAIL,
     to: author_email,
     subject: "Approved your post",
     html: `
@@ -196,7 +203,7 @@ module.exports.rejectPost = async function (req, res) {
   );
 
   const mailOptions = {
-    from: "nstung_17th@agu.edu.vn",
+    from: USERNAME_EMAIL,
     to: author_email,
     subject: "Rejected your post",
     html: `
@@ -397,46 +404,54 @@ module.exports.updatePost = async function (req, res) {
   const post = req.body.post;
   const condition = { _id: mongoose.Types.ObjectId(post._id) };
 
-  const regex = /src=\"data:image\/([a-zA-Z]*);base64,([^\"]*)\"/;
-  const result = post.cover_img.match(regex);
-  if (result) {
-    await cloudinary.v2.uploader.upload(result[1]).then((data) => {
-      post.cover_img = data.url;
-    });
-  }
-
-  let content = post.content;
-  const imgArr = content.match(
-    /src=\"data:image\/([a-zA-Z]*);base64,([^\"]*)\"/gm
-  );
-  let arrSrc = [];
-  if (imgArr)
-    arrSrc = imgArr.map((element) => {
-      return element.match(/<img.*?src="(.*?)"/)[1];
-    });
-  if (arrSrc.length) {
-    for (let index = 0; index < arrSrc.length; index++) {
-      await cloudinary.v2.uploader.upload(arrSrc[index]).then((data) => {
-        content = content.replace(/src="([^"]+)"/, `src='${data.url}'`);
-      });
-    }
-  }
-
   const query = {
     $set: {
-      content: content,
+      content: post.content,
       activity_id: post.activity_id,
       created_at: post.created_at,
       title: post.title,
       description: post.description,
       cover_img: post.cover_img,
       active: PENDING,
-      view: 0,
     },
   };
 
-  postModel.updateOne(condition, query, (err, html) => {
-    if (err) res.json({ error: true });
-    else res.json({ success: true });
-  });
+  postModel.findOneAndUpdate(
+    condition,
+    query,
+    { new: true },
+    async (err, data) => {
+      if (err) res.json({ error: true });
+      else {
+        res.json({ success: true });
+        const regex = /src=\"data:image\/([a-zA-Z]*);base64,([^\"]*)\"/;
+        const result = data.cover_img.match(regex);
+        if (result) {
+          await cloudinary.v2.uploader.upload(result[1]).then((link) => {
+            data.cover_img = link.url;
+          });
+        }
+
+        const imgArr = data.content.match(
+          /src=\"data:image\/([a-zA-Z]*);base64,([^\"]*)\"/gm
+        );
+        let arrSrc = [];
+        if (imgArr)
+          arrSrc = imgArr.map((element) => {
+            return element.match(/<img.*?src="(.*?)"/)[1];
+          });
+        if (arrSrc.length) {
+          for (let index = 0; index < arrSrc.length; index++) {
+            await cloudinary.v2.uploader.upload(arrSrc[index]).then((link) => {
+              data.content = data.content.replace(
+                /src="([^"]+)"/,
+                `src='${link.url}'`
+              );
+            });
+          }
+        }
+        data.save();
+      }
+    }
+  );
 };
