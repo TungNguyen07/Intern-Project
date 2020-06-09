@@ -6,6 +6,7 @@
 * Nodejs
 * MongoDB
 * Git
+* Yarn
 ## Common setup
 Clone project and install dependencies.
 ```
@@ -15,33 +16,33 @@ cd Intern-Project
 Install dependencies in client-side
 ```
 cd client
-npm install
+yarn install
 ```
 Install dependencies in server-side
 ```
 cd server
-npm install
+yarn install
 ```
 ## Run project
 Run client-side server
 ```
 cd client
-npm run build
+yarn build
 ```
 ```
-npm run start
+yarn start
 ```
 Run server-side server
 ```
 cd server
-npm run start
+yarn start
 ```
 Open [http://localhost:3000](http://localhost:3000) and take a look around
 ## Init user
 Init user admin
 ```
 cd server
-npm migrate-up
+yarn migrate-up
 ```
 User admin:
 * username: admin
