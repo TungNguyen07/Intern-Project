@@ -23,12 +23,12 @@ const PostTableComponent = ({ isChange }) => {
   const classes = useStyles();
   const columns = [
     {
-      title: "Title",
+      title: "Tiêu đề",
       field: "title",
       width: "50%",
     },
-    { title: "Activity", field: "activity" },
-    { title: "Author", field: "author" },
+    { title: "Hoạt động", field: "activity" },
+    { title: "Tác giả", field: "author" },
     { title: "_id", field: "_id", hidden: true },
   ];
   const [activePost, setActivePost] = useState([]);
@@ -80,13 +80,13 @@ const PostTableComponent = ({ isChange }) => {
   ) : (
     <div>
       <MaterialTable
-        title="Manage Post"
+        title="QUẢN LÝ BÀI VIẾT"
         columns={columns}
         data={activePost}
         localization={{
           body: {
             editRow: {
-              deleteText: "Are you sure want to delete this post?",
+              deleteText: "Bạn có chắc muốn xóa bài viết này?",
             },
           },
         }}

@@ -81,7 +81,7 @@ export const CoverImgComponent = ({ isReload, getImg, cover_img }) => {
         {!coverImg && (
           <div>
             <CloudUploadIcon className={classes.uploadIcon} />
-            <h2>Upload your cover image</h2>
+            <h2>Tải lên ảnh bìa</h2>
           </div>
         )}
         <input

@@ -83,7 +83,7 @@ const SearchResultComponent = ({ query }) => {
   ) : (
     <div>
       <Typography className={classes.title} variant="h5">
-        Search: {title}
+        Tìm kiếm từ khóa: {title}
       </Typography>
       {post.length ? (
         post.map((item) => (

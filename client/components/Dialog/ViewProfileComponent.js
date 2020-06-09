@@ -70,7 +70,7 @@ const ViewProfileComponent = ({ user, isOpen, isClose }) => {
     <React.Fragment>
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth={true}>
         <DialogTitle id="form-dialog-title">
-          {user.fullname}'s Profile
+          Thông tin {user.fullname}
         </DialogTitle>
         <DialogContent>
           {isFetching ? (
@@ -81,12 +81,12 @@ const ViewProfileComponent = ({ user, isOpen, isClose }) => {
             <div className={classes.groupInfo}>
               <Avatar className={classes.reviewAvatar} src={info.avatar} />
               <div className={classes.otherInfo}>
-                <Typography variant="subtitle1">Staff ID: </Typography>
-                <Typography variant="subtitle1">Gender: </Typography>
-                <Typography variant="subtitle1">Birthday: </Typography>
-                <Typography variant="subtitle1">Phone: </Typography>
+                <Typography variant="subtitle1">Mã nhân viên: </Typography>
+                <Typography variant="subtitle1">Giới tính: </Typography>
+                <Typography variant="subtitle1">Ngày sinh: </Typography>
+                <Typography variant="subtitle1">Số điện thoại: </Typography>
                 <Typography variant="subtitle1">Email: </Typography>
-                <Typography variant="subtitle1">Address: </Typography>
+                <Typography variant="subtitle1">Địa chỉ: </Typography>
               </div>
               <div className={classes.displayInfo}>
                 <Typography variant="subtitle1">{info.staff_id}</Typography>

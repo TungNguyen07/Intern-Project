@@ -49,7 +49,7 @@ const AlertDialog = ({ message, btnOK, setDisplay, expectedResult }) => {
             OK
           </Button>
           <Button onClick={handleClose} color="secondary">
-            Cancel
+            Hủy
           </Button>
         </DialogActions>
       </Dialog>

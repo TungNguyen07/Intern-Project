@@ -3,7 +3,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
+import Link from "next/link";
 import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -46,6 +46,12 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     margin: theme.spacing(1),
   },
+  link: {
+    color: "darkblue",
+    "& visited": {
+      color: "inherit",
+    },
+  },
 }));
 
 export const LoginComponent = ({ user, setUserDetail }) => {
@@ -72,16 +78,16 @@ export const LoginComponent = ({ user, setUserDetail }) => {
   const checkSigninInfo = () => {
     let arrError = [];
     if (info.username == "" || info.username == undefined)
-      arrError.push("Username is required!");
+      arrError.push("Tài khoản không được bỏ trống!");
     if (info.username.length > 0) {
       if (info.username.length < 5)
-        arrError.push("Username must be at least 5 characters!");
+        arrError.push("Tài khoản phải lớn hơn hoặc bằng 5 kí tự!");
     }
     if (info.password == "" || info.password == undefined)
-      arrError.push("Password is required!");
+      arrError.push("Mật khẩu không được bỏ trống!");
     if (info.password.length > 0) {
       if (info.password.length < 6)
-        arrError.push("Password must be at least 6 characters!");
+        arrError.push("Mật khẩu phải lớn hơn hoặc bằng 6 kí tự!");
     }
 
     if (!arrError.length) {
@@ -111,7 +117,7 @@ export const LoginComponent = ({ user, setUserDetail }) => {
   };
 
   const handleWrong = () => {
-    setCorrect(["Incorrect Username or Password!"]);
+    setCorrect(["Tài khoản hoặc mật khẩu không chính xác!"]);
   };
 
   useEffect(() => {
@@ -142,7 +148,7 @@ export const LoginComponent = ({ user, setUserDetail }) => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Đăng nhập
           </Typography>
           {valid &&
             valid.map((item, index) => {
@@ -167,7 +173,7 @@ export const LoginComponent = ({ user, setUserDetail }) => {
               required
               fullWidth
               id="username"
-              label="Username"
+              label="Tài khoản"
               name="username"
               autoFocus
               onChange={handleChange("username")}
@@ -179,7 +185,7 @@ export const LoginComponent = ({ user, setUserDetail }) => {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="Mật khẩu"
               type={showPassword ? "text" : "password"}
               id="password"
               onChange={handleChange("password")}
@@ -192,7 +198,7 @@ export const LoginComponent = ({ user, setUserDetail }) => {
               }}
               color="primary"
             />{" "}
-            Show password
+            Hiển thị mật khẩu
             <Button
               type="button"
               fullWidth
@@ -201,12 +207,12 @@ export const LoginComponent = ({ user, setUserDetail }) => {
               className={classes.submit}
               onClick={handleCheck}
             >
-              Sign In
+              Đăng nhập
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="/forgot-password" variant="body2">
-                  Forgot password?
+                <Link href="/forgot-password">
+                  <a className={classes.link}>Quên mật khẩu?</a>
                 </Link>
               </Grid>
             </Grid>

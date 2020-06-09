@@ -102,7 +102,7 @@ const ChangeBannerComponent = () => {
 
   return (
     <div>
-      <Typography variant="h5">Change banner image</Typography>
+      <Typography variant="h5">Thay đổi ảnh nền</Typography>
       <br />
       <Card className={classes.card}>
         <CardActionArea className={classes.cardAction}>
@@ -133,7 +133,7 @@ const ChangeBannerComponent = () => {
           color="primary"
           onClick={hanldeSave}
         >
-          Save
+          Lưu
         </Button>
         <Button
           className={classes.cancelButton}
@@ -142,7 +142,7 @@ const ChangeBannerComponent = () => {
           color="secondary"
           onClick={handleCancel}
         >
-          Cancel
+          Hủy
         </Button>
       </div>
       {display && <MessageDialog setError={setDisplay} message={message} />}

@@ -80,7 +80,7 @@ const CommentComponent = () => {
           );
         else {
           setDisplay(true);
-          setMessage(["Comment failed!"]);
+          setMessage(["Bình luận thất bại!"]);
         }
       }
     });
@@ -96,7 +96,7 @@ const CommentComponent = () => {
         <Grid id="comment" item xs={9} className={classes.root}>
           <Paper>
             <Typography className={classes.title} variant="h5">
-              Comment
+              Bình luận
             </Typography>
             <CommentForm action={handleComment} />
             {fetching ? (

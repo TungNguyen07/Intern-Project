@@ -212,7 +212,7 @@ module.exports.getResetPasswordToken = async function (req, res) {
     html: `
     <div style="width: 100%; font-family: sans-serif;">
       <div style="width: 60%; margin: auto;">
-        <div style="height: 3rem;  background-color: #4fd2ef">
+        <div style="height: 3rem;  background-color: #03c8ff">
         <h2 style=" width: fit-content; margin: auto; padding-top: 0.5rem; font-size: 1.7rem">Long Xuyen City Cultural and Sports Center</h2>
         </div>
         <div style="padding-left: 1rem">

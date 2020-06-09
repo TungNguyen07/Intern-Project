@@ -72,7 +72,7 @@ export const ForgotPasswordComponent = ({ user, setUserDetail }) => {
         if (res.email) handleSendMail();
         else
           setValid([
-            "You have not provided a personal email, please contact the admin to reset the password!",
+            "Bạn chưa cập nhật email cá nhân, vui lòng liên hệ Quản trị viên để đặt lại mật khẩu",
           ]);
       } else handleWrong();
     });
@@ -81,10 +81,10 @@ export const ForgotPasswordComponent = ({ user, setUserDetail }) => {
   const checkValidUsername = () => {
     let arrError = [];
     if (username == "" || username == undefined)
-      arrError.push("Username is required!");
+      arrError.push("Tài khoản không được bỏ trống!");
     if (username.length > 0) {
       if (username.length < 5)
-        arrError.push("Username must be at least 5 characters!");
+        arrError.push("Tài khoản phải dài ít nhất 5 kí tự!");
     }
 
     if (!arrError.length) {
@@ -104,11 +104,13 @@ export const ForgotPasswordComponent = ({ user, setUserDetail }) => {
   };
 
   const handleWrong = () => {
-    setError(["Usename does not exist!"]);
+    setError(["Tài khoản không tồn tại!"]);
   };
 
   const handleSendMail = () => {
-    setCorrect(["We have e-mailed your password reset link!"]);
+    setCorrect([
+      "Chúng tôi đã gửi email cho bạn về đường dẫn để đổi mật khẩu. Vui lòng kiểm tra email của bạn!",
+    ]);
     const hostname = window.location.href.split("/forgot-password")[0];
     postData(`${SERVER_URL}/profile/get-reset-password-token`, {
       username,
@@ -145,7 +147,7 @@ export const ForgotPasswordComponent = ({ user, setUserDetail }) => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Reset Password
+            Quên mật khẩu
           </Typography>
           {valid &&
             valid.map((item, index) => {
@@ -174,14 +176,14 @@ export const ForgotPasswordComponent = ({ user, setUserDetail }) => {
             })}
           <form className={classes.form} noValidate>
             <Typography className={classes.note}>
-              Enter your username to reset your password!
+              Vui lòng nhập tài khoản của bạn
             </Typography>
             <TextField
               variant="outlined"
               required
               fullWidth
               id="username"
-              label="Username"
+              label="Tài khoản"
               name="username"
               autoFocus
               onChange={handleChange}
@@ -196,7 +198,7 @@ export const ForgotPasswordComponent = ({ user, setUserDetail }) => {
               className={classes.submit}
               onClick={handleCheck}
             >
-              Verify
+              Xác nhận
             </Button>
           </form>
         </div>

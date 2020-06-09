@@ -90,7 +90,7 @@ const LatestPostComponent = () => {
     <div>
       <span className={classes.span}>
         <Typography className={classes.title} variant="h6">
-          NEWEST ACTIVITY
+          Các hoạt động mới nhất
         </Typography>
       </span>
 

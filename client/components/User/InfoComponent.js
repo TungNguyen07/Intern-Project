@@ -58,17 +58,17 @@ export const InfoComponent = ({ user }) => {
 
           <div className={classes.groupInfo}>
             <div className={classes.otherInfo}>
-              <Typography variant="subtitle1">ID: </Typography>
-              <Typography variant="subtitle1">Gender: </Typography>
-              <Typography variant="subtitle1">Birthday: </Typography>
-              <Typography variant="subtitle1">Phone: </Typography>
+              <Typography variant="subtitle1">Mã nhân viên: </Typography>
+              <Typography variant="subtitle1">Giới tính: </Typography>
+              <Typography variant="subtitle1">Ngày sinh: </Typography>
+              <Typography variant="subtitle1">Số điện thoại: </Typography>
               <Typography variant="subtitle1">Email: </Typography>
-              <Typography variant="subtitle1">Address: </Typography>
+              <Typography variant="subtitle1">Địa chỉ: </Typography>
             </div>
             <div className={classes.displayInfo}>
               <Typography variant="subtitle1">{user.staff_id}</Typography>
               <Typography variant="subtitle1">
-                {parseInt(user.gender) ? "Male" : "Female"}
+                {parseInt(user.gender) ? "Nam" : "Nữ"}
               </Typography>
               <Typography variant="subtitle1">
                 {new Date(user.birth_date).toLocaleDateString()}

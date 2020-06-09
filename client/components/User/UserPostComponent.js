@@ -115,7 +115,7 @@ export const UserPostComponent = ({ user }) => {
   return (
     <div>
       <Paper className={classes.root}>
-        <h1 className={classes.title}>{user.fullname}'s Post</h1>
+        <h1 className={classes.title}>Bài viết của {user.fullname}</h1>
         <Link href="/write-post">
           <a className={classes.link}>
             <PostAddIcon className={classes.icon} />
@@ -130,9 +130,9 @@ export const UserPostComponent = ({ user }) => {
             textColor="primary"
             centered
           >
-            <Tab value="approved" label="Approved Post" />
-            <Tab value="pending" label="Pending Post" />
-            <Tab value="rejected" label="Rejected Post" />
+            <Tab value="approved" label="Bài viết đã được duyệt" />
+            <Tab value="pending" label="Bài viết đang chờ" />
+            <Tab value="rejected" label="Bài viết đã bị từ chối" />
           </Tabs>
           <TabPanel value={value} index="approved">
             <ListApprovedPost />

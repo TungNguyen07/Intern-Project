@@ -25,8 +25,8 @@ const useStyles = makeStyles((theme) => ({
 const PendingPostTableComponent = ({ isChange }) => {
   const classes = useStyles();
   const columns = [
-    { title: "Title", field: "title", width: "50%" },
-    { title: "Author", field: "author" },
+    { title: "Tiêu đề", field: "title", width: "50%" },
+    { title: "Tác giả", field: "author" },
     { title: "id", field: "_id", hidden: true },
     { title: "Author id", field: "author_id", hidden: true },
   ];
@@ -65,7 +65,7 @@ const PendingPostTableComponent = ({ isChange }) => {
 
   const handleApprove = (post) => {
     setTitle(
-      '<div>Are you sure want to</div><div style="background-color: #e7e7e7; margin-right: 4px; margin-left: 4px; font-weight: bold">APPROVE</div><div>this post</div>'
+      '<div>Bạn có chắc muốn</div><div style="background-color: #e7e7e7; margin-right: 4px; margin-left: 4px; font-weight: bold">DUYỆT</div><div>bài viết này?</div>'
     );
     setTarget(post);
     setExpectedResult("APPROVE");
@@ -75,7 +75,7 @@ const PendingPostTableComponent = ({ isChange }) => {
 
   const handleReject = (post) => {
     setTitle(
-      '<div>Are you sure want to</div><div style="background-color: #e7e7e7; margin-right: 4px; margin-left: 4px; font-weight: bold">REJECT</div><div>this post</div>'
+      '<div>Bạn có chắc muốn</div><div style="background-color: #e7e7e7; margin-right: 4px; margin-left: 4px; font-weight: bold">TỪ CHỐI</div><div>bài viết này?</div>'
     );
     setTarget(post);
     setExpectedResult("REJECT");
@@ -141,7 +141,7 @@ const PendingPostTableComponent = ({ isChange }) => {
   ) : (
     <div>
       <MaterialTable
-        title="Manage Pending Post"
+        title="QUẢN LÝ BÀI VIẾT ĐANG CHỜ"
         columns={columns}
         data={pendingPost}
         actions={[

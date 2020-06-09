@@ -64,14 +64,14 @@ const Footer = ({ action }) => {
         <Card className={classes.card}>
           <Link href="/">
             <h2 className={classes.title}>
-              Long Xuyen City Cultural and Sports Center
+              TRUNG TÂM VĂN HÓA - THỂ THAO THÀNH PHỐ LONG XUYÊN
             </h2>
           </Link>
           <p>
-            Address: 268 Nguyen Truong To, Binh Khanh Ward, Long Xuyen City, An
-            Giang
+            Địa chỉ: số 268, Nguyễn Trường Tộ, Phường Bình Khánh, thành phố Long
+            Xuyen, tỉnh An Giang
           </p>
-          <p>Phone: 02963841732</p>
+          <p>Số điện thoại: 0296 - 384 - 1732</p>
           <p>
             Email:{" "}
             <a href="mailto:ttvhtt.longxuyen@angiang.gov.vn">
@@ -79,10 +79,10 @@ const Footer = ({ action }) => {
             </a>
           </p>
           <p>
-            &copy; 2020, Copyright by Long Xuyen City Cultural and Sports Center
+            &copy; 2020, Bản quyền thuộc N S.Tung
             {display && (
               <Link href="/signin">
-                <a className={classes.link}>Signin</a>
+                <a className={classes.link}>Đăng nhập</a>
               </Link>
             )}
           </p>

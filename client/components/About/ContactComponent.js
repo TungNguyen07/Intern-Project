@@ -102,12 +102,12 @@ const ContactComponent = () => {
     handleToggle();
     postData(`${SERVER_URL}/send-feedback`, contactInfo).then((res) => {
       if (res.success) {
-        setMessage(["Send feedback successfully!"]);
+        setMessage(["Gửi phản hồi thành công!"]);
         handleClose();
         setDisplay(true);
         setContactInfo(initInfo);
       } else {
-        setMessage(["Send feedback failed!"]);
+        setMessage(["Gửi phản hồi thất bại!"]);
         handleClose();
         setDisplay(true);
       }
@@ -128,20 +128,20 @@ const ContactComponent = () => {
   const checkValid = (data) => {
     let error = [];
     if (data.title.trim() == "" || data.title.length == 0)
-      error.push("Title is required!");
+      error.push("Tiêu đề không được bỏ trống!");
     if (data.fullname.trim() == "" || data.fullname.length == 0)
-      error.push("Fullname is required!");
+      error.push("Họ tên không được bỏ trống!");
     if (data.email.trim() == "" || data.email.length == 0)
-      error.push("Email is required!");
-    else if (!validateEmail(data.email)) error.push("Invalid Email!");
+      error.push("Email không được bỏ trống!");
+    else if (!validateEmail(data.email)) error.push("Email không hợp lệ!");
     if (data.phone.trim() == "" || data.phone.length == 0)
-      error.push("Phone is required!");
+      error.push("Số điện thoại không được bỏ trống!");
     else if (isNaN(data.phone) || data.phone.length < 10)
-      error.push("Invalid phone number!");
+      error.push("Số điện thoại không hợp lệ!");
     if (data.address.trim() == "" || data.address.length == 0)
-      error.push("Address is required!");
+      error.push("Địa chỉ không được bỏ trống!");
     if (data.content.trim() == "" || data.content.lengt == 0)
-      error.push("Content is required!");
+      error.push("Nội dung không được bỏ trống!");
 
     if (error.length) {
       setMessage(error);
@@ -155,35 +155,35 @@ const ContactComponent = () => {
   return (
     <div>
       <Typography className={classes.title} variant="h4">
-        Contact
+        3. Liên hệ
       </Typography>
       <Typography>
-        In order to continuously improve the quality of the service and better
-        meet the requirements of our listeners, we look forward to receiving
-        feedback. If you have any questions or contributions, please contact us
-        at the information below. We will respond to you as soon as possible.
+        Để tiếp tục cải thiện chất lượng dịch vụ và đáp ứng yêu cầu của người
+        đọc tốt hơn, chúng tôi mong nhận được phản hồi của bạn. Nếu bạn có bất
+        kỳ câu hỏi hoặc đóng góp, xin vui lòng liên hệ với chúng tôi tại thông
+        tin dưới đây. Chúng tôi sẽ trả lời sớm nhất có thể.
       </Typography>
       <div className={classes.contact}>
         <Grid item xs={5} style={{ lineHeight: "1.25rem" }}>
           <Typography className={classes.contactUs} variant="h6">
-            Contact us
+            Liên hệ
           </Typography>
           <p>
-            Address: 268, Nguyen Truong To, Binh Khanh Ward, Long Xuyen City, An
-            Giang
+            Địa chỉ: số 268, Nguyễn Trường Tộ, Phường Bình Khánh, thành phố Long
+            Xuyen, tỉnh An Giang
           </p>
-          <p>Phone: 0296 - 384 - 1732</p>
+          <p>Số điện thoại: 0296 - 384 - 1732</p>
           <p>
             Email:{" "}
             <a href="mailto:ttvhtt.longxuyen@angiang.gov.vn">
               ttvhtt.longxuyen@angiang.gov.vn
             </a>
           </p>
-          <p>Vice President's phone: 091 - 907 - 2240</p>
+          <p>Phó giám đốc: 091 - 907 - 2240</p>
         </Grid>
         <Grid className={classes.feedbackForm} item xs={7}>
           <Typography className={classes.feedbackTitle} variant="h6">
-            Send feedback
+            Gửi phản hồi
           </Typography>
           <div className={classes.feedback}>
             <Grid container spacing={1} alignItems="flex-end">
@@ -194,7 +194,7 @@ const ContactComponent = () => {
                 <TextField
                   value={contactInfo.title}
                   className={classes.input}
-                  label="Title"
+                  label="Tiêu đề"
                   required
                   onChange={handleChange("title")}
                 />
@@ -208,7 +208,7 @@ const ContactComponent = () => {
                 <TextField
                   value={contactInfo.fullname}
                   className={classes.input}
-                  label="Fullname"
+                  label="Họ và tên"
                   required
                   onChange={handleChange("fullname")}
                 />
@@ -236,7 +236,7 @@ const ContactComponent = () => {
                 <TextField
                   value={contactInfo.phone}
                   className={classes.input}
-                  label="Phone"
+                  label="Số điện thoại"
                   required
                   onChange={handleChange("phone")}
                 />
@@ -250,7 +250,7 @@ const ContactComponent = () => {
                 <TextField
                   value={contactInfo.address}
                   className={classes.input}
-                  label="Address"
+                  label="Địa chỉ"
                   required
                   onChange={handleChange("address")}
                 />
@@ -265,7 +265,7 @@ const ContactComponent = () => {
                   value={contactInfo.content}
                   className={classes.input}
                   rowsMin={3}
-                  placeholder="Content"
+                  placeholder="Nội dung"
                   required
                   onChange={handleChange("content")}
                 />
@@ -280,7 +280,7 @@ const ContactComponent = () => {
               color="primary"
               onClick={handleCheck}
             >
-              Send
+              Gửi
             </Button>
             <Button
               className={classes.cancelButton}
@@ -289,7 +289,7 @@ const ContactComponent = () => {
               color="secondary"
               onClick={handleCancel}
             >
-              Cancel
+              Hủy bỏ
             </Button>
           </div>
         </Grid>

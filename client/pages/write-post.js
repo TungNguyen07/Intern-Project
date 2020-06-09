@@ -23,7 +23,7 @@ const CreatePost = () => {
     <div>
       <Header title="Write post" />
       <Banner />
-      <Layout Right={<PostEditor title="Write your new post" />} />
+      <Layout Right={<PostEditor title="Viết bài viết mới" />} />
       <Footer />
     </div>
   );

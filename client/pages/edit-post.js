@@ -22,21 +22,30 @@ const useStyles = makeStyles((theme) => ({
 const EditPost = () => {
   const classes = useStyles();
   const [post, setPost] = useState({});
+  const [postId, setPostId] = useState("");
 
   useEffect(() => {
-    let unmouted = false;
-    const post_id = Router.query.post_id;
-    fetchData(`${SERVER_URL}/post/get-post/${post_id}`).then((res) => {
-      if (res.data) {
-        if (!unmouted) {
-          setPost(res.data);
-        }
-      }
-    });
-    return () => {
-      unmouted = true;
-    };
+    const path = Router.asPath;
+    const id = path.split("=").pop();
+    setPostId(id);
   }, []);
+
+  useEffect(() => {
+    if (postId) {
+      let unmouted = false;
+
+      fetchData(`${SERVER_URL}/post/get-post/${postId}`).then((res) => {
+        if (res.data) {
+          if (!unmouted) {
+            setPost(res.data);
+          }
+        }
+      });
+      return () => {
+        unmouted = true;
+      };
+    }
+  }, [postId]);
 
   return (
     <div>
@@ -44,7 +53,9 @@ const EditPost = () => {
       <Banner />
       {post ? (
         <Layout
-          Right={<RejectedPostEditor title="Edit your post" edit_post={post} />}
+          Right={
+            <RejectedPostEditor title="Chỉnh sửa bài viết" edit_post={post} />
+          }
         />
       ) : (
         <div className={classes.div}>

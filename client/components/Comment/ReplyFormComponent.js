@@ -88,15 +88,15 @@ const ReplyForm = ({ action, cmtId }) => {
   const validate = (checkInfo) => {
     let error = [];
     if (checkInfo.owner.trim() == "" || checkInfo.owner.trim() == undefined)
-      error.push("Name is required!");
+      error.push("Họ và tên không được bỏ trống!");
     if (checkInfo.email.trim() == "" || checkInfo.email.trim() == undefined)
-      error.push("Email is required!");
-    else if (!validateEmail(checkInfo.email)) error.push("Invalid Email!");
+      error.push("Email không được bỏ trống");
+    else if (!validateEmail(checkInfo.email)) error.push("Email không hợp lệ!");
     if (
       checkInfo.repComment.trim() == "" ||
       checkInfo.repComment.trim() == undefined
     )
-      error.push("Content is required!");
+      error.push("Nội dung không được bỏ trống!");
     if (error.length) {
       setNotify(error);
       return false;
@@ -111,7 +111,7 @@ const ReplyForm = ({ action, cmtId }) => {
       <div>
         <TextField
           className={classes.name}
-          label="Name"
+          label="Họ và tên"
           variant="outlined"
           value={info.owner}
           onChange={handleChange("owner")}
@@ -127,7 +127,7 @@ const ReplyForm = ({ action, cmtId }) => {
       <TextareaAutosize
         className={classes.opinion}
         rowsMin={3}
-        placeholder="Your opinion"
+        placeholder="Ý kiến của bạn"
         required
         value={info.repComment}
         onChange={handleChange("repComment")}
@@ -140,7 +140,7 @@ const ReplyForm = ({ action, cmtId }) => {
           color="primary"
           onClick={handleSave}
         >
-          Reply
+          Trả lời bình luận
         </Button>
         <Button
           className={classes.cancelButton}
@@ -149,7 +149,7 @@ const ReplyForm = ({ action, cmtId }) => {
           color="secondary"
           onClick={handleCancel}
         >
-          Cancel
+          Hủy
         </Button>
       </div>
       {display && <MessageDialog setError={setDisplay} message={notify} />}

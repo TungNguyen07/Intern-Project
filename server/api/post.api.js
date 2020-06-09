@@ -157,14 +157,14 @@ module.exports.approvePost = async function (req, res) {
   const condition = { _id: post_id };
   const query = { $set: { active: APPROVED } };
 
-  const author_email = await userModel.findOne(
+  const author = await userModel.findOne(
     { _id: author_id },
-    { _id: 0, email: 1 }
+    { _id: 0, email: 1, fullname: 1 }
   );
 
   const mailOptions = {
     from: USERNAME_EMAIL,
-    to: author_email,
+    to: author.email,
     subject: "Approved your post",
     html: `
     <div style="width: 100%; font-family: sans-serif;">
@@ -175,7 +175,7 @@ module.exports.approvePost = async function (req, res) {
         <div style="padding-left: 1rem">
           <h2 style="font-size: 1.4rem">Post Approved</h2>
           <div style="font-size: medium;">
-            <p>Hi ${user.fullname},</p>
+            <p>Hi ${author.fullname},</p>
             <p>Your post in Long Xuyen City Cultural and Sports Center has been approved!</p>
           </div>
         </div>
@@ -188,7 +188,7 @@ module.exports.approvePost = async function (req, res) {
     if (err) throw err;
     else {
       res.json({ success: true });
-      if (author_email) transporter.sendMail(mailOptions);
+      if (author.email) transporter.sendMail(mailOptions);
     }
   });
 };
@@ -197,14 +197,14 @@ module.exports.rejectPost = async function (req, res) {
   const post_id = req.body.id;
   const author_id = mongoose.Types.ObjectId(req.body.author_id);
 
-  const author_email = await userModel.findOne(
+  const author = await userModel.findOne(
     { _id: author_id },
-    { _id: 0, email: 1 }
+    { _id: 0, email: 1, fullname: 1 }
   );
 
   const mailOptions = {
     from: USERNAME_EMAIL,
-    to: author_email,
+    to: author.email,
     subject: "Rejected your post",
     html: `
     <div style="width: 100%; font-family: sans-serif;">
@@ -215,7 +215,7 @@ module.exports.rejectPost = async function (req, res) {
         <div style="padding-left: 1rem">
           <h2 style="font-size: 1.4rem">Post Rejected</h2>
           <div style="font-size: medium;">
-            <p>Hi ${user.fullname},</p>
+            <p>Hi ${author.fullname},</p>
             <p>Your post in Long Xuyen City Cultural and Sports Center has been rejected! Please edit it and submit again!</p>
           </div>
         </div>
@@ -231,7 +231,7 @@ module.exports.rejectPost = async function (req, res) {
       if (err) throw err;
       else {
         res.json({ success: true });
-        if (author_email) transporter.sendMail(mailOptions);
+        if (author.email) transporter.sendMail(mailOptions);
       }
     }
   );

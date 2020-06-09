@@ -87,25 +87,25 @@ const StatisticComponent = ({ isChange }) => {
       <Grid item xs={12} className={classes.grid}>
         <CardItems
           className={classes.cardBorder}
-          title="USER"
+          title="NHÂN VIÊN"
           icon={<PeopleAltIcon className={classes.icon} />}
           quantity={data.user}
           style={{ ...cardBorder, borderLeft: "5px solid #4e73df" }}
         />
         <CardItems
-          title="ACTIVITY"
+          title="HOẠT ĐỘNG"
           icon={<CategoryIcon className={classes.icon} />}
           quantity={data.activity}
           style={{ ...cardBorder, borderLeft: "5px solid #36b9cc" }}
         />
         <CardItems
-          title="POST"
+          title="BÀI VIẾT"
           icon={<AssignmentIcon className={classes.icon} />}
           quantity={data.post}
           style={{ ...cardBorder, borderLeft: "5px solid #1cc88a" }}
         />
         <CardItems
-          title="PENDING POST"
+          title="BÀI VIẾT ĐANG CHỜ"
           icon={<AssignmentLateIcon className={classes.icon} />}
           quantity={data.pendingPost}
           style={{ ...cardBorder, borderLeft: "5px solid #f6c23e" }}

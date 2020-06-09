@@ -79,38 +79,38 @@ export const ProfileNav = ({ user, Signout }) => {
 
       <Collapse in={open} timeout="auto" unmountOnExit>
         <MenuList tabIndex="-1">
-          <MenuItem className={classes.item}>
-            <Link href="/profile">
-              <span>Profile</span>
-            </Link>
-          </MenuItem>
+          <Link href="/profile">
+            <MenuItem className={classes.item}>
+              <span>Cá nhân</span>
+            </MenuItem>
+          </Link>
 
-          <MenuItem className={classes.item}>
-            <Link href="/change-password">
-              <span>Change Password</span>
-            </Link>
-          </MenuItem>
+          <Link href="/change-password">
+            <MenuItem className={classes.item}>
+              <span>Đổi mật khẩu</span>
+            </MenuItem>
+          </Link>
 
-          <MenuItem className={classes.item}>
-            <Link href="/write-post">
-              <span>Write post</span>
-            </Link>
-          </MenuItem>
+          <Link href="/write-post">
+            <MenuItem className={classes.item}>
+              <span>Viết bài viết</span>
+            </MenuItem>
+          </Link>
 
           {/* <MenuItem className={classes.item}>
             <Link href="/write-post">Write post</Link>
           </MenuItem> */}
 
           {user.role == 1 && (
-            <MenuItem className={classes.item}>
-              <Link href="/admin">
+            <Link href="/admin">
+              <MenuItem className={classes.item}>
                 <span>Dashboard</span>
-              </Link>
-            </MenuItem>
+              </MenuItem>
+            </Link>
           )}
 
           <MenuItem className={classes.item} onClick={signout}>
-            Logout
+            Đăng xuất
           </MenuItem>
         </MenuList>
       </Collapse>

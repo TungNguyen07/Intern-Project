@@ -59,7 +59,7 @@ const SearchComponent = ({ setQuery }) => {
     <Paper className={classes.paper}>
       <InputBase
         className={classes.input}
-        placeholder="Search"
+        placeholder="Tìm kiếm"
         onChange={handleChange}
       />
       <IconButton onClick={handleClick}>

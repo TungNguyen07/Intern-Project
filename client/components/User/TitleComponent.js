@@ -56,7 +56,7 @@ export const TitleComponent = ({ user, Signout }) => {
           <ArrowBackIcon className={classes.icon} />
         </IconButton>
       </Link>
-      <h1 className={classes.title}>{user.fullname}'s Profile</h1>
+      <h1 className={classes.title}>Thông tin {user.fullname}</h1>
       <IconButton
         color="primary"
         aria-label="Edit"

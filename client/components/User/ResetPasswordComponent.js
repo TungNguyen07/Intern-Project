@@ -62,18 +62,18 @@ export const ResetPasswordComponent = () => {
   const checkSigninInfo = () => {
     let arrError = [];
     if (info.confirm_password == "" || info.confirm_password == undefined)
-      arrError.push("confirm_password is required!");
+      arrError.push("Xác nhận lại mật khẩu không được bỏ trống!");
     if (info.confirm_password.length > 0) {
-      if (info.confirm_password.length < 5)
-        arrError.push("Confirm password must be at least 5 characters!");
+      if (info.confirm_password.length < 6)
+        arrError.push("Mật khẩu phải dài ít nhất 6 kí tự!");
       else if (info.confirm_password != info.new_password)
-        arrError.push(["Confirm password is incorrect!"]);
+        arrError.push(["Xác nhận lại mật khẩu không chính xác!"]);
     }
     if (info.new_password == "" || info.new_password == undefined)
-      arrError.push("Password is required!");
+      arrError.push("Mật khẩu mới không được bỏ trống!");
     if (info.new_password.length > 0) {
       if (info.new_password.length < 6)
-        arrError.push("Password must be at least 6 characters!");
+        arrError.push("Mật khẩu phải dài ít nhất 6 kí tự!");
     }
 
     if (!arrError.length) {
@@ -127,12 +127,12 @@ export const ResetPasswordComponent = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Change Password
+            Đặt lại mật khẩu
           </Typography>
           {expired ? (
             <div>
               <Alert className={classes.alert} severity="warning">
-                Your reset password token is invalid or has expired!
+                Token đã hết hạn hoặc không chính xác!
               </Alert>
               <Link href="/forgot-password">
                 <Button
@@ -142,14 +142,14 @@ export const ResetPasswordComponent = () => {
                   color="primary"
                   className={classes.submit}
                 >
-                  Back
+                  Trở lại
                 </Button>
               </Link>
             </div>
           ) : success ? (
             <div>
               <Alert className={classes.alert} severity="success">
-                Your password has changed successfully! Sign in now!
+                Thay đổi mật khẩu thành công! Vui lòng đăng nhập lại!
               </Alert>
               <Link href="/signin">
                 <Button
@@ -159,7 +159,7 @@ export const ResetPasswordComponent = () => {
                   color="primary"
                   className={classes.submit}
                 >
-                  Sign in
+                  Đăng nhập
                 </Button>
               </Link>
             </div>
@@ -183,7 +183,7 @@ export const ResetPasswordComponent = () => {
                   required
                   fullWidth
                   id="new_password"
-                  label="New Password"
+                  label="Mật khẩu mới"
                   name="new_password"
                   type="password"
                   autoFocus
@@ -196,7 +196,7 @@ export const ResetPasswordComponent = () => {
                   required
                   fullWidth
                   name="confirmPassword"
-                  label="Confirm New Password"
+                  label="Xác nhận lại mật khẩu"
                   type="password"
                   id="confirmPassword"
                   onChange={handleChange("confirm_password")}
@@ -211,7 +211,7 @@ export const ResetPasswordComponent = () => {
                   className={classes.submit}
                   onClick={handleCheck}
                 >
-                  Change Password
+                  Đổi mật khẩu
                 </Button>
               </form>{" "}
             </div>

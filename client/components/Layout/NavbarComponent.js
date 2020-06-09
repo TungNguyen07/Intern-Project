@@ -85,7 +85,7 @@ const Nav = ({ activeActivity }) => {
     <Card className={classes.root}>
       <Typography className={classes.title} variant="h6" component="h6">
         <ListItem className={classes.button} button onClick={handleClick}>
-          <div className={classes.div}>Activity</div>
+          <div className={classes.div}>Hoạt động</div>
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
       </Typography>
@@ -94,7 +94,7 @@ const Nav = ({ activeActivity }) => {
         <MenuList selected="0">
           <MenuItem className={classes.item}>
             <Link href="/">
-              <span>Home</span>
+              <span>Trang chủ</span>
             </Link>
           </MenuItem>
           {activity.map((item) => {
@@ -115,7 +115,7 @@ const Nav = ({ activeActivity }) => {
           })}
           <MenuItem className={classes.item}>
             <Link href="/about">
-              <span>About</span>
+              <span>Giới thiệu</span>
             </Link>
           </MenuItem>
         </MenuList>

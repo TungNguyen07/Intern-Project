@@ -29,9 +29,9 @@ const useStyles = makeStyles((theme) => ({
 const UserTableComponent = ({ isChange }) => {
   const classes = useStyles();
   const columns = [
-    { title: "Staff ID", field: "staff_id" },
-    { title: "Fullname", field: "fullname" },
-    { title: "Username", field: "username" },
+    { title: "Mã nhân viên", field: "staff_id" },
+    { title: "Họ và tên", field: "fullname" },
+    { title: "Tài khoản", field: "username" },
   ];
 
   const [data, setData] = useState([]);
@@ -84,18 +84,18 @@ const UserTableComponent = ({ isChange }) => {
   const checkValid = (newUser) => {
     let arrError = [];
     if (newUser.staff_id == "" || newUser.staff_id == undefined)
-      arrError.push("Staff Id is required!");
+      arrError.push("Mã nhân viên không được bỏ trống");
     if (newUser.fullname == "" || newUser.fullname == undefined)
-      arrError.push("Fullname Id is required!");
+      arrError.push("Họ và tên không được bỏ trống");
     if (newUser.username == "" || newUser.username == undefined)
-      arrError.push("Username Id is required!");
+      arrError.push("Tài khoản không được bỏ trống");
     if (newUser.staff_id) {
       if (newUser.staff_id.length < 5)
-        arrError.push("Staff Id must be at least 5 charaters!");
+        arrError.push("Mã nhân viên phải dài ít nhất 5 kí tự");
     }
     if (newUser.username) {
       if (newUser.username.length < 5)
-        arrError.push("Username must be at least 5 charaters!");
+        arrError.push("Tài khoản phải dài ít nhất 5 kí tự");
     }
 
     for (let user of data) {
@@ -103,7 +103,7 @@ const UserTableComponent = ({ isChange }) => {
         user.staff_id.toLowerCase() == newUser.staff_id.toLowerCase() ||
         user.username.toLowerCase() == newUser.username.toLowerCase()
       )
-        arrError.push("Duplicate Staff Id or Username!");
+        arrError.push("Tài khoản hoặc mã nhân viên bị trùng!");
     }
 
     if (arrError.length) {
@@ -120,7 +120,7 @@ const UserTableComponent = ({ isChange }) => {
   };
 
   const handleDeleteAdmin = () => {
-    setError(["Cannot delete user admin!"]);
+    setError(["Không thể xóa người dùng admin!"]);
     setIsError(true);
   };
 
@@ -151,13 +151,13 @@ const UserTableComponent = ({ isChange }) => {
   ) : (
     <div>
       <MaterialTable
-        title="Manage User"
+        title="Quản lý người dùng"
         columns={columns}
         data={data}
         localization={{
           body: {
             editRow: {
-              deleteText: "Are you sure want to delete this user?",
+              deleteText: "Bạn có chắc muốn xóa người dùng này?",
             },
           },
         }}

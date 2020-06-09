@@ -76,37 +76,37 @@ export const ChangePasswordComponent = ({ user }) => {
   const checkValidPassword = async (password) => {
     let arrError = [];
     if (password.currentPassword == "" || password.currentPassword == undefined)
-      arrError.push("Current password is required!");
+      arrError.push("Mật khẩu hiện tại không được bỏ trống!");
     else if (
       password.newPassword == "" ||
       password.confirmPassword == undefined
     )
-      arrError.push("New password is required!");
+      arrError.push("Mật khẩu mới không được bỏ trống!");
     else if (
       password.confirmPassword == "" ||
       password.confirmPassword == undefined
     )
-      arrError.push("Confirm password is required!");
+      arrError.push("Xác nhận mật khẩu không được bỏ trống!");
 
     if (
       password.currentPassword.length < 6 ||
       password.newPassword.length < 6 ||
       password.confirmPassword.length < 6
     )
-      arrError.push("Password must be at least 6 characters!");
+      arrError.push("Mật khẩu phải dài ít nhất 6 kí tự!");
 
     if (password.newPassword != password.confirmPassword)
-      arrError.push("Confirm password is incorrect!");
+      arrError.push("Xác nhận mật khẩu không chính xác!");
 
     const checked = await checkCurrentPassword({
       id: user.id,
       currentPassword: password.currentPassword,
     });
 
-    if (!checked.result) arrError.push("Current password is incorrect!");
+    if (!checked.result) arrError.push("Mật khẩu hiện tại không chính xác!");
 
     if (!arrError.length) {
-      setMessage(["Change password successfully!"]);
+      setMessage(["Đổi mật khẩu thành công!"]);
       return true;
     } else {
       setMessage(arrError);
@@ -137,14 +137,14 @@ export const ChangePasswordComponent = ({ user }) => {
   return (
     <React.Fragment>
       <Typography variant="h3" className={classes.title}>
-        Change password
+        Đổi mật khẩu
       </Typography>
       <div className={classes.div}>
         <form>
           <TextField
             className={classes.textField}
             value={passwordInfo.currentPassword}
-            label="Current Password"
+            label="Mật khẩu hiện tại"
             required
             type={showPassword ? "text" : "password"}
             variant="outlined"
@@ -153,7 +153,7 @@ export const ChangePasswordComponent = ({ user }) => {
           <TextField
             className={classes.textField}
             value={passwordInfo.newPassword}
-            label="New Password"
+            label="Mật khẩu mới"
             required
             type={showPassword ? "text" : "password"}
             variant="outlined"
@@ -162,7 +162,7 @@ export const ChangePasswordComponent = ({ user }) => {
           <TextField
             className={classes.textField}
             value={passwordInfo.confirmPassword}
-            label="Confirm Password"
+            label="Xác nhận lại mật khẩu"
             required
             type={showPassword ? "text" : "password"}
             variant="outlined"
@@ -178,7 +178,7 @@ export const ChangePasswordComponent = ({ user }) => {
           }}
           color="primary"
         />{" "}
-        Show password
+        Hiển thị mật khẩu
       </div>
       <Button
         variant="contained"
@@ -186,7 +186,7 @@ export const ChangePasswordComponent = ({ user }) => {
         className={classes.saveButton}
         onClick={handleCheck}
       >
-        Change password
+        Đổi mật khẩu
       </Button>
       <Button
         variant="contained"
@@ -194,7 +194,7 @@ export const ChangePasswordComponent = ({ user }) => {
         className={classes.cancelButton}
         onClick={handleClear}
       >
-        Clear
+        Xóa
       </Button>
       {display && <MessageDialog setError={setDisplay} message={message} />}
     </React.Fragment>

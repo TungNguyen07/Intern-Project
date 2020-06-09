@@ -22,7 +22,7 @@ const DashboardItemComponent = ({ setState }) => {
         <ListItemIcon>
           <HomeIcon />
         </ListItemIcon>
-        <ListItemText primary="HOME" />
+        <ListItemText primary="TRANG CHỦ" />
       </ListItem>
 
       <ListItem
@@ -34,7 +34,7 @@ const DashboardItemComponent = ({ setState }) => {
         <ListItemIcon>
           <PanoramaIcon />
         </ListItemIcon>
-        <ListItemText primary="BANNER" />
+        <ListItemText primary="ẢNH NỀN" />
       </ListItem>
 
       <ListItem
@@ -46,7 +46,7 @@ const DashboardItemComponent = ({ setState }) => {
         <ListItemIcon>
           <PeopleAltIcon />
         </ListItemIcon>
-        <ListItemText primary="USER" />
+        <ListItemText primary="NHÂN VIÊN" />
       </ListItem>
 
       <ListItem
@@ -58,7 +58,7 @@ const DashboardItemComponent = ({ setState }) => {
         <ListItemIcon>
           <CategoryIcon />
         </ListItemIcon>
-        <ListItemText primary="ACTIVITY" />
+        <ListItemText primary="HOẠT ĐỘNG" />
       </ListItem>
 
       <ListItem
@@ -70,7 +70,7 @@ const DashboardItemComponent = ({ setState }) => {
         <ListItemIcon>
           <AssignmentIcon />
         </ListItemIcon>
-        <ListItemText primary="POST" />
+        <ListItemText primary="BÀI VIẾT" />
       </ListItem>
 
       <ListItem
@@ -82,7 +82,7 @@ const DashboardItemComponent = ({ setState }) => {
         <ListItemIcon>
           <AssignmentLateIcon />
         </ListItemIcon>
-        <ListItemText primary="PENDING POST" />
+        <ListItemText primary="BÀI VIẾT ĐANG CHỜ" />
       </ListItem>
     </div>
   );

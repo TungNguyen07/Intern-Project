@@ -20,8 +20,8 @@ const useStyles = makeStyles((theme) => ({
 const ActivityTableComponent = ({ isChange }) => {
   const classes = useStyles();
   const columns = [
-    { title: "Activity", field: "activity_name" },
-    { title: "Description", field: "description" },
+    { title: "Hoạt động", field: "activity_name" },
+    { title: "Mô tả", field: "description" },
     { title: "Id", field: "_id", hidden: true },
   ];
 
@@ -58,14 +58,14 @@ const ActivityTableComponent = ({ isChange }) => {
       newActivity.activity_name == undefined ||
       newActivity.activity_name.trim().length == 0
     )
-      error.push("Activity name is required!");
+      error.push("Tên hoạt động không được bỏ trống!");
     else {
       for (let item of activity) {
         if (
           newActivity.activity_name.toLowerCase() ==
           item.activity_name.toLowerCase()
         )
-          error.push("Duplicate activity name!");
+          error.push("Tên hoạt động bị trùng!");
       }
     }
     if (
@@ -73,7 +73,7 @@ const ActivityTableComponent = ({ isChange }) => {
       newActivity.description == undefined ||
       newActivity.description.trim().length == 0
     )
-      error.push("Description is required!");
+      error.push("Mô tả không được bỏ trống!");
 
     if (error.length) {
       setMessage(error);
@@ -108,7 +108,7 @@ const ActivityTableComponent = ({ isChange }) => {
   ) : (
     <div>
       <MaterialTable
-        title="Manage Activity"
+        title="QUẢN LÝ HOẠT ĐỘNG"
         columns={columns}
         data={activity}
         options={{
@@ -119,7 +119,7 @@ const ActivityTableComponent = ({ isChange }) => {
           body: {
             editRow: {
               deleteText:
-                "Delete Activity will also delete all Post of this Activity!",
+                "Xóa hoạt động này cũng đồng thời xóa các bài viết thuộc hoạt động ấy, bạn chắc chắn muốn xóa?",
             },
           },
         }}

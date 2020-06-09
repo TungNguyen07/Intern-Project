@@ -85,7 +85,7 @@ export const ListRejectedPost = ({ user }) => {
 
   const handleDelete = (item) => (event) => {
     setTitle(
-      '<div>Are you sure want to</div><div style="background-color: #e7e7e7; margin-right: 4px; margin-left: 4px; font-weight: bold">DELETE</div><div>this post</div>'
+      '<div>Bạn có chắc muốn</div><div style="background-color: #e7e7e7; margin-right: 4px; margin-left: 4px;font-weight: bold">XÓA</div><div>bài viết này</div>'
     );
     setTarget(item);
     setExpectedResult("DELETE_POST");
@@ -119,7 +119,7 @@ export const ListRejectedPost = ({ user }) => {
             <div className={classes.cardBlock} key={index}>
               <CardPostNoURL post={item} />
               <div>
-                <Link href={`/edit-post`} as={`/edit-post/${item._id}`}>
+                <Link href={`/edit-post`} as={`/edit-post?post_id=${item._id}`}>
                   <IconButton>
                     <EditIcon color="primary" />
                   </IconButton>

@@ -35,15 +35,15 @@ const AvatarComponent = ({ avatar, Signout }) => {
           <Fade {...TransitionProps} timeout={350}>
             <Paper>
               <Link href="/profile">
-                <MenuItem>Profile</MenuItem>
+                <MenuItem>Cá nhân</MenuItem>
               </Link>
               <Link href="/change-password">
-                <MenuItem>Change password</MenuItem>
+                <MenuItem>Đổi mật khẩu</MenuItem>
               </Link>
               <Link href="/write-post">
-                <MenuItem>Write post</MenuItem>
+                <MenuItem>Viết bài viết</MenuItem>
               </Link>
-              <MenuItem onClick={Signout}>Logout</MenuItem>
+              <MenuItem onClick={Signout}>Đăng xuất</MenuItem>
             </Paper>
           </Fade>
         )}

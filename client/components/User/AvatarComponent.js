@@ -110,7 +110,7 @@ export const AvatarComponent = ({ user, updateAvatar }) => {
       </CardActionArea>
 
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth={true}>
-        <DialogTitle id="form-dialog-title">Edit Personal Avatar</DialogTitle>
+        <DialogTitle id="form-dialog-title">Cập nhật ảnh dại diện</DialogTitle>
         <DialogContent>
           <Avatar className={classes.reviewAvatar} src={avatar} />
           <Button className={classes.button}>
@@ -122,23 +122,23 @@ export const AvatarComponent = ({ user, updateAvatar }) => {
               onChange={onDrop}
             />
             <CameraAltIcon />
-            <p> Upload your new Avatar</p>
+            <p>Tải lên ảnh đại diện mới</p>
           </Button>
         </DialogContent>
 
         <DialogActions>
           <Button onClick={handleClose} color="secondary">
-            Cancel
+            Hủy
           </Button>
           <Button onClick={handleSave} color="primary">
-            Save
+            Lưu
           </Button>
         </DialogActions>
       </Dialog>
       {display && (
         <MessageDialog
           setError={setDisplay}
-          message={["Update avatar successfully!"]}
+          message={["Cập nhật ảnh đại diện thành công!"]}
         />
       )}
     </React.Fragment>

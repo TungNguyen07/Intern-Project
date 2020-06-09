@@ -76,7 +76,8 @@ export const EditInfoComponent = ({ user, update }) => {
   };
 
   const handleDateChange = (date) => {
-    setInfo({ ...info, birth_date: date.toISOString() });
+    date != "Invalid Date" &&
+      setInfo({ ...info, birth_date: date.toISOString() });
   };
 
   const handleChange = (prop) => (event) => {
@@ -95,12 +96,17 @@ export const EditInfoComponent = ({ user, update }) => {
   const checkValid = (infor) => {
     let arrError = [];
     if (!validateEmail(infor.email) || infor.email == "")
-      arrError.push("Invalid Email!");
-    if (validatePhone(infor.phone_number) || infor.phone_number.length < 10)
-      arrError.push("Invalid Number Phone!");
-    if (infor.fullname == "") arrError.push("Fullname is required!");
-    if (infor.address == "") arrError.push("Address is required!");
-    if (infor.phone_number == "") arrError.push("Phone number is required!");
+      arrError.push("Email không hợp lệ!");
+    if (
+      validatePhone(infor.phone_number) ||
+      infor.phone_number.length < 10 ||
+      infor.phone_number.length > 11
+    )
+      arrError.push("Số điện thoại không hợp lệ!");
+    if (infor.fullname == "") arrError.push("Họ và tên không được bỏ trống!");
+    if (infor.address == "") arrError.push("Địa chỉ không được bỏ trống!");
+    if (infor.phone_number == "")
+      arrError.push("Số điện thoại không được bỏ trống!");
     if (arrError.length) {
       setError(arrError);
       return false;
@@ -133,21 +139,21 @@ export const EditInfoComponent = ({ user, update }) => {
       </Tooltip>
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth={true}>
         <DialogTitle id="form-dialog-title">
-          Edit Personal Infomation
+          Thay đổi thông tin cá nhân
         </DialogTitle>
         <DialogContent>
           <FormControl id="info" className={classes.form}>
             <TextField
               className={classes.infoItem}
               id="fullname"
-              label="Fullname"
+              label="Họ và tên"
               variant="outlined"
               value={info.fullname}
               required
               onChange={handleChange("fullname")}
             />
             <div className={classes.gender}>
-              <FormLabel className={classes.genderTitle}>Gender</FormLabel>
+              <FormLabel className={classes.genderTitle}>Giới tính</FormLabel>
               <RadioGroup
                 className={classes.genderGroup}
                 aria-label="gender"
@@ -158,12 +164,12 @@ export const EditInfoComponent = ({ user, update }) => {
                 <FormControlLabel
                   value="0"
                   control={<Radio className={classes.radio} />}
-                  label="Female"
+                  label="Nữ"
                 />
                 <FormControlLabel
                   value="1"
                   control={<Radio className={classes.radio} />}
-                  label="Male"
+                  label="Nam"
                 />
               </RadioGroup>
             </div>
@@ -173,8 +179,8 @@ export const EditInfoComponent = ({ user, update }) => {
                 className={classes.datePicker}
                 variant="outlined"
                 id="birth_date"
-                label="birth_date"
-                format="MM/dd/yyyy"
+                label="Ngày sinh"
+                format="dd/MM/yyyy"
                 value={info.birth_date}
                 onChange={handleDateChange}
                 KeyboardButtonProps={{
@@ -194,7 +200,7 @@ export const EditInfoComponent = ({ user, update }) => {
             <TextField
               className={classes.infoItem}
               id="phone"
-              label="Phone"
+              label="Số điện thoại"
               variant="outlined"
               value={info.phone_number}
               required
@@ -203,7 +209,7 @@ export const EditInfoComponent = ({ user, update }) => {
             <TextField
               className={classes.infoItem}
               id="address"
-              label="Address"
+              label="Địa chỉ"
               variant="outlined"
               value={info.address}
               required
@@ -213,10 +219,10 @@ export const EditInfoComponent = ({ user, update }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">
-            Cancel
+            Hủy
           </Button>
           <Button onClick={handleSave} color="primary">
-            Save
+            Lưu
           </Button>
         </DialogActions>
       </Dialog>
@@ -224,7 +230,7 @@ export const EditInfoComponent = ({ user, update }) => {
       {success && (
         <MessageDialog
           setError={setSuccess}
-          message={["Update profile successfully!"]}
+          message={["Cập nhật thông tin cá nhân thành công!"]}
         />
       )}
     </React.Fragment>

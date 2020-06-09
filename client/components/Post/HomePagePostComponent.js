@@ -86,7 +86,7 @@ const HomePagePostComponent = () => {
       <Link href="/newest-activity">
         <span className={classes.span}>
           <Typography className={classes.title} variant="h6">
-            NEWEST ACTIVITY
+            Các hoạt động mới nhất
           </Typography>
         </span>
       </Link>

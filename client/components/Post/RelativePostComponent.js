@@ -69,7 +69,7 @@ const RelativePostComponent = () => {
         <Grid item xs={9} className={classes.root}>
           <Paper>
             <Typography className={classes.title} variant="h5">
-              Relative post
+              Bài viết liên quan
             </Typography>
             {relative.length ? (
               <div>

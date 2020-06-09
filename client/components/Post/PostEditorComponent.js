@@ -113,21 +113,21 @@ export const PostEditor = ({ title, author, edit_post }) => {
   const checkValid = (newPost) => {
     let arrError = [];
     if (newPost.title == "" || newPost.title == undefined)
-      arrError.push("Title is required!");
+      arrError.push("Tiêu đề không được bỏ trống!");
     if (newPost.description == "" || newPost.description == undefined)
-      arrError.push("Description is required!");
+      arrError.push("Mô tả không được bỏ trống!");
     if (
       newPost.content == "" ||
       newPost.content == undefined ||
       newPost.content == "<p><br></p>"
     )
-      arrError.push("Content is required!");
+      arrError.push("Nội dung không được bỏ trống!");
     if (arrError.length) {
       setNotify(arrError);
       return false;
     } else {
       arrError.push(
-        "Make new post successfully. Waiting for admin approve your post!"
+        "Viết bài viết thành công, vui lòng chờ đợi Quản trị viên duyệt bài viết của bạn. Bạn có thể chỉnh sửa bài viết của mình trong mục Cá nhân."
       );
       setNotify(arrError);
       return true;
@@ -203,12 +203,12 @@ export const PostEditor = ({ title, author, edit_post }) => {
           className={classes.textField}
           value={post.title}
           id="title"
-          label="Title"
+          label="Tiêu đề"
           required
           onChange={handleChange("title")}
         />
         <FormControl className={classes.select}>
-          <InputLabel id="demo-simple-select-label">Activity</InputLabel>
+          <InputLabel id="demo-simple-select-label">Hoạt động</InputLabel>
           <Select
             className={classes.select}
             id="activity"
@@ -228,7 +228,7 @@ export const PostEditor = ({ title, author, edit_post }) => {
           className={classes.textField}
           value={post.description}
           id="description"
-          label="Description"
+          label="Mô tả"
           multiline
           required
           onChange={handleChange("description")}
@@ -254,7 +254,7 @@ export const PostEditor = ({ title, author, edit_post }) => {
             color="primary"
           >
             <SaveIcon className={classes.icon} />
-            Save
+            Lưu
           </Button>
           <Button
             className={classes.buttonDelete}
@@ -264,7 +264,7 @@ export const PostEditor = ({ title, author, edit_post }) => {
             color="secondary"
           >
             <DeleteIcon className={classes.icon} />
-            Cannel
+            Hủy
           </Button>
         </div>
       </form>
