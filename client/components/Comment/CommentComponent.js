@@ -13,6 +13,7 @@ import UserCommment from "./UserCommentComponent";
 import { postData } from "../../libs/postData";
 import { fetchData } from "../../libs/fetchData";
 import MessageDialog from "../Dialog/MessageDialogComponent";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles({
   loading: {
@@ -36,7 +37,7 @@ const useStyles = makeStyles({
   },
 });
 
-const CommentComponent = () => {
+const CommentComponent = ({ postId }) => {
   const classes = useStyles();
   const [fetching, setFetching] = useState(true);
   const [comment, setComment] = useState([]);
@@ -52,9 +53,11 @@ const CommentComponent = () => {
       `${SERVER_URL}/comment/get-comment-by-post-id/${id}/${page}`
     ).then((res) => {
       if (!unmouted) {
-        setComment(res.data.comment);
-        setLength(res.data.count);
-        setFetching(false);
+        if (res.data) {
+          setComment(res.data.comment);
+          setLength(res.data.count);
+          setFetching(false);
+        }
       }
     });
     return () => {
@@ -88,6 +91,25 @@ const CommentComponent = () => {
       unmouted = true;
     };
   };
+
+  useEffect(() => {
+    const id = Router.asPath.split("-").pop();
+    let unmouted = false;
+    fetchData(
+      `${SERVER_URL}/comment/get-comment-by-post-id/${postId || id}/${page}`
+    ).then((res) => {
+      if (!unmouted) {
+        if (res.data) {
+          setComment(res.data.comment);
+          setLength(res.data.count);
+          setFetching(false);
+        }
+      }
+    });
+    return () => {
+      unmouted = true;
+    };
+  }, [postId]);
 
   return (
     <Container maxWidth="lg">
@@ -135,4 +157,10 @@ const CommentComponent = () => {
   );
 };
 
-export default CommentComponent;
+const mapStateToProps = (state) => {
+  return {
+    postId: state.postReducer.post_id,
+  };
+};
+
+export default connect(mapStateToProps, null)(CommentComponent);

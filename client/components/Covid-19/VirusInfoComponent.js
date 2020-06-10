@@ -37,19 +37,19 @@ const VirusInfoComponent = () => {
         <TableHead>
           <TableRow>
             <TableCell align="center" colSpan={4}>
-              Statistical Covid-19
+              Thống kê Covid-19
             </TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>Area</TableCell>
-            <TableCell align="right">Cases</TableCell>
-            <TableCell align="right">Deaths</TableCell>
-            <TableCell align="right">Recovered</TableCell>
+            <TableCell>Khu vực</TableCell>
+            <TableCell align="right">Ca nhiễm</TableCell>
+            <TableCell align="right">Tử vong</TableCell>
+            <TableCell align="right">Hồi phục</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow key="global">
-            <TableCell>Global</TableCell>
+            <TableCell>Thế giới</TableCell>
             <TableCell align="right">{info.global.cases}</TableCell>
             <TableCell align="right">{info.global.deaths}</TableCell>
             <TableCell align="right">{info.global.recovered}</TableCell>
@@ -57,7 +57,7 @@ const VirusInfoComponent = () => {
         </TableBody>
         <TableBody>
           <TableRow key="vietnam">
-            <TableCell>Vietnam</TableCell>
+            <TableCell>Việt Nam</TableCell>
             <TableCell align="right">{info.vietnam.cases}</TableCell>
             <TableCell align="right">{info.vietnam.deaths}</TableCell>
             <TableCell align="right">{info.vietnam.recovered}</TableCell>

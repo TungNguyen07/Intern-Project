@@ -6,6 +6,7 @@ import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
 
 import { fetchData } from "../../libs/fetchData";
 import Router from "next/router";
+import { connect } from "react-redux";
 
 const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
@@ -53,25 +54,43 @@ const useStyles = makeStyles({
   },
 });
 
-const ReadPostComponent = ({ setTitle }) => {
+const ReadPostComponent = ({ setTitle, postId }) => {
   const classes = useStyles();
   const [post, setPost] = useState({});
   const [fetching, setFetching] = useState(true);
 
+  // useEffect(() => {
+  //   const post_id = Router.query.post.split("-").slice(-1).pop();
+  //   let unmounted = false;
+  //   fetchData(`${SERVER_URL}/post/get-post/${post_id}`).then((res) => {
+  //     if (!unmounted) {
+  //       setPost(res.data);
+  //       setFetching(false);
+  //       setTitle(res.data.title);
+  //     }
+  //   });
+
+  //   return () => {
+  //     unmounted = true;
+  //   };
+  // }, []);
+
   useEffect(() => {
-    const post_id = Router.query.post.split("-").slice(-1).pop();
+    const id = Router.asPath.split("-").pop();
+
     let unmounted = false;
-    fetchData(`${SERVER_URL}/post/get-post/${post_id}`).then((res) => {
+    fetchData(`${SERVER_URL}/post/get-post/${postId || id}`).then((res) => {
       if (!unmounted) {
         setPost(res.data);
         setFetching(false);
         setTitle(res.data.title);
       }
     });
+
     return () => {
       unmounted = true;
     };
-  }, []);
+  }, [postId]);
 
   return fetching ? (
     <div className={classes.div}>
@@ -97,4 +116,10 @@ const ReadPostComponent = ({ setTitle }) => {
   );
 };
 
-export default ReadPostComponent;
+const mapStateToProps = (state) => {
+  return {
+    postId: state.postReducer.post_id,
+  };
+};
+
+export default connect(mapStateToProps, null)(ReadPostComponent);

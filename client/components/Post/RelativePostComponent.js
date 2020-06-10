@@ -15,6 +15,7 @@ import {
   CardContent,
   CardMedia,
 } from "@material-ui/core";
+import { connect } from "react-redux";
 
 const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
@@ -39,24 +40,41 @@ const useStyles = makeStyles({
   },
 });
 
-const RelativePostComponent = () => {
+const RelativePostComponent = ({ postId }) => {
   const classes = useStyles();
   const [relative, setRelative] = useState([]);
   const [fetching, setFetching] = useState(true);
 
+  // useEffect(() => {
+  //   const post_id = Router.query.post.split("-").slice(-1).pop();
+  //   console.log(post_id);
+  //   let unmounted = false;
+  //   fetchData(`${SERVER_URL}/post/get-relative-post/${post_id}`).then((res) => {
+  //     if (!unmounted) {
+  //       setRelative(res.data.relativePost);
+  //       setFetching(false);
+  //     }
+  //   });
+  //   return () => {
+  //     unmounted = true;
+  //   };
+  // }, []);
+
   useEffect(() => {
-    const post_id = Router.query.post.split("-").slice(-1).pop();
+    const id = Router.asPath.split("-").pop();
     let unmounted = false;
-    fetchData(`${SERVER_URL}/post/get-relative-post/${post_id}`).then((res) => {
-      if (!unmounted) {
-        setRelative(res.data.relativePost);
-        setFetching(false);
+    fetchData(`${SERVER_URL}/post/get-relative-post/${postId || id}`).then(
+      (res) => {
+        if (!unmounted) {
+          setRelative(res.data.relativePost);
+          setFetching(false);
+        }
       }
-    });
+    );
     return () => {
       unmounted = true;
     };
-  }, []);
+  }, [postId]);
 
   return fetching ? (
     <div className={classes.div}>
@@ -86,4 +104,10 @@ const RelativePostComponent = () => {
   );
 };
 
-export default RelativePostComponent;
+const mapStateToProps = (state) => {
+  return {
+    postId: state.postReducer.post_id,
+  };
+};
+
+export default connect(mapStateToProps, null)(RelativePostComponent);

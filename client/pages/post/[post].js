@@ -13,22 +13,21 @@ const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 import CommentComponent from "../../components/Comment/CommentComponent";
 
 const ReadPost = ({ user, setUserDetail }) => {
-  const [loginUser, setUser] = useState({});
+  //const [loginUser, setUser] = useState({});
   const [title, setTitle] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     let unmounted = false;
-    if (!user) {
-      postData(`${SERVER_URL}/check-token`, { token }).then((res) => {
-        if (!unmounted) {
-          if (res.fullname) {
-            setUserDetail(res);
-            setUser(res);
-          } else return;
+
+    postData(`${SERVER_URL}/check-token`, { token }).then((res) => {
+      if (!unmounted) {
+        if (res.fullname) {
+          setUserDetail(res);
         }
-      });
-    } else setUser(user);
+      }
+    });
+
     return () => {
       unmounted = true;
     };
@@ -38,10 +37,7 @@ const ReadPost = ({ user, setUserDetail }) => {
     <div>
       <Header title={title} />
       <Banner />
-      <PostLayout
-        user={loginUser}
-        Right={<ReadPostComponent setTitle={setTitle} />}
-      />
+      <PostLayout Right={<ReadPostComponent setTitle={setTitle} />} />
       <CommentComponent />
       <RelativePost />
 

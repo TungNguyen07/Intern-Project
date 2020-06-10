@@ -1,4 +1,4 @@
-import { Typography, Avatar } from "@material-ui/core";
+import { Typography, Avatar, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import ReplyForm from "./ReplyFormComponent";
 import UserReply from "./UserReplyComponent";
@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import { postData } from "../../libs/postData";
 import { titleToURL } from "../../libs/changeTitleToURL";
 import MessageDialog from "../Dialog/MessageDialogComponent";
+import { connect } from "react-redux";
+import { deleteComment } from "../../actions/postActions";
 const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 
 const useStyles = makeStyles({
@@ -52,9 +54,13 @@ const useStyles = makeStyles({
       },
     },
   },
+  button: {
+    marginLeft: "auto",
+    marginRight: "5%",
+  },
 });
 
-const UserCommment = ({ comment }) => {
+const UserCommment = ({ comment, user }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [display, setDisplay] = useState(false);
@@ -110,6 +116,7 @@ const UserCommment = ({ comment }) => {
         </Typography>
         <Typography className={classes.comment}>{comment.comment}</Typography>
       </div>
+
       <div className={classes.infoBlock}>
         <a onClick={handleOpen} className={classes.reply}>
           Reply
@@ -142,4 +149,10 @@ const UserCommment = ({ comment }) => {
   );
 };
 
-export default UserCommment;
+const mapStateToProps = (state) => {
+  return {
+    user: state.userReducer.user,
+  };
+};
+
+export default connect(mapStateToProps, null)(UserCommment);

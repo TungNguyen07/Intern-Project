@@ -15,7 +15,7 @@ const SERVER_URL = process.env.SERVER_URL || "http://localhost:4000";
 const useStyles = makeStyles((theme) => ({
   otherInfo: {
     textAlign: "left",
-    marginLeft: "5rem",
+    marginLeft: "2rem",
     marginBottom: "1rem",
   },
   groupInfo: {
@@ -91,7 +91,7 @@ const ViewProfileComponent = ({ user, isOpen, isClose }) => {
               <div className={classes.displayInfo}>
                 <Typography variant="subtitle1">{info.staff_id}</Typography>
                 <Typography variant="subtitle1">
-                  {parseInt(info.gender) ? "Male" : "Female"}
+                  {parseInt(info.gender) ? "Nam" : "Nữ"}
                 </Typography>
                 <Typography variant="subtitle1">
                   {new Date(info.birth_date).toLocaleDateString()}
