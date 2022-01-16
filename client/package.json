@@ -18,7 +18,7 @@
     "babel-plugin-styled-components": "^1.10.7",
     "css-mediaquery": "^0.1.2",
     "date-fns": "^2.0.0",
-    "dayjs": "^1.8.17",
+    "dayjs": "^1.10.7",
     "dotenv": "^8.2.0",
     "dotenv-webpack": "^1.7.0",
     "luxon": "^1.21.3",
