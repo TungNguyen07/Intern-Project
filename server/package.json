@@ -9,7 +9,9 @@
     "migrate-create": "migrate create --compiler=\"js:@babel/register\"",
     "migrate-up": "migrate up --compiler=\"js:@babel/register\"",
     "migrate-down": "migrate down --compiler=\"js:@babel/register\"",
-    "start": "babel-node index.js"
+    "start": "babel-node index.js",
+    "prepare": "yarn run snyk-protect",
+    "snyk-protect": "snyk-protect"
   },
   "author": "",
   "license": "ISC",
@@ -36,7 +38,8 @@
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
     "nodemailer": "^6.4.6",
-    "uuid": "^8.1.0"
+    "uuid": "^8.1.0",
+    "@snyk/protect": "latest"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",
@@ -45,5 +48,6 @@
     "@babel/register": "^7.8.3",
     "babel-preset-jest": "^24.9.0",
     "nodemon": "^2.0.2"
-  }
+  },
+  "snyk": true
 }
