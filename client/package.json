@@ -23,7 +23,7 @@
     "dotenv-webpack": "^1.7.0",
     "luxon": "^1.21.3",
     "material-table": "^1.57.2",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "next": "^9.3.2",
     "next-redux-wrapper": "^5.0.0",
     "nextjs-progressbar": "^0.0.4",
