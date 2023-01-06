@@ -21,7 +21,7 @@
     "dayjs": "^1.8.17",
     "dotenv": "^8.2.0",
     "dotenv-webpack": "^1.7.0",
-    "luxon": "^1.21.3",
+    "luxon": "^1.28.1",
     "material-table": "^1.57.2",
     "moment": "^2.24.0",
     "next": "^9.3.2",
