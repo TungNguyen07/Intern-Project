@@ -14,7 +14,7 @@
     "@material-ui/pickers": "^4.0.0-alpha.3",
     "@material-ui/styles": "^4.9.0",
     "@zeit/next-css": "^1.0.1",
-    "axios": "^0.19.2",
+    "axios": "^1.6.0",
     "babel-plugin-styled-components": "^1.10.7",
     "css-mediaquery": "^0.1.2",
     "date-fns": "^2.0.0",
